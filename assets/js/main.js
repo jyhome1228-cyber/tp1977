@@ -1,16 +1,31 @@
 (() => {
-  if (!document.querySelector('link[data-brand-clean]')) {
-    const cleanCss = document.createElement('link');
+  const isGithubPages = location.hostname.endsWith('github.io');
+  const assetRoot = isGithubPages ? '/tp1977/' : '/';
+  const cacheVersion = '20260810-1127';
+
+  let cleanCss = document.querySelector('link[data-brand-clean]');
+  if (!cleanCss) {
+    cleanCss = document.createElement('link');
     cleanCss.rel = 'stylesheet';
-    cleanCss.href = './assets/css/brand-clean.css?v=20260810-1103';
     cleanCss.dataset.brandClean = 'true';
     document.head.appendChild(cleanCss);
   }
+  cleanCss.href = `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`;
 
-  const homeBrand = document.querySelector('.site-header .brand');
-  if (homeBrand && !homeBrand.classList.contains('brand-image')) {
-    homeBrand.classList.add('brand-image');
-    homeBrand.innerHTML = '<img src="./assets/images/logo-taepyung.svg?v=20260810-1103" alt="태평제지 Taepyung Since 1977" onerror="this.parentElement.classList.add(\'logo-fallback\');this.remove();">';
+  const brand = document.querySelector('.site-header .brand');
+  if (brand) {
+    brand.classList.add('brand-image');
+    brand.classList.remove('logo-fallback');
+    let logoImg = brand.querySelector('img');
+    if (!logoImg) {
+      brand.innerHTML = '<img alt="태평제지 Taepyung Since 1977">';
+      logoImg = brand.querySelector('img');
+    }
+    logoImg.src = `${assetRoot}assets/images/logo-taepyung.svg?v=${cacheVersion}`;
+    logoImg.onerror = () => {
+      brand.classList.add('logo-fallback');
+      logoImg.remove();
+    };
   }
 
   document.querySelectorAll('.hero-orbit, .brand-symbol').forEach((element) => element.remove());
