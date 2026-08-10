@@ -1,0 +1,111 @@
+:root {
+  --bg:#ffffff;
+  --paper:#ffffff;
+  --ink:#111111;
+  --muted:#666666;
+  --line:rgba(17,17,17,.10);
+  --green:#22793a;
+  --green-deep:#22793a;
+  --sand:#ffffff;
+}
+
+html,body{background:#fff!important;color:var(--ink)}
+
+/* Header */
+.site-header,
+.site-header.sub-header,
+.site-header.is-scrolled,
+.site-header.menu-active{
+  background:rgba(255,255,255,.97)!important;
+  color:var(--ink)!important;
+  border-color:var(--line)!important;
+  backdrop-filter:blur(12px);
+}
+.brand{gap:0!important}
+.brand-mark,.brand-wordmark{display:none!important}
+.brand-image{display:inline-flex!important;align-items:center!important;flex:0 0 auto}
+.brand-image img{display:block;width:auto;height:42px;max-width:220px}
+.nav-item>a:hover,.nav-item>a[aria-current="page"]{color:var(--green)}
+.nav-item>a::after{background:var(--green)!important}
+.dropdown{background:#fff!important;border-color:var(--line)!important;box-shadow:0 14px 34px rgba(0,0,0,.06)}
+.dropdown a{color:#444!important}
+.dropdown a:hover{background:rgba(34,121,58,.06)!important;color:var(--green)!important}
+.mobile-panel,.mobile-nav{background:#fff!important}
+
+/* Remove ivory and decorative shapes */
+.hero-orbit,.hero-orbit-a,.hero-orbit-b,.brand-symbol,.business-visual{display:none!important}
+.hero::before,.hero::after,.brand-panel::before,.brand-panel::after{display:none!important;content:none!important}
+.section[style]{background:#fff!important}
+.intro-section,.business-section,.product-section,.sustainability-section,.site-footer,.sub-hero,.sub-nav,.content-section,.page-media-section{background:#fff!important}
+
+/* Main hero */
+.hero{background:#fff!important;color:var(--ink)!important;border-bottom:1px solid var(--line)}
+.hero-title{color:var(--ink)!important}
+.hero-title span{color:var(--green)!important}
+.hero-copy{color:var(--muted)!important}
+.eyebrow,.section-kicker,.content-label{color:var(--green)!important}
+.hero-bottom{border-top:1px solid var(--line)!important}
+.hero-bottom>div{border-right:1px solid var(--line)!important}
+.hero-bottom strong{color:var(--ink)!important}
+.hero-bottom span{color:var(--muted)!important}
+.button-dark{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+.button-dark:hover{background:#fff!important;color:var(--green)!important;border-color:var(--green)!important}
+.button-outline,.button-light{background:#fff!important;color:var(--green)!important;border-color:var(--green)!important}
+.button-outline:hover,.button-light:hover{background:var(--green)!important;color:#fff!important}
+.text-link:hover,.text-link:focus{color:var(--green)}
+
+/* Sections */
+.section{background:#fff}
+.section-copy,.content-body p,.sustainability-copy p{color:var(--muted)!important}
+.business-grid{background:#fff!important;border:0!important;gap:16px!important}
+.business-card{min-height:280px!important;background:#fff!important;border:1px solid var(--line)!important}
+.business-card:hover{border-color:var(--green)!important}
+.card-copy{top:70px!important;bottom:auto!important;align-items:flex-start!important;flex-direction:column!important;gap:6px!important}
+.card-copy h3{color:var(--ink)!important}
+.card-copy p,.card-index{color:var(--muted)!important}
+.product-grid{border-color:var(--line)!important}
+.product-card{background:#fff!important}
+.product-card:hover{background:var(--green)!important;color:#fff!important}
+.product-card:hover p,.product-card:hover .product-no{color:rgba(255,255,255,.72)!important}
+
+/* Brand section: white, no decorative glyph */
+.brand-section{background:#fff!important;padding:0!important}
+.brand-panel{min-height:auto!important;background:#fff!important;color:var(--ink)!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.brand-copy{padding-top:140px!important;padding-bottom:140px!important}
+.brand-panel .section-kicker{color:var(--green)!important}
+.brand-title{color:var(--ink)!important}
+.brand-copy>p:not(.section-kicker){color:var(--muted)!important}
+
+/* Sustainability / contact */
+.sustainability-section{border-top:1px solid var(--line)}
+.contact-banner{background:#fff!important;color:var(--ink)!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.contact-banner .section-kicker{color:var(--green)!important}
+.round-link{width:auto!important;height:auto!important;border-radius:0!important;padding:15px 22px!important;border:1px solid var(--green)!important;color:var(--green)!important}
+.round-link:hover{background:var(--green)!important;color:#fff!important;transform:none!important}
+
+/* Sub pages */
+.sub-hero{border-bottom:1px solid var(--line)!important}
+.sub-nav a.active,.sub-nav a:hover{color:var(--green)!important;border-color:var(--green)!important}
+.category-card{background:#fff!important}
+.category-card:hover{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+.category-card:hover small{color:rgba(255,255,255,.7)!important}
+.feature-row span{color:var(--green)!important}
+.page-media-frame{background:#fff!important;border:0!important}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line)!important}
+.footer-brand strong{color:var(--green)!important}
+.footer-brand p,.company-info,.footer-legal{color:var(--muted)!important}
+.footer-nav a:hover,.footer-legal a:hover{color:var(--green)!important}
+
+@media(max-width:1100px){
+  .site-header.menu-active{background:#fff!important}
+  .mobile-nav summary,.mobile-single{color:var(--ink)!important}
+  .mobile-nav details a:hover,.mobile-single:hover{color:var(--green)!important}
+}
+
+@media(max-width:760px){
+  .brand-image img{height:32px;max-width:180px}
+  .business-card{min-height:220px!important}
+  .brand-copy{padding-top:90px!important;padding-bottom:90px!important}
+}
