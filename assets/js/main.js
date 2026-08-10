@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1735';
+  const cacheVersion = '20260810-1815';
 
   const upsertMeta = (selector, attrs) => {
     let el = document.head.querySelector(selector);
