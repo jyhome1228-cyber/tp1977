@@ -1,0 +1,34 @@
+/* Homepage — original content rebuilt with the current Taepyung identity */
+body.home-page{background:#fff!important;color:#111}
+.home-main{padding-top:var(--header-h);background:#fff}
+.home-hero{width:100%;background:#fff;overflow:hidden}
+.home-hero img{display:block;width:100%;height:auto;max-height:660px;object-fit:cover;object-position:center}
+.home-about{padding:82px 0 54px;background:#fff}
+.home-about-inner{width:min(calc(100% - 96px),1160px);margin:0 auto}
+.home-about-copy{max-width:980px;margin:0;font-size:22px;line-height:1.58;letter-spacing:-.035em;font-weight:650;color:#171717}
+.home-about-copy span{display:block}
+.home-gallery{padding:28px 0 108px;background:#fff}
+.home-gallery-inner{width:min(calc(100% - 96px),1160px);margin:0 auto}
+.home-gallery figure{margin:0;overflow:hidden;background:#fff}
+.home-gallery img{display:block;width:100%;height:auto}
+.home-gallery-caption{margin:18px 0 0;font-size:11px;letter-spacing:.12em;color:#22793a;font-weight:700}
+.home-page .site-footer{margin-top:0!important}
+
+@media(max-width:1100px){
+  .home-about{padding:64px 0 42px}
+  .home-about-inner,.home-gallery-inner{width:calc(100% - 48px)}
+  .home-about-copy{font-size:19px}
+  .home-gallery{padding-bottom:80px}
+}
+@media(max-width:760px){
+  .home-main{padding-top:var(--header-h)}
+  .home-hero img{min-height:260px;object-fit:cover;object-position:62% center}
+  .home-about{padding:48px 0 32px}
+  .home-about-inner,.home-gallery-inner{width:calc(100% - 36px)}
+  .home-about-copy{font-size:17px;line-height:1.68;letter-spacing:-.025em;font-weight:600}
+  .home-about-copy span{display:inline}
+  .home-gallery{padding:14px 0 66px}
+  .home-gallery figure{overflow-x:auto;scrollbar-width:none}
+  .home-gallery figure::-webkit-scrollbar{display:none}
+  .home-gallery img{width:1000px;max-width:none;height:200px;object-fit:cover}
+}
