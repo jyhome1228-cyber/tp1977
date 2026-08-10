@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1320';
+  const cacheVersion = '20260810-1442';
 
   let cleanCss = document.querySelector('link[data-brand-clean]');
   if (!cleanCss) {
