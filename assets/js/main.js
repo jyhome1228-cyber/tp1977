@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1625';
+  const cacheVersion = '20260810-1630';
 
   /* FAVICON + BASIC SEO */
   const upsertMeta = (selector, attrs) => {
@@ -68,23 +68,21 @@
   upsertLink('link[rel="shortcut icon"]', { rel: 'shortcut icon', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
   upsertLink('link[rel="manifest"]', { rel: 'manifest', href: `${assetRoot}site.webmanifest?v=${cacheVersion}` });
 
-  let cleanCss = document.querySelector('link[data-brand-clean]');
-  if (!cleanCss) {
-    cleanCss = document.createElement('link');
-    cleanCss.rel = 'stylesheet';
-    cleanCss.dataset.brandClean = 'true';
-    document.head.appendChild(cleanCss);
-  }
-  cleanCss.href = `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`;
+  const ensureStylesheet = (selector, dataKey, href) => {
+    let link = document.querySelector(selector);
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'stylesheet';
+      if (dataKey) link.dataset[dataKey] = 'true';
+      document.head.appendChild(link);
+    }
+    link.href = href;
+    return link;
+  };
 
-  let footerCss = document.querySelector('link[data-footer-brand]');
-  if (!footerCss) {
-    footerCss = document.createElement('link');
-    footerCss.rel = 'stylesheet';
-    footerCss.dataset.footerBrand = 'true';
-    document.head.appendChild(footerCss);
-  }
-  footerCss.href = `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`;
+  ensureStylesheet('link[data-brand-clean]', 'brandClean', `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`);
+  ensureStylesheet('link[data-content-refine]', 'contentRefine', `${assetRoot}assets/css/content-refine.css?v=${cacheVersion}`);
+  ensureStylesheet('link[data-footer-brand]', 'footerBrand', `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`);
 
   const brand = document.querySelector('.site-header .brand');
   if (brand) {
@@ -102,16 +100,21 @@
     };
   }
 
-  const companyInfo = document.querySelector('.company-info');
-  if (companyInfo) {
-    const items = companyInfo.children;
-    if (items[0]) items[0].textContent = '태평제지(주)';
-    if (items[1]) items[1].textContent = '대표이사: 이정욱';
-    if (items[2]) items[2].textContent = '소재지: 경기도 이천시 마장면 마도로 223번길 22';
-    if (items[3]) items[3].textContent = '전화: 031-595-0797';
-    if (items[4]) items[4].textContent = '팩스번호: 031-632-4016';
-    if (items[5]) items[5].textContent = '전자우편: contact@blondy.co.kr';
-    if (items[6]) items[6].textContent = '사업자등록번호: 132-81-58657';
+  const footer = document.querySelector('.site-footer');
+  if (footer && !footer.querySelector('.footer-shell')) {
+    footer.innerHTML = `
+      <div class="wrap footer-shell">
+        <div class="footer-primary">
+          <div class="footer-brand"><strong>TAEPYUNG PAPER</strong><p>사람과 환경을 생각합니다.</p><small>SINCE 1977 · 생활 위생용품 전문 제조기업</small></div>
+          <div class="footer-nav"><a href="${assetRoot}company/">개요</a><a href="${assetRoot}business/">운영현황</a><a href="${assetRoot}product/">제품소개</a><a href="${assetRoot}esg/">지속가능경영</a><a href="${assetRoot}recruit/">채용</a><a href="${assetRoot}contact/">고객만족</a></div>
+        </div>
+        <div class="footer-details">
+          <div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사: 이정욱</p><p>사업자등록번호: 132-81-58657</p></div>
+          <div class="footer-detail-group"><span class="footer-label">LOCATION</span><p>경기도 이천시 마장면 마도로 223번길 22</p><p>생활 위생용품 제조 · 생산 · 공급</p></div>
+          <div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">031-595-0797</a><a href="mailto:contact@blondy.co.kr">contact@blondy.co.kr</a><p>FAX. 031-632-4016</p></div>
+        </div>
+        <div class="footer-bottom"><div class="footer-legal"><a href="${assetRoot}privacy/">개인정보처리방침</a><a href="${assetRoot}contact/">고객문의</a></div><span>© 2026 TAEPYUNG PAPER CO., LTD. ALL RIGHTS RESERVED.</span></div>
+      </div>`;
   }
 
   document.querySelectorAll('.hero-orbit, .brand-symbol').forEach((element) => element.remove());
