@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1127';
+  const cacheVersion = '20260810-1442';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
@@ -86,7 +86,7 @@
           <div class="footer-nav"><a href="${base}company/">개요</a><a href="${base}business/">운영현황</a><a href="${base}product/">제품소개</a><a href="${base}esg/">지속가능경영</a><a href="${base}recruit/">채용</a><a href="${base}contact/">고객만족</a></div>
         </div>
         <div class="wrap footer-bottom">
-          <div class="company-info"><span>태평제지(주)</span><span>대표이사 이정욱</span><span>경기도 이천시 마장면 마도로 223번길 22</span><span>T. 031-595-0797</span><span>F. 031-632-4016</span><a href="mailto:contact@blondy.co.kr">E. contact@blondy.co.kr</a><span>사업자등록번호 132-81-58657</span></div>
+          <div class="company-info"><span>태평제지(주)</span><span>대표이사: 이정욱</span><span>소재지: 경기도 이천시 마장면 마도로 223번길 22</span><span>전화: 031-595-0797</span><span>팩스번호: 031-632-4016</span><a href="mailto:contact@blondy.co.kr">전자우편: contact@blondy.co.kr</a><span>사업자등록번호: 132-81-58657</span></div>
           <div class="footer-legal"><a href="${base}privacy/">개인정보처리방침</a><span>© 2026 TAEPYUNG PAPER CO., LTD.</span></div>
         </div>
       </footer>`;
@@ -105,7 +105,7 @@
   let path = location.pathname.replace(/\/index\.html$/, '/').replace(/^\/tp1977(?=\/)/, '');
   if (!path.endsWith('/')) path += '/';
   const mediaScripts = {
-    '/company/ceo/':'company-ceo','/company/story/':'company-story','/company/brand/':'company-brand','/company/vision/':'company-vision',
+    '/company/ceo/':'company-ceo','/company/brand/':'company-brand',
     '/business/customer/':'business-customer','/business/marketing/':'business-marketing','/business/production/':'business-production','/business/logistics/':'business-logistics','/business/quality/':'business-quality',
     '/product/roll/':'product-roll','/product/jumbo-roll/':'product-jumbo-roll','/product/hand-towel/':'product-hand-towel','/product/kitchen-towel/':'product-kitchen-towel','/product/facial-tissue/':'product-facial-tissue','/product/etc/':'product-etc',
     '/esg/':'esg','/recruit/':'recruit','/contact/':'contact'
