@@ -1,20 +1,25 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1625';
+  const cacheVersion = '20260810-1846';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
   const footerMount = document.querySelector('[data-site-footer]');
 
-  let cleanCss = document.querySelector('link[data-brand-clean]');
-  if (!cleanCss) {
-    cleanCss = document.createElement('link');
-    cleanCss.rel = 'stylesheet';
-    cleanCss.dataset.brandClean = 'true';
-    document.head.appendChild(cleanCss);
-  }
-  cleanCss.href = `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`;
+  const ensureCss = (selector, dataKey, href) => {
+    let link = document.querySelector(selector);
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'stylesheet';
+      if (dataKey) link.dataset[dataKey] = 'true';
+      document.head.appendChild(link);
+    }
+    link.href = href;
+  };
+
+  ensureCss('link[data-brand-clean]', 'brandClean', `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`);
+  ensureCss('link[data-site-enhancements]', 'siteEnhancements', `${assetRoot}assets/css/site-enhancements.css?v=${cacheVersion}`);
 
   const logo = () => `
     <a class="brand brand-image" href="${base}" aria-label="태평제지 홈">
@@ -106,27 +111,10 @@
       </footer>`;
   }
 
-  window.insertPageMedia = (src, alt) => {
-    if (document.querySelector('.page-media-section')) return;
-    const anchor = document.querySelector('.sub-nav') || document.querySelector('.sub-hero');
-    if (!anchor) return;
-    const section = document.createElement('section');
-    section.className = 'page-media-section';
-    section.innerHTML = `<div class="wrap"><figure class="page-media-frame"><img src="${src}" alt="${alt}" loading="eager"></figure></div>`;
-    anchor.insertAdjacentElement('afterend', section);
-  };
-
-  let path = location.pathname.replace(/\/index\.html$/, '/').replace(/^\/tp1977(?=\/)/, '');
-  if (!path.endsWith('/')) path += '/';
-  const mediaScripts = {
-    '/company/ceo/':'company-ceo','/company/brand/':'company-brand',
-    '/business/customer/':'business-customer','/business/marketing/':'business-marketing','/business/production/':'business-production','/business/logistics/':'business-logistics','/business/quality/':'business-quality',
-    '/product/roll/':'product-roll','/product/jumbo-roll/':'product-jumbo-roll','/product/hand-towel/':'product-hand-towel','/product/kitchen-towel/':'product-kitchen-towel','/product/facial-tissue/':'product-facial-tissue','/product/etc/':'product-etc',
-    '/esg/':'esg','/recruit/':'recruit','/contact/':'contact'
-  };
-  if (mediaScripts[path]) {
-    const s = document.createElement('script');
-    s.src = `${assetRoot}assets/js/media/${mediaScripts[path]}.js?v=${cacheVersion}`;
-    document.head.appendChild(s);
+  if (!document.querySelector('script[data-site-enhancements]')) {
+    const script = document.createElement('script');
+    script.src = `${assetRoot}assets/js/site-enhancements.js?v=${cacheVersion}`;
+    script.dataset.siteEnhancements = 'true';
+    document.head.appendChild(script);
   }
 })();
