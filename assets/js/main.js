@@ -2,15 +2,15 @@
   if (!document.querySelector('link[data-brand-clean]')) {
     const cleanCss = document.createElement('link');
     cleanCss.rel = 'stylesheet';
-    cleanCss.href = './assets/css/brand-clean.css';
+    cleanCss.href = './assets/css/brand-clean.css?v=20260810-1103';
     cleanCss.dataset.brandClean = 'true';
     document.head.appendChild(cleanCss);
   }
 
   const homeBrand = document.querySelector('.site-header .brand');
-  if (homeBrand) {
+  if (homeBrand && !homeBrand.classList.contains('brand-image')) {
     homeBrand.classList.add('brand-image');
-    homeBrand.innerHTML = '<img src="./assets/images/logo-taepyung.svg" alt="태평제지 Taepyung Since 1977">';
+    homeBrand.innerHTML = '<img src="./assets/images/logo-taepyung.svg?v=20260810-1103" alt="태평제지 Taepyung Since 1977" onerror="this.parentElement.classList.add(\'logo-fallback\');this.remove();">';
   }
 
   document.querySelectorAll('.hero-orbit, .brand-symbol').forEach((element) => element.remove());
@@ -32,16 +32,13 @@
     const syncHeader = () => {
       const y = window.scrollY;
       header.classList.toggle('is-scrolled', y > 20);
-
       if (!header.classList.contains('menu-active') && y > 240) {
         header.classList.toggle('is-hidden', y > lastY && y - lastY > 2);
       } else {
         header.classList.remove('is-hidden');
       }
-
       lastY = y;
     };
-
     syncHeader();
     window.addEventListener('scroll', syncHeader, { passive: true });
   }
@@ -75,7 +72,6 @@
         observer.unobserve(entry.target);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-
     reveals.forEach((element, index) => {
       element.style.transitionDelay = `${Math.min(index % 4, 3) * 55}ms`;
       observer.observe(element);
