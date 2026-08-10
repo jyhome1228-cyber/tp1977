@@ -2,7 +2,6 @@
   const base = document.body.dataset.base || './';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
-
   const headerMount = document.querySelector('[data-site-header]');
   const footerMount = document.querySelector('[data-site-footer]');
 
@@ -41,5 +40,55 @@
         <div class="wrap footer-top"><div class="footer-brand"><strong>TAEPYUNG PAPER</strong><p>사람과 환경을 생각합니다.</p></div><div class="footer-nav"><a href="${base}company/">개요</a><a href="${base}business/">운영현황</a><a href="${base}product/">제품소개</a><a href="${base}esg/">지속가능경영</a><a href="${base}recruit/">채용</a><a href="${base}contact/">고객만족</a></div></div>
         <div class="wrap footer-bottom"><div class="company-info"><span>태평제지(주)</span><span>대표이사 이정욱</span><span>경기도 이천시 마장면 마도로 223번길 22</span><span>T. 031-595-0797</span><span>F. 031-632-4016</span><a href="mailto:contact@blondy.co.kr">E. contact@blondy.co.kr</a><span>사업자등록번호 132-81-58657</span></div><div class="footer-legal"><a href="${base}privacy/">개인정보처리방침</a><span>© 2026 TAEPYUNG PAPER CO., LTD.</span></div></div>
       </footer>`;
+  }
+
+  window.insertPageMedia = (src, alt) => {
+    if (document.querySelector('.page-media-section')) return;
+    if (!document.querySelector('#tp-media-style')) {
+      const style = document.createElement('style');
+      style.id = 'tp-media-style';
+      style.textContent = `
+        .page-media-section{padding:38px 0 0;background:var(--paper)}
+        .page-media-frame{margin:0;overflow:hidden;background:#f2f2ef;border:1px solid var(--line)}
+        .page-media-frame img{display:block;width:100%;height:auto}
+        .page-media-section + .content-section{padding-top:90px}
+        @media(max-width:760px){.page-media-section{padding-top:20px}.page-media-section + .content-section{padding-top:64px}}
+      `;
+      document.head.appendChild(style);
+    }
+    const anchor = document.querySelector('.sub-nav') || document.querySelector('.sub-hero');
+    if (!anchor) return;
+    const section = document.createElement('section');
+    section.className = 'page-media-section';
+    section.innerHTML = `<div class="wrap"><figure class="page-media-frame"><img src="${src}" alt="${alt}" loading="eager"></figure></div>`;
+    anchor.insertAdjacentElement('afterend', section);
+  };
+
+  let path = location.pathname.replace(/\/index\.html$/, '/').replace(/^\/tp1977(?=\/)/, '');
+  if (!path.endsWith('/')) path += '/';
+  const mediaScripts = {
+    '/company/ceo/':'company-ceo',
+    '/company/story/':'company-story',
+    '/company/brand/':'company-brand',
+    '/company/vision/':'company-vision',
+    '/business/customer/':'business-customer',
+    '/business/marketing/':'business-marketing',
+    '/business/production/':'business-production',
+    '/business/logistics/':'business-logistics',
+    '/business/quality/':'business-quality',
+    '/product/roll/':'product-roll',
+    '/product/jumbo-roll/':'product-jumbo-roll',
+    '/product/hand-towel/':'product-hand-towel',
+    '/product/kitchen-towel/':'product-kitchen-towel',
+    '/product/facial-tissue/':'product-facial-tissue',
+    '/product/etc/':'product-etc',
+    '/esg/':'esg',
+    '/recruit/':'recruit',
+    '/contact/':'contact'
+  };
+  if (mediaScripts[path]) {
+    const s = document.createElement('script');
+    s.src = `${base}assets/js/media/${mediaScripts[path]}.js`;
+    document.head.appendChild(s);
   }
 })();
