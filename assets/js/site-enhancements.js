@@ -7,8 +7,40 @@
   const isProduct = path.startsWith('/product/');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const productCategories = [
+    ['/product/', '전체'],
+    ['/product/roll/', '두루마리 화장지'],
+    ['/product/jumbo-roll/', '점보롤 화장지'],
+    ['/product/hand-towel/', '페이퍼타월'],
+    ['/product/kitchen-towel/', '키친타월'],
+    ['/product/facial-tissue/', '미용티슈'],
+    ['/product/etc/', '물티슈 · 디스펜서']
+  ];
+
   const removeLegacy = () => {
     document.querySelectorAll('.product-source-extra,.page-media-section').forEach(el => el.remove());
+    document.querySelectorAll('[class*="product-source-extra"]').forEach(el => el.remove());
+  };
+
+  const ensureProductCategoryNav = () => {
+    if (!isProduct || path === '/product/' || document.querySelector('.product-category-switch')) return false;
+    const section = document.querySelector('.product-catalog-section');
+    if (!section) return false;
+
+    const nav = document.createElement('nav');
+    nav.className = 'product-category-switch';
+    nav.setAttribute('aria-label', '제품 카테고리');
+    nav.innerHTML = `
+      <div class="wrap">
+        <div class="product-category-switch__scroll">
+          ${productCategories.map(([route, label]) => {
+            const active = route === path;
+            return `<a href="${root}${route.replace(/^\//,'')}" class="${active ? 'is-active' : ''}" ${active ? 'aria-current="page"' : ''}>${label}</a>`;
+          }).join('')}
+        </div>
+      </div>`;
+    section.insertAdjacentElement('beforebegin', nav);
+    return true;
   };
 
   const enhanceCompanyGallery = () => {
@@ -180,6 +212,7 @@
 
   const run = () => {
     removeLegacy();
+    ensureProductCategoryNav();
     enhanceCompanyGallery();
     enhanceProductCards();
     hideBrokenImages();
@@ -188,5 +221,4 @@
   run();
   const observer = new MutationObserver(()=>run());
   observer.observe(document.documentElement,{childList:true,subtree:true});
-  setTimeout(()=>observer.disconnect(),12000);
 })();
