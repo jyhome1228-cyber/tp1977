@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1612';
+  const cacheVersion = '20260810-1625';
 
   /* FAVICON + BASIC SEO */
   const upsertMeta = (selector, attrs) => {
@@ -76,6 +76,15 @@
     document.head.appendChild(cleanCss);
   }
   cleanCss.href = `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`;
+
+  let footerCss = document.querySelector('link[data-footer-brand]');
+  if (!footerCss) {
+    footerCss = document.createElement('link');
+    footerCss.rel = 'stylesheet';
+    footerCss.dataset.footerBrand = 'true';
+    document.head.appendChild(footerCss);
+  }
+  footerCss.href = `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`;
 
   const brand = document.querySelector('.site-header .brand');
   if (brand) {
