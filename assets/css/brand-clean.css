@@ -31,17 +31,7 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 .nav-item>a{font-size:13px!important;font-weight:600!important}
 .nav-item>a:hover,.nav-item>a[aria-current="page"]{color:var(--green)!important}
 .nav-item>a::after{background:var(--green)!important;bottom:17px!important}
-.dropdown{
-  left:0!important;
-  right:auto!important;
-  min-width:210px!important;
-  padding:10px 0!important;
-  transform:translateY(8px)!important;
-  background:#fff!important;
-  border:1px solid var(--line)!important;
-  box-shadow:0 16px 36px rgba(0,0,0,.07)!important;
-  text-align:left!important;
-}
+.dropdown{left:0!important;right:auto!important;min-width:210px!important;padding:10px 0!important;transform:translateY(8px)!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:0 16px 36px rgba(0,0,0,.07)!important;text-align:left!important}
 .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{transform:none!important}
 .dropdown a{display:block!important;padding:11px 20px!important;font-size:13px!important;line-height:1.45!important;text-align:left!important;color:#444!important;white-space:nowrap}
 .dropdown a:hover{background:rgba(34,121,58,.055)!important;color:var(--green)!important}
@@ -65,12 +55,12 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 .brand-title{font-size:clamp(34px,3.8vw,52px)!important;line-height:1.14!important}
 .contact-banner h2{font-size:clamp(32px,3.5vw,50px)!important}
 
-/* SUB PAGES — approx 60% of previous title scale */
+/* SUB PAGES */
 .sub-main{padding-top:var(--header-h)!important}
 .sub-hero{padding:58px 0 42px!important;border-bottom:1px solid var(--line)!important}
-.breadcrumb{margin:0 0 22px!important;font-size:11px!important;line-height:1.4!important;color:#777!important}
+.sub-hero .breadcrumb{display:block!important;margin:0 0 14px!important;font-size:11px!important;line-height:1.4!important;color:#777!important;letter-spacing:.015em!important}
 .sub-hero h1{margin:0!important;font-size:clamp(34px,3.6vw,52px)!important;line-height:1.06!important;letter-spacing:-.04em!important;font-weight:650!important}
-.sub-hero p{width:100%!important;max-width:760px!important;margin:22px 0 0!important;font-size:15px!important;line-height:1.75!important;color:#73716b!important;overflow-wrap:anywhere}
+.sub-hero p:not(.breadcrumb){width:100%!important;max-width:760px!important;margin:18px 0 0!important;font-size:15px!important;line-height:1.75!important;color:#73716b!important;overflow-wrap:anywhere}
 .sub-nav{border-bottom:1px solid var(--line)!important}
 .sub-nav .wrap{gap:0!important}
 .sub-nav a{padding:17px 20px 15px!important;font-size:12px!important;color:#888!important}
@@ -78,7 +68,8 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 .sub-nav a.active,.sub-nav a:hover{color:var(--green)!important;border-color:var(--green)!important}
 .content-section{padding:80px 0 105px!important}
 .content-grid{grid-template-columns:220px minmax(0,1fr)!important;gap:54px!important}
-.content-body h2{font-size:clamp(27px,2.7vw,38px)!important;line-height:1.25!important;margin-bottom:24px!important}
+.content-label{display:inline-block!important;margin-bottom:16px!important}
+.content-body h2{font-size:clamp(27px,2.7vw,38px)!important;line-height:1.25!important;margin:0 0 24px!important}
 .feature-list{margin-top:42px!important}
 .feature-row{padding:24px 0!important;grid-template-columns:82px minmax(0,1fr)!important;gap:24px!important}
 .feature-row h3{font-size:18px!important;line-height:1.45!important}
@@ -140,8 +131,9 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
   .hero{min-height:600px!important}
   .hero-title{font-size:38px!important}
   .sub-hero{padding:44px 0 34px!important}
+  .sub-hero .breadcrumb{margin-bottom:10px!important}
   .sub-hero h1{font-size:34px!important}
-  .sub-hero p{font-size:14px!important;margin-top:16px!important}
+  .sub-hero p:not(.breadcrumb){font-size:14px!important;margin-top:16px!important}
   .sub-nav a{padding:14px 14px 12px!important}
   .sub-nav a:first-child{padding-left:0!important}
   .section{padding:78px 0!important}
