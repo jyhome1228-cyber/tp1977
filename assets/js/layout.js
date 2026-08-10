@@ -5,13 +5,20 @@
   const headerMount = document.querySelector('[data-site-header]');
   const footerMount = document.querySelector('[data-site-footer]');
 
+  if (!document.querySelector('link[data-brand-clean]')) {
+    const cleanCss = document.createElement('link');
+    cleanCss.rel = 'stylesheet';
+    cleanCss.href = `${base}assets/css/brand-clean.css`;
+    cleanCss.dataset.brandClean = 'true';
+    document.head.appendChild(cleanCss);
+  }
+
   if (headerMount) {
     headerMount.outerHTML = `
       <header class="site-header sub-header" data-header>
         <div class="header-inner">
-          <a class="brand" href="${base}" aria-label="태평제지 홈">
-            <span class="brand-mark" aria-hidden="true">TP</span>
-            <span class="brand-wordmark">TAEPYUNG PAPER</span>
+          <a class="brand brand-image" href="${base}" aria-label="태평제지 홈">
+            <img src="${base}assets/images/logo-taepyung.svg" alt="태평제지 Taepyung Since 1977">
           </a>
           <nav class="desktop-nav" aria-label="주요 메뉴">
             <div class="nav-item has-dropdown"><a href="${base}company/"${isActive('company')}>개요</a><div class="dropdown"><a href="${base}company/ceo/">CEO 인사말</a><a href="${base}company/story/">태평제지 스토리</a><a href="${base}company/brand/">브랜드 소개</a><a href="${base}company/vision/">비전 및 핵심 가치</a></div></div>
@@ -48,8 +55,8 @@
       const style = document.createElement('style');
       style.id = 'tp-media-style';
       style.textContent = `
-        .page-media-section{padding:38px 0 0;background:var(--paper)}
-        .page-media-frame{margin:0;overflow:hidden;background:#f2f2ef;border:1px solid var(--line)}
+        .page-media-section{padding:38px 0 0;background:#fff}
+        .page-media-frame{margin:0;overflow:hidden;background:#fff;border:0}
         .page-media-frame img{display:block;width:100%;height:auto}
         .page-media-section + .content-section{padding-top:90px}
         @media(max-width:760px){.page-media-section{padding-top:20px}.page-media-section + .content-section{padding-top:64px}}
