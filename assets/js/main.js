@@ -1,4 +1,20 @@
 (() => {
+  if (!document.querySelector('link[data-brand-clean]')) {
+    const cleanCss = document.createElement('link');
+    cleanCss.rel = 'stylesheet';
+    cleanCss.href = './assets/css/brand-clean.css';
+    cleanCss.dataset.brandClean = 'true';
+    document.head.appendChild(cleanCss);
+  }
+
+  const homeBrand = document.querySelector('.site-header .brand');
+  if (homeBrand) {
+    homeBrand.classList.add('brand-image');
+    homeBrand.innerHTML = '<img src="./assets/images/logo-taepyung.svg" alt="태평제지 Taepyung Since 1977">';
+  }
+
+  document.querySelectorAll('.hero-orbit, .brand-symbol').forEach((element) => element.remove());
+
   const header = document.querySelector('[data-header]');
   const menuButton = document.querySelector('[data-menu-button]');
   const mobilePanel = document.querySelector('[data-mobile-panel]');
