@@ -1,21 +1,24 @@
 (() => {
   const base = document.body.dataset.base || './';
+  const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
+  const cacheVersion = '20260810-1127';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
   const footerMount = document.querySelector('[data-site-footer]');
 
-  if (!document.querySelector('link[data-brand-clean]')) {
-    const cleanCss = document.createElement('link');
+  let cleanCss = document.querySelector('link[data-brand-clean]');
+  if (!cleanCss) {
+    cleanCss = document.createElement('link');
     cleanCss.rel = 'stylesheet';
-    cleanCss.href = `${base}assets/css/brand-clean.css?v=20260810-1103`;
     cleanCss.dataset.brandClean = 'true';
     document.head.appendChild(cleanCss);
   }
+  cleanCss.href = `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`;
 
   const logo = () => `
     <a class="brand brand-image" href="${base}" aria-label="태평제지 홈">
-      <img src="${base}assets/images/logo-taepyung.svg?v=20260810-1103"
+      <img src="${assetRoot}assets/images/logo-taepyung.svg?v=${cacheVersion}"
            alt="태평제지 Taepyung Since 1977"
            onerror="this.parentElement.classList.add('logo-fallback');this.remove();">
     </a>`;
@@ -109,7 +112,7 @@
   };
   if (mediaScripts[path]) {
     const s = document.createElement('script');
-    s.src = `${base}assets/js/media/${mediaScripts[path]}.js?v=20260810-1103`;
+    s.src = `${assetRoot}assets/js/media/${mediaScripts[path]}.js?v=${cacheVersion}`;
     document.head.appendChild(s);
   }
 })();
