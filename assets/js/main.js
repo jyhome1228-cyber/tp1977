@@ -1,7 +1,72 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1442';
+  const cacheVersion = '20260810-1612';
+
+  /* FAVICON + BASIC SEO */
+  const upsertMeta = (selector, attrs) => {
+    let el = document.head.querySelector(selector);
+    if (!el) {
+      el = document.createElement('meta');
+      document.head.appendChild(el);
+    }
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    return el;
+  };
+
+  const upsertLink = (selector, attrs) => {
+    let el = document.head.querySelector(selector);
+    if (!el) {
+      el = document.createElement('link');
+      document.head.appendChild(el);
+    }
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    return el;
+  };
+
+  const normalizedPath = location.pathname
+    .replace(/^\/tp1977(?=\/|$)/, '')
+    .replace(/\/index\.html$/, '/') || '/';
+
+  const keywordGroups = {
+    company: '태평제지 회사소개, 태평제지 스토리, 태평제지 역사, 태평제지 비전, 태평제지 핵심가치, 브론디 브랜드',
+    business: '태평제지 운영현황, 화장지 생산, 위생용품 생산, 화장지 물류, 화장지 품질, 기업납품, B2B 위생용품',
+    product: '브론디, 두루마리 화장지, 점보롤 화장지, 페이퍼타월, 핸드타월, 키친타월, 미용티슈, 물티슈, 디스펜서',
+    esg: '태평제지 지속가능경영, 친환경 화장지, 환경마크 화장지, 재생펄프, 친환경 위생용품',
+    recruit: '태평제지 채용, 태평제지 인재상, 태평제지 복리후생, 화장지 제조 채용',
+    contact: '태평제지 고객만족, 태평제지 고객센터, 태평제지 문의, 브론디 문의'
+  };
+
+  let sectionKeywords = '';
+  if (normalizedPath.startsWith('/company/')) sectionKeywords = keywordGroups.company;
+  else if (normalizedPath.startsWith('/business/')) sectionKeywords = keywordGroups.business;
+  else if (normalizedPath.startsWith('/product/')) sectionKeywords = keywordGroups.product;
+  else if (normalizedPath.startsWith('/esg/')) sectionKeywords = keywordGroups.esg;
+  else if (normalizedPath.startsWith('/recruit/')) sectionKeywords = keywordGroups.recruit;
+  else if (normalizedPath.startsWith('/contact/')) sectionKeywords = keywordGroups.contact;
+
+  const baseKeywords = '태평제지, Taepyung Paper, 브론디, Blondy, 화장지 제조업체, 생활 위생용품, 화장지, 위생용품, 대한민국 화장지 제조';
+  const keywords = sectionKeywords ? `${baseKeywords}, ${sectionKeywords}` : `${baseKeywords}, 두루마리 화장지, 점보롤 화장지, 페이퍼타월, 키친타월, 미용티슈`;
+
+  upsertMeta('meta[name="keywords"]', { name: 'keywords', content: keywords });
+  upsertMeta('meta[name="robots"]', { name: 'robots', content: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' });
+  upsertMeta('meta[name="author"]', { name: 'author', content: '태평제지(주)' });
+  upsertMeta('meta[name="theme-color"]', { name: 'theme-color', content: '#22793a' });
+  upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: '태평제지 | Taepyung Paper' });
+  upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: 'ko_KR' });
+  upsertMeta('meta[property="og:title"]', { property: 'og:title', content: document.title });
+  upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
+
+  const description = document.head.querySelector('meta[name="description"]')?.content || '1977년부터 생활 위생용품을 제조해온 태평제지 공식 웹사이트입니다.';
+  upsertMeta('meta[property="og:description"]', { property: 'og:description', content: description });
+
+  const canonicalPath = normalizedPath.endsWith('/') ? normalizedPath : `${normalizedPath}/`;
+  const canonicalUrl = `https://www.tp1977.com${canonicalPath}`;
+  upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonicalUrl });
+  upsertLink('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl });
+  upsertLink('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
+  upsertLink('link[rel="shortcut icon"]', { rel: 'shortcut icon', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
+  upsertLink('link[rel="manifest"]', { rel: 'manifest', href: `${assetRoot}site.webmanifest?v=${cacheVersion}` });
 
   let cleanCss = document.querySelector('link[data-brand-clean]');
   if (!cleanCss) {
