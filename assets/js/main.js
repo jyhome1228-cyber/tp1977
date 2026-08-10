@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1127';
+  const cacheVersion = '20260810-1320';
 
   let cleanCss = document.querySelector('link[data-brand-clean]');
   if (!cleanCss) {
@@ -26,6 +26,18 @@
       brand.classList.add('logo-fallback');
       logoImg.remove();
     };
+  }
+
+  const companyInfo = document.querySelector('.company-info');
+  if (companyInfo) {
+    const items = companyInfo.children;
+    if (items[0]) items[0].textContent = '태평제지(주)';
+    if (items[1]) items[1].textContent = '대표이사: 이정욱';
+    if (items[2]) items[2].textContent = '소재지: 경기도 이천시 마장면 마도로 223번길 22';
+    if (items[3]) items[3].textContent = '전화: 031-595-0797';
+    if (items[4]) items[4].textContent = '팩스번호: 031-632-4016';
+    if (items[5]) items[5].textContent = '전자우편: contact@blondy.co.kr';
+    if (items[6]) items[6].textContent = '사업자등록번호: 132-81-58657';
   }
 
   document.querySelectorAll('.hero-orbit, .brand-symbol').forEach((element) => element.remove());
