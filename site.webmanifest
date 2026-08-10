@@ -1,0 +1,16 @@
+{
+  "name": "태평제지 | Taepyung Paper",
+  "short_name": "태평제지",
+  "description": "1977년부터 생활 위생용품을 제조해온 태평제지 공식 웹사이트",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22793a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
