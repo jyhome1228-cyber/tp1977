@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1442';
+  const cacheVersion = '20260810-1625';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
@@ -81,13 +81,27 @@
   if (footerMount) {
     footerMount.outerHTML = `
       <footer class="site-footer">
-        <div class="wrap footer-top">
-          <div class="footer-brand"><strong>TAEPYUNG PAPER</strong><p>사람과 환경을 생각합니다.</p></div>
-          <div class="footer-nav"><a href="${base}company/">개요</a><a href="${base}business/">운영현황</a><a href="${base}product/">제품소개</a><a href="${base}esg/">지속가능경영</a><a href="${base}recruit/">채용</a><a href="${base}contact/">고객만족</a></div>
-        </div>
-        <div class="wrap footer-bottom">
-          <div class="company-info"><span>태평제지(주)</span><span>대표이사: 이정욱</span><span>소재지: 경기도 이천시 마장면 마도로 223번길 22</span><span>전화: 031-595-0797</span><span>팩스번호: 031-632-4016</span><a href="mailto:contact@blondy.co.kr">전자우편: contact@blondy.co.kr</a><span>사업자등록번호: 132-81-58657</span></div>
-          <div class="footer-legal"><a href="${base}privacy/">개인정보처리방침</a><span>© 2026 TAEPYUNG PAPER CO., LTD.</span></div>
+        <div class="wrap footer-shell">
+          <div class="footer-primary">
+            <div class="footer-brand">
+              <strong>TAEPYUNG PAPER</strong>
+              <p>사람과 환경을 생각합니다.</p>
+              <small>SINCE 1977 · 생활 위생용품 전문 제조기업</small>
+            </div>
+            <div class="footer-nav">
+              <a href="${base}company/">개요</a><a href="${base}business/">운영현황</a><a href="${base}product/">제품소개</a>
+              <a href="${base}esg/">지속가능경영</a><a href="${base}recruit/">채용</a><a href="${base}contact/">고객만족</a>
+            </div>
+          </div>
+          <div class="footer-details">
+            <div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사: 이정욱</p><p>사업자등록번호: 132-81-58657</p></div>
+            <div class="footer-detail-group"><span class="footer-label">LOCATION</span><p>경기도 이천시 마장면 마도로 223번길 22</p><p>생활 위생용품 제조 · 생산 · 공급</p></div>
+            <div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">031-595-0797</a><a href="mailto:contact@blondy.co.kr">contact@blondy.co.kr</a><p>FAX. 031-632-4016</p></div>
+          </div>
+          <div class="footer-bottom">
+            <div class="footer-legal"><a href="${base}privacy/">개인정보처리방침</a><a href="${base}contact/">고객문의</a></div>
+            <span>© 2026 TAEPYUNG PAPER CO., LTD. ALL RIGHTS RESERVED.</span>
+          </div>
         </div>
       </footer>`;
   }
