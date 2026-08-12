@@ -11,7 +11,9 @@
 
   <style>
     body[data-section="contact"]{background:#fff;color:#171917}
-    body[data-section="contact"] .source-image-gallery{display:none!important}
+    body[data-section="contact"] .source-image-gallery,
+    body[data-section="contact"] .page-media-section,
+    body[data-section="contact"] .product-source-extra{display:none!important}
 
     .cs-page{
       --cs-green:#22793a;
@@ -27,10 +29,8 @@
       margin-inline:auto;
     }
 
-    /* HERO */
     .cs-hero{padding:32px 0 0}
     .cs-hero-media{
-      position:relative;
       margin:0;
       width:100%;
       aspect-ratio:2.55 / 1;
@@ -43,17 +43,9 @@
       height:100%;
       display:block;
       object-fit:cover;
-      object-position:center 48%;
-    }
-    .cs-hero-media::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg,rgba(9,20,11,.18),rgba(9,20,11,.04) 58%,transparent);
-      pointer-events:none;
+      object-position:center center;
     }
 
-    /* INTRO */
     .cs-intro{padding:92px 0 78px}
     .cs-intro-grid{
       display:grid;
@@ -91,7 +83,19 @@
     }
     .cs-intro-copy p+p{margin-top:12px}
 
-    /* PROCESS INFOGRAPHIC */
+    .cs-selected-product{
+      display:none;
+      margin-top:24px;
+      padding:16px 18px;
+      border:1px solid rgba(34,121,58,.18);
+      background:var(--cs-soft);
+      color:#46604a;
+      font-size:13px;
+      line-height:1.6;
+    }
+    .cs-selected-product.is-visible{display:block}
+    .cs-selected-product b{color:var(--cs-green);font-weight:700}
+
     .cs-process{
       padding:88px 0 106px;
       border-top:1px solid var(--cs-line);
@@ -185,7 +189,6 @@
     }
     .cs-step:last-child .cs-step-arrow{display:none}
 
-    /* CONTACT INFOGRAPHIC */
     .cs-contact{
       padding:92px 0 112px;
       border-top:1px solid var(--cs-line);
@@ -242,19 +245,6 @@
     }
     .cs-contact-card a:hover{color:var(--cs-green)}
 
-    .cs-selected-product{
-      display:none;
-      margin-top:24px;
-      padding:16px 18px;
-      border:1px solid rgba(34,121,58,.18);
-      background:var(--cs-soft);
-      color:#46604a;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .cs-selected-product.is-visible{display:block}
-    .cs-selected-product b{color:var(--cs-green);font-weight:700}
-
     @media(max-width:1100px){
       .cs-intro-grid{grid-template-columns:1fr;gap:28px}
       .cs-intro-copy{padding-top:0}
@@ -293,7 +283,7 @@
   <section class="cs-hero" aria-label="태평제지 고객만족">
     <div class="cs-shell">
       <figure class="cs-hero-media">
-        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/77d91cb7d7bd3.jpg" alt="고객의 의견을 기록하고 상담하는 태평제지 고객만족 이미지" fetchpriority="high">
+        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/a17238ed171e2.png" alt="고객 상담과 의견 접수를 진행하는 태평제지 고객만족 이미지" fetchpriority="high">
       </figure>
     </div>
   </section>
@@ -402,11 +392,11 @@
       box.classList.add('is-visible');
     }
 
-    const removeAutoGallery = () => {
-      document.querySelectorAll('.source-image-gallery').forEach((gallery) => gallery.remove());
+    const removeLegacyVisuals = () => {
+      document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach((el) => el.remove());
     };
-    removeAutoGallery();
-    new MutationObserver(removeAutoGallery).observe(document.documentElement,{childList:true,subtree:true});
+    removeLegacyVisuals();
+    new MutationObserver(removeLegacyVisuals).observe(document.documentElement,{childList:true,subtree:true});
   })();
 </script>
 </body>
