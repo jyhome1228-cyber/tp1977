@@ -7,7 +7,7 @@
   --green:#22793a;
   --green-deep:#22793a;
   --sand:#fff;
-  --header-h:74px;
+  --header-h:82px;
 }
 html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 
@@ -19,21 +19,21 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
   border-color:var(--line)!important;
   backdrop-filter:blur(10px);
 }
-.header-inner{width:min(calc(100% - 72px),1440px)!important;gap:48px!important}
+.header-inner{width:min(calc(100% - 72px),1440px)!important;gap:52px!important}
 .brand{gap:0!important}
 .brand-mark,.brand-wordmark{display:none!important}
 .brand-image{display:inline-flex!important;align-items:center!important;flex:0 0 auto;min-width:0}
-.brand-image img{display:block!important;width:auto!important;height:30px!important;max-width:190px!important;object-fit:contain}
+.brand-image img{display:block!important;width:auto!important;height:34px!important;max-width:212px!important;object-fit:contain}
 .brand-image.logo-fallback img{display:none!important}
-.brand-image.logo-fallback::before{content:"Taepyung";font-size:22px;line-height:1;font-weight:750;color:var(--green);letter-spacing:-.04em}
-.brand-image.logo-fallback::after{content:"태평제지\A SINCE 1977";white-space:pre;margin-left:7px;font-size:8px;line-height:1.15;font-weight:800;color:#111}
-.desktop-nav{gap:32px!important}
-.nav-item>a{font-size:13px!important;font-weight:600!important}
+.brand-image.logo-fallback::before{content:"Taepyung";font-size:25px;line-height:1;font-weight:750;color:var(--green);letter-spacing:-.04em}
+.brand-image.logo-fallback::after{content:"태평제지\A SINCE 1977";white-space:pre;margin-left:8px;font-size:9px;line-height:1.15;font-weight:800;color:#111}
+.desktop-nav{gap:36px!important}
+.nav-item>a{font-size:14px!important;font-weight:650!important;letter-spacing:-.015em!important}
 .nav-item>a:hover,.nav-item>a[aria-current="page"]{color:var(--green)!important}
-.nav-item>a::after{background:var(--green)!important;bottom:17px!important}
-.dropdown{left:0!important;right:auto!important;min-width:210px!important;padding:10px 0!important;transform:translateY(8px)!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:0 16px 36px rgba(0,0,0,.07)!important;text-align:left!important}
+.nav-item>a::after{background:var(--green)!important;bottom:19px!important}
+.dropdown{left:0!important;right:auto!important;min-width:214px!important;padding:10px 0!important;transform:translateY(8px)!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:0 16px 36px rgba(0,0,0,.07)!important;text-align:left!important}
 .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{transform:none!important}
-.dropdown a{display:block!important;padding:11px 20px!important;font-size:13px!important;line-height:1.45!important;text-align:left!important;color:#444!important;white-space:nowrap}
+.dropdown a{display:block!important;padding:12px 20px!important;font-size:13px!important;line-height:1.45!important;text-align:left!important;color:#444!important;white-space:nowrap}
 .dropdown a:hover{background:rgba(34,121,58,.055)!important;color:var(--green)!important}
 .mobile-panel,.mobile-nav{background:#fff!important}
 
@@ -117,9 +117,9 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 .footer-nav a:hover,.footer-legal a:hover{color:var(--green)!important}
 
 @media(max-width:1100px){
-  :root{--header-h:68px}
+  :root{--header-h:72px}
   .header-inner{width:calc(100% - 40px)!important}
-  .brand-image img{height:27px!important;max-width:170px!important}
+  .brand-image img{height:30px!important;max-width:188px!important}
   .site-header.menu-active{background:#fff!important}
   .mobile-nav summary,.mobile-single{font-size:17px!important;color:var(--ink)!important}
   .mobile-nav details a{font-size:13px!important}
@@ -127,7 +127,7 @@ html,body{background:#fff!important;color:var(--ink);overflow-x:hidden}
 }
 @media(max-width:760px){
   .wrap{width:calc(100% - 36px)!important}
-  .brand-image img{height:25px!important;max-width:155px!important}
+  .brand-image img{height:27px!important;max-width:168px!important}
   .hero{min-height:600px!important}
   .hero-title{font-size:38px!important}
   .sub-hero{padding:44px 0 34px!important}
