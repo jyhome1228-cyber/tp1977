@@ -15,265 +15,20 @@
     body[data-section="contact"] .page-media-section,
     body[data-section="contact"] .product-source-extra{display:none!important}
 
-    .cs-page{
-      --cs-green:#22793a;
-      --cs-ink:#171917;
-      --cs-muted:#666b66;
-      --cs-line:rgba(23,25,23,.10);
-      --cs-soft:#f4faf5;
-      background:#fff;
-    }
+    .cs-page{--cs-green:#22793a;--cs-ink:#171917;--cs-muted:#666b66;--cs-line:rgba(23,25,23,.11);--cs-soft:#f4faf5;background:#fff}
+    .cs-shell{width:min(calc(100% - 72px),1440px);margin-inline:auto}
 
-    .cs-shell{
-      width:min(calc(100% - 72px),1440px);
-      margin-inline:auto;
-    }
+    .cs-hero{padding:32px 0 0}.cs-hero-media{margin:0;width:100%;aspect-ratio:2.55/1;overflow:hidden;border-radius:8px;background:#eef2ee}.cs-hero-media img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
 
-    .cs-hero{padding:32px 0 0}
-    .cs-hero-media{
-      margin:0;
-      width:100%;
-      aspect-ratio:2.55 / 1;
-      overflow:hidden;
-      border-radius:8px;
-      background:#eef2ee;
-    }
-    .cs-hero-media img{
-      width:100%;
-      height:100%;
-      display:block;
-      object-fit:cover;
-      object-position:center center;
-    }
+    .cs-intro{padding:92px 0 78px}.cs-intro-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:76px;align-items:start}.cs-kicker{display:block;margin:0 0 22px;color:var(--cs-green);font-size:12px;line-height:1;font-weight:700;letter-spacing:.10em;text-transform:uppercase}.cs-intro h1{margin:0;font-size:clamp(38px,3.1vw,52px);line-height:1.12;letter-spacing:-.05em;font-weight:700}.cs-intro-copy{max-width:720px;padding-top:34px}.cs-intro-copy p{margin:0;color:var(--cs-muted);font-size:16px;line-height:1.88;letter-spacing:-.012em}.cs-intro-copy p+p{margin-top:12px}.cs-selected-product{display:none;margin-top:24px;padding:16px 18px;border:1px solid rgba(34,121,58,.18);background:var(--cs-soft);color:#46604a;font-size:13px;line-height:1.6}.cs-selected-product.is-visible{display:block}.cs-selected-product b{color:var(--cs-green);font-weight:700}
 
-    .cs-intro{padding:92px 0 78px}
-    .cs-intro-grid{
-      display:grid;
-      grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);
-      gap:76px;
-      align-items:start;
-    }
-    .cs-kicker{
-      display:block;
-      margin:0 0 22px;
-      color:var(--cs-green);
-      font-size:12px;
-      line-height:1;
-      font-weight:700;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-    .cs-intro h1{
-      margin:0;
-      font-size:clamp(38px,3.1vw,52px);
-      line-height:1.12;
-      letter-spacing:-.05em;
-      font-weight:700;
-    }
-    .cs-intro-copy{
-      max-width:720px;
-      padding-top:34px;
-    }
-    .cs-intro-copy p{
-      margin:0;
-      color:var(--cs-muted);
-      font-size:16px;
-      line-height:1.88;
-      letter-spacing:-.012em;
-    }
-    .cs-intro-copy p+p{margin-top:12px}
+    .cs-process{padding:88px 0 106px;border-top:1px solid var(--cs-line)}.cs-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:54px}.cs-section-head h2{margin:0;font-size:clamp(30px,2.45vw,40px);line-height:1.2;letter-spacing:-.045em;font-weight:680}.cs-section-head p{width:min(100%,620px);margin:0;color:var(--cs-muted);font-size:14px;line-height:1.78;text-align:right}
+    .cs-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.cs-step{position:relative;min-height:275px;padding:28px 26px 30px;border:1px solid var(--cs-line);border-radius:10px;background:#fff}.cs-step-top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}.cs-step-index{display:grid;place-items:center;width:52px;height:52px;border:1px solid rgba(34,121,58,.38);border-radius:50%;background:#fff;color:var(--cs-green);font-size:12px;font-weight:750;letter-spacing:.08em}.cs-icon{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:var(--cs-soft);color:var(--cs-green)}.cs-icon svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.cs-step h3{margin:0 0 18px;font-size:22px;line-height:1.3;letter-spacing:-.035em;font-weight:680}.cs-step p{margin:0;color:#5f645f;font-size:14px;line-height:1.75}.cs-step-arrow{position:absolute;z-index:2;top:50%;right:-17px;display:grid;place-items:center;width:34px;height:34px;transform:translateY(-50%);border:1px solid rgba(34,121,58,.18);border-radius:50%;background:#fff;color:rgba(34,121,58,.72);font-size:17px}.cs-step:last-child .cs-step-arrow{display:none}
 
-    .cs-selected-product{
-      display:none;
-      margin-top:24px;
-      padding:16px 18px;
-      border:1px solid rgba(34,121,58,.18);
-      background:var(--cs-soft);
-      color:#46604a;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .cs-selected-product.is-visible{display:block}
-    .cs-selected-product b{color:var(--cs-green);font-weight:700}
+    .cs-contact{padding:92px 0 112px;border-top:1px solid var(--cs-line);background:#fbfcfb}.cs-contact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--cs-line);border-left:1px solid var(--cs-line)}.cs-contact-card{position:relative;min-height:245px;padding:28px;border-right:1px solid var(--cs-line);border-bottom:1px solid var(--cs-line);background:#fff;transition:background .2s ease,border-color .2s ease}.cs-contact-card:hover{background:#f8fbf8}.cs-contact-card-top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}.cs-contact-no{display:block;color:#9aa09a;font-size:10px;font-weight:700;letter-spacing:.14em}.cs-contact-icon{display:grid;place-items:center;width:46px;height:46px;border:1px solid rgba(34,121,58,.18);border-radius:50%;color:var(--cs-green);background:#fff}.cs-contact-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.cs-contact-card h3{margin:0 0 12px;color:var(--cs-green);font-size:15px;line-height:1.4;letter-spacing:-.02em;font-weight:700}.cs-contact-card strong,.cs-contact-card a{display:block;margin:0;color:var(--cs-ink);font-size:22px;line-height:1.42;letter-spacing:-.035em;font-weight:650;overflow-wrap:anywhere}.cs-contact-card p{margin:10px 0 0;color:var(--cs-muted);font-size:13px;line-height:1.65}.cs-contact-card a:hover{color:var(--cs-green)}
 
-    .cs-process{
-      padding:88px 0 106px;
-      border-top:1px solid var(--cs-line);
-    }
-    .cs-section-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:48px;
-      margin-bottom:54px;
-    }
-    .cs-section-head h2{
-      margin:0;
-      font-size:clamp(30px,2.45vw,40px);
-      line-height:1.2;
-      letter-spacing:-.045em;
-      font-weight:680;
-    }
-    .cs-section-head p{
-      width:min(100%,620px);
-      margin:0;
-      color:var(--cs-muted);
-      font-size:14px;
-      line-height:1.78;
-      text-align:right;
-    }
-
-    .cs-flow{
-      position:relative;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:18px;
-    }
-    .cs-flow::before{
-      content:"";
-      position:absolute;
-      top:29px;
-      left:7%;
-      right:7%;
-      height:1px;
-      background:rgba(34,121,58,.22);
-      z-index:0;
-    }
-    .cs-step{
-      position:relative;
-      z-index:1;
-      min-height:250px;
-      padding:0 26px 30px;
-      border:1px solid var(--cs-line);
-      border-radius:10px;
-      background:#fff;
-    }
-    .cs-step-index{
-      display:grid;
-      place-items:center;
-      width:58px;
-      height:58px;
-      margin:-1px 0 38px;
-      border:1px solid rgba(34,121,58,.40);
-      border-radius:50%;
-      background:#fff;
-      color:var(--cs-green);
-      font-size:12px;
-      font-weight:750;
-      letter-spacing:.08em;
-    }
-    .cs-step h3{
-      margin:0 0 18px;
-      font-size:22px;
-      line-height:1.3;
-      letter-spacing:-.035em;
-      font-weight:680;
-    }
-    .cs-step p{
-      margin:0;
-      color:#5f645f;
-      font-size:14px;
-      line-height:1.75;
-    }
-    .cs-step-arrow{
-      position:absolute;
-      top:19px;
-      right:-14px;
-      width:27px;
-      height:20px;
-      color:rgba(34,121,58,.52);
-      font-size:19px;
-      line-height:20px;
-      text-align:center;
-      background:#fff;
-    }
-    .cs-step:last-child .cs-step-arrow{display:none}
-
-    .cs-contact{
-      padding:92px 0 112px;
-      border-top:1px solid var(--cs-line);
-      background:#fbfcfb;
-    }
-    .cs-contact-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      border-top:1px solid var(--cs-line);
-      border-left:1px solid var(--cs-line);
-    }
-    .cs-contact-card{
-      position:relative;
-      min-height:230px;
-      padding:30px 28px 28px;
-      border-right:1px solid var(--cs-line);
-      border-bottom:1px solid var(--cs-line);
-      background:#fff;
-      transition:background .2s ease,border-color .2s ease;
-    }
-    .cs-contact-card:hover{background:#f8fbf8}
-    .cs-contact-no{
-      display:block;
-      margin-bottom:48px;
-      color:#9aa09a;
-      font-size:10px;
-      font-weight:700;
-      letter-spacing:.14em;
-    }
-    .cs-contact-card h3{
-      margin:0 0 12px;
-      color:var(--cs-green);
-      font-size:15px;
-      line-height:1.4;
-      letter-spacing:-.02em;
-      font-weight:700;
-    }
-    .cs-contact-card strong,
-    .cs-contact-card a{
-      display:block;
-      margin:0;
-      color:var(--cs-ink);
-      font-size:22px;
-      line-height:1.42;
-      letter-spacing:-.035em;
-      font-weight:650;
-      overflow-wrap:anywhere;
-    }
-    .cs-contact-card p{
-      margin:10px 0 0;
-      color:var(--cs-muted);
-      font-size:13px;
-      line-height:1.65;
-    }
-    .cs-contact-card a:hover{color:var(--cs-green)}
-
-    @media(max-width:1100px){
-      .cs-intro-grid{grid-template-columns:1fr;gap:28px}
-      .cs-intro-copy{padding-top:0}
-      .cs-section-head{align-items:flex-start;flex-direction:column;gap:18px}
-      .cs-section-head p{text-align:left}
-      .cs-flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-      .cs-flow::before{display:none}
-      .cs-step-arrow{display:none}
-      .cs-contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-
-    @media(max-width:760px){
-      .cs-shell{width:calc(100% - 36px)}
-      .cs-hero{padding-top:18px}
-      .cs-hero-media{aspect-ratio:1.48 / 1;border-radius:6px}
-      .cs-intro{padding:58px 0 60px}
-      .cs-intro h1{font-size:34px}
-      .cs-intro-copy p{font-size:14px;line-height:1.76}
-      .cs-process,.cs-contact{padding:64px 0 74px}
-      .cs-section-head{margin-bottom:34px}
-      .cs-section-head h2{font-size:28px}
-      .cs-section-head p{font-size:13px}
-      .cs-flow,.cs-contact-grid{grid-template-columns:1fr}
-      .cs-step{min-height:auto;padding:0 22px 26px}
-      .cs-step-index{margin-bottom:24px}
-      .cs-contact-card{min-height:190px}
-      .cs-contact-no{margin-bottom:34px}
-      .cs-contact-card strong,.cs-contact-card a{font-size:20px}
-    }
+    @media(max-width:1100px){.cs-intro-grid{grid-template-columns:1fr;gap:28px}.cs-intro-copy{padding-top:0}.cs-section-head{align-items:flex-start;flex-direction:column;gap:18px}.cs-section-head p{text-align:left}.cs-flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.cs-step-arrow{display:none}.cs-contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.cs-shell{width:calc(100% - 36px)}.cs-hero{padding-top:18px}.cs-hero-media{aspect-ratio:1.48/1;border-radius:6px}.cs-intro{padding:58px 0 60px}.cs-intro h1{font-size:34px}.cs-intro-copy p{font-size:14px;line-height:1.76}.cs-process,.cs-contact{padding:64px 0 74px}.cs-section-head{margin-bottom:34px}.cs-section-head h2{font-size:28px}.cs-section-head p{font-size:13px}.cs-flow,.cs-contact-grid{grid-template-columns:1fr}.cs-step{min-height:auto;padding:24px 22px 28px}.cs-step-top{margin-bottom:28px}.cs-step-index{width:46px;height:46px}.cs-icon{width:44px;height:44px}.cs-contact-card{min-height:205px}.cs-contact-card-top{margin-bottom:32px}.cs-contact-card strong,.cs-contact-card a{font-size:20px}}
   </style>
 </head>
 <body data-base="../" data-section="contact">
@@ -281,19 +36,12 @@
 
 <main class="sub-main cs-page">
   <section class="cs-hero" aria-label="태평제지 고객만족">
-    <div class="cs-shell">
-      <figure class="cs-hero-media">
-        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/a17238ed171e2.png" alt="고객 상담과 의견 접수를 진행하는 태평제지 고객만족 이미지" fetchpriority="high">
-      </figure>
-    </div>
+    <div class="cs-shell"><figure class="cs-hero-media"><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/a17238ed171e2.png" alt="고객 상담과 의견 접수를 진행하는 태평제지 고객만족 이미지" fetchpriority="high"></figure></div>
   </section>
 
   <section class="cs-intro">
     <div class="cs-shell cs-intro-grid">
-      <div>
-        <span class="cs-kicker">Customer Satisfaction</span>
-        <h1>고객의 의견을 듣고,<br>더 나은 기준으로 이어갑니다</h1>
-      </div>
+      <div><span class="cs-kicker">Customer Satisfaction</span><h1>고객의 의견을 듣고,<br>더 나은 기준으로 이어갑니다</h1></div>
       <div class="cs-intro-copy">
         <p>태평제지는 고객의 불편 사항과 문의를 신속하고 정확하게 확인하고, 담당 부서와 연결하여 필요한 조치가 이루어질 수 있도록 체계적으로 관리하고 있습니다.</p>
         <p>접수된 의견은 확인과 개선, 결과 안내까지 한 흐름으로 관리하며 고객의 목소리를 제품과 서비스 개선에 반영합니다.</p>
@@ -304,37 +52,23 @@
 
   <section class="cs-process" aria-labelledby="process-title">
     <div class="cs-shell">
-      <div class="cs-section-head">
-        <div>
-          <span class="cs-kicker">Response Process</span>
-          <h2 id="process-title">고객 의견 처리 절차</h2>
-        </div>
-        <p>접수부터 완료·관리까지 담당 부서가 단계별로 확인하며, 처리 결과와 개선 사항을 지속적으로 관리합니다.</p>
-      </div>
-
+      <div class="cs-section-head"><div><span class="cs-kicker">Response Process</span><h2 id="process-title">고객 의견 처리 절차</h2></div><p>접수부터 완료·관리까지 담당 부서가 단계별로 확인하며, 처리 결과와 개선 사항을 지속적으로 관리합니다.</p></div>
       <div class="cs-flow">
         <article class="cs-step">
-          <span class="cs-step-index">01</span>
-          <h3>접수</h3>
-          <p>전화, 팩스, 이메일을 통해 고객 의견과 문의 사항을 접수합니다.</p>
-          <span class="cs-step-arrow" aria-hidden="true">→</span>
+          <div class="cs-step-top"><span class="cs-step-index">01</span><span class="cs-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="6" width="22" height="17" rx="2"></rect><path d="M9 12h8M9 16h12"></path><path d="m19 20 2 2 4-5"></path></svg></span></div>
+          <h3>접수</h3><p>전화, 팩스, 이메일을 통해 고객 의견과 문의 사항을 접수합니다.</p><span class="cs-step-arrow" aria-hidden="true">→</span>
         </article>
         <article class="cs-step">
-          <span class="cs-step-index">02</span>
-          <h3>확인·조치</h3>
-          <p>문의 내용을 담당 부서에 전달하고 원인을 확인하여 필요한 조치를 진행합니다.</p>
-          <span class="cs-step-arrow" aria-hidden="true">→</span>
+          <div class="cs-step-top"><span class="cs-step-index">02</span><span class="cs-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="7"></circle><path d="m19 19 6 6"></path><path d="m10.5 14 2.2 2.2 4-4.2"></path></svg></span></div>
+          <h3>확인·조치</h3><p>문의 내용을 담당 부서에 전달하고 원인을 확인하여 필요한 조치를 진행합니다.</p><span class="cs-step-arrow" aria-hidden="true">→</span>
         </article>
         <article class="cs-step">
-          <span class="cs-step-index">03</span>
-          <h3>피드백</h3>
-          <p>처리 결과를 안내하고 추가 확인이 필요한 사항과 고객 의견을 점검합니다.</p>
-          <span class="cs-step-arrow" aria-hidden="true">→</span>
+          <div class="cs-step-top"><span class="cs-step-index">03</span><span class="cs-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 7h15a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H12l-5 4v-4H5a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3Z"></path><path d="M11 12h7M11 16h5"></path></svg></span></div>
+          <h3>피드백</h3><p>처리 결과를 안내하고 추가 확인이 필요한 사항과 고객 의견을 점검합니다.</p><span class="cs-step-arrow" aria-hidden="true">→</span>
         </article>
         <article class="cs-step">
-          <span class="cs-step-index">04</span>
-          <h3>완료·관리</h3>
-          <p>처리 내용을 기록하고 반복되는 의견은 제품과 서비스 개선에 반영합니다.</p>
+          <div class="cs-step-top"><span class="cs-step-index">04</span><span class="cs-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10"></circle><path d="m11 16 3.2 3.2L21 12.5"></path><path d="M16 3v3M16 26v3M3 16h3M26 16h3"></path></svg></span></div>
+          <h3>완료·관리</h3><p>처리 내용을 기록하고 반복되는 의견은 제품과 서비스 개선에 반영합니다.</p>
         </article>
       </div>
     </div>
@@ -342,38 +76,23 @@
 
   <section class="cs-contact" aria-labelledby="contact-title">
     <div class="cs-shell">
-      <div class="cs-section-head">
-        <div>
-          <span class="cs-kicker">Contact</span>
-          <h2 id="contact-title">고객불만족 접수방법</h2>
-        </div>
-        <p>제품에 대한 불편 사항이나 기타 문의 사항은 아래의 방법으로 남겨주시면 확인 후 안내드리겠습니다.</p>
-      </div>
-
+      <div class="cs-section-head"><div><span class="cs-kicker">Contact</span><h2 id="contact-title">고객불만족 접수방법</h2></div><p>제품에 대한 불편 사항이나 기타 문의 사항은 아래의 방법으로 남겨주시면 확인 후 안내드리겠습니다.</p></div>
       <div class="cs-contact-grid">
         <article class="cs-contact-card">
-          <span class="cs-contact-no">01 · CALL</span>
-          <h3>전화</h3>
-          <a href="tel:0315950797">031 - 595 - 0797</a>
-          <p>제품 및 일반 문의</p>
+          <div class="cs-contact-card-top"><span class="cs-contact-no">01 · CALL</span><span class="cs-contact-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 5h5l2 6-3 2c1.5 3.2 3.8 5.5 7 7l2-3 6 2v5c0 2-1.6 3-3.5 3C13.4 26 6 18.6 5 8.5 5 6.6 6 5 8 5Z"></path></svg></span></div>
+          <h3>전화</h3><a href="tel:0315950797">031 - 595 - 0797</a><p>제품 및 일반 문의</p>
         </article>
         <article class="cs-contact-card">
-          <span class="cs-contact-no">02 · FAX</span>
-          <h3>팩스</h3>
-          <strong>031 - 632 - 4016</strong>
-          <p>문서 및 자료 접수</p>
+          <div class="cs-contact-card-top"><span class="cs-contact-no">02 · FAX</span><span class="cs-contact-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 4h14v7H9z"></path><rect x="5" y="11" width="22" height="13" rx="2"></rect><path d="M9 18h14v10H9zM22 15h1"></path></svg></span></div>
+          <h3>팩스</h3><strong>031 - 632 - 4016</strong><p>문서 및 자료 접수</p>
         </article>
         <article class="cs-contact-card">
-          <span class="cs-contact-no">03 · EMAIL</span>
-          <h3>이메일</h3>
-          <a href="mailto:contact@blondy.co.kr">contact@blondy.co.kr</a>
-          <p>문의 내용을 자유롭게 보내주세요.</p>
+          <div class="cs-contact-card-top"><span class="cs-contact-no">03 · EMAIL</span><span class="cs-contact-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="2"></rect><path d="m5 9 11 9L27 9"></path></svg></span></div>
+          <h3>이메일</h3><a href="mailto:contact@blondy.co.kr">contact@blondy.co.kr</a><p>문의 내용을 자유롭게 보내주세요.</p>
         </article>
         <article class="cs-contact-card">
-          <span class="cs-contact-no">04 · HOURS</span>
-          <h3>상담 가능 시간</h3>
-          <strong>월요일 ~ 금요일</strong>
-          <p>09:00 ~ 17:00</p>
+          <div class="cs-contact-card-top"><span class="cs-contact-no">04 · HOURS</span><span class="cs-contact-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"></circle><path d="M16 10v7l5 3"></path></svg></span></div>
+          <h3>상담 가능 시간</h3><strong>월요일 ~ 금요일</strong><p>09:00 ~ 17:00</p>
         </article>
       </div>
     </div>
@@ -381,22 +100,15 @@
 </main>
 
 <div data-site-footer></div>
-
 <script>
   (() => {
     const params = new URLSearchParams(location.search);
     const product = params.get('product');
     const box = document.querySelector('[data-selected-product]');
-    if (product && box) {
-      box.querySelector('span').textContent = product;
-      box.classList.add('is-visible');
-    }
-
-    const removeLegacyVisuals = () => {
-      document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach((el) => el.remove());
-    };
-    removeLegacyVisuals();
-    new MutationObserver(removeLegacyVisuals).observe(document.documentElement,{childList:true,subtree:true});
+    if (product && box) { box.querySelector('span').textContent = product; box.classList.add('is-visible'); }
+    const removeLegacy = () => document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach(el => el.remove());
+    removeLegacy();
+    new MutationObserver(removeLegacy).observe(document.documentElement,{childList:true,subtree:true});
   })();
 </script>
 </body>
