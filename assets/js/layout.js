@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260813-1015';
+  const cacheVersion = '20260813-1227';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
