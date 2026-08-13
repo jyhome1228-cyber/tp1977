@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260814-0750';
+  const cacheVersion = '20260814-0802';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header], .site-header');
@@ -84,6 +84,7 @@
             <div class="nav-item"><a href="${base}esg/"${isActive('esg')}>지속가능경영</a></div>
             <div class="nav-item"><a href="${base}recruit/"${isActive('recruit')}>채용</a></div>
             <div class="nav-item"><a href="${base}contact/"${isActive('contact')}>고객만족</a></div>
+            <div class="nav-item"><a href="${base}inquiry/"${isActive('inquiry')}>문의·제휴</a></div>
           </nav>
           <button class="menu-button" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-button><span></span><span></span><span></span></button>
         </div>
@@ -95,6 +96,7 @@
             <a class="mobile-single" href="${base}esg/">지속가능경영</a>
             <a class="mobile-single" href="${base}recruit/">채용</a>
             <a class="mobile-single" href="${base}contact/">고객만족</a>
+            <a class="mobile-single" href="${base}inquiry/">문의·제휴</a>
           </nav>
         </div>
       </header>`;
