@@ -1,7 +1,172 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>운영현황 | 태평제지</title><meta name="description" content="기업·온라인 고객, 상품개발, 전자동 생산, 전국 배송, 품질 관리로 이어지는 태평제지의 운영 체계를 소개합니다."><link rel="stylesheet" href="../assets/css/style.css"><script defer src="../assets/js/layout.js"></script><script defer src="../assets/js/main.js"></script></head>
-<body data-base="../" data-section="business"><div data-site-header></div><main class="sub-main">
-<section class="sub-hero"><div class="wrap"><p class="breadcrumb">HOME / BUSINESS</p><h1>운영현황</h1><p>고객이 원하는 제품을 기획하고 안정적으로 생산해 필요한 곳에 정확하게 공급하는 전 과정을 연결합니다.</p></div></section>
-<section class="content-section"><div class="wrap content-grid"><div><span class="content-label">HOW WE WORK</span></div><div class="content-body"><h2>약 50년의 제조 경험을<br>고객·생산·공급으로 연결합니다.</h2><p>태평제지는 대기업, 대형건물, 학교, 병원, 관공서 등에 위생용품을 공급해온 B2B 경험과 쿠팡·네이버·카카오·지마켓·옥션·11번가·알리익스프레스 등 온라인 채널의 소비자 접점을 함께 운영하고 있습니다.</p><p>고객 요구에 맞는 상품 개발과 PB 생산, 전자동 설비 기반의 제조, 제품 사양과 품질 관리, 전국 단위의 신속하고 정확한 배송까지 각 단계가 끊기지 않도록 운영합니다.</p><div class="feature-list"><div class="feature-row"><span>CUSTOMER</span><div><h3>기업 고객과 온라인 소비자</h3><p>B2B 납품과 B2C 온라인 판매를 함께 운영하며 다양한 사용 환경의 요구를 확인합니다.</p></div></div><div class="feature-row"><span>PRODUCT</span><div><h3>상품 개발과 PB 생산</h3><p>쿠팡 코멧 제품처럼 유통 고객의 요구에 맞는 상품을 개발·생산합니다.</p></div></div><div class="feature-row"><span>SUPPLY</span><div><h3>생산부터 전국 배송까지</h3><p>우수한 품질과 신속하고 정확한 공급을 기업 고객이 태평제지를 선택하는 중요한 기준으로 이어갑니다.</p></div></div></div></div></div></section>
-<section class="section" style="background:#efeee9"><div class="wrap"><p class="section-kicker">BUSINESS SYSTEM</p><h2 class="section-title" style="margin-bottom:58px">태평제지의 운영 영역</h2><div class="category-grid"><a class="category-card reveal" href="./customer/"><small>01 · CUSTOMER</small><div><h2>고객</h2><span>B2B · B2C 고객 →</span></div></a><a class="category-card reveal" href="./marketing/"><small>02 · MARKETING</small><div><h2>마케팅</h2><span>시장과 고객을 연결하는 방식 →</span></div></a><a class="category-card reveal" href="./production/"><small>03 · PRODUCTION</small><div><h2>생산</h2><span>안정적인 전자동 생산 →</span></div></a><a class="category-card reveal" href="./logistics/"><small>04 · LOGISTICS</small><div><h2>물류</h2><span>신속하고 정확한 공급 →</span></div></a><a class="category-card reveal" href="./quality/"><small>05 · QUALITY</small><div><h2>품질</h2><span>제품의 기본을 지키는 기준 →</span></div></a></div></div></section>
-</main><div data-site-footer></div></body></html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>운영현황 | 태평제지</title>
+  <meta name="description" content="기업·온라인 고객, 상품개발, 전자동 생산, 전국 배송, 품질 관리로 이어지는 태평제지의 운영 체계를 소개합니다.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script defer src="../assets/js/layout.js"></script>
+  <script defer src="../assets/js/main.js"></script>
+  <style>
+    body[data-section="business"]{background:#fff;color:#171917}
+
+    .business-page{
+      --b-green:#22793a;
+      --b-ink:#171917;
+      --b-muted:#666b66;
+      --b-line:rgba(23,25,23,.10);
+      --b-soft:#f7faf7;
+      background:#fff;
+    }
+    .business-shell{width:min(calc(100% - 72px),1440px);margin-inline:auto}
+
+    .business-intro{padding:96px 0 108px}
+    .business-intro-grid{display:grid;grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr);gap:76px;align-items:start}
+    .business-kicker{display:block;margin:0 0 22px;color:var(--b-green);font-size:12px;line-height:1;font-weight:750;letter-spacing:.11em;text-transform:uppercase}
+    .business-intro h2{margin:0;font-size:clamp(38px,3.15vw,54px);line-height:1.12;letter-spacing:-.052em;font-weight:700}
+    .business-intro-copy{max-width:760px;padding-top:30px}
+    .business-intro-copy p{margin:0;color:var(--b-muted);font-size:16px;line-height:1.88;letter-spacing:-.012em}
+    .business-intro-copy p+p{margin-top:14px}
+
+    .business-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:62px;background:var(--b-line);border:1px solid var(--b-line)}
+    .business-summary article{min-height:178px;padding:28px 30px;background:#fff}
+    .business-summary span{display:block;margin-bottom:34px;color:#969b96;font-size:10px;font-weight:750;letter-spacing:.14em}
+    .business-summary h3{margin:0 0 11px;font-size:21px;line-height:1.35;letter-spacing:-.035em;font-weight:680}
+    .business-summary p{margin:0;color:var(--b-muted);font-size:13px;line-height:1.75}
+
+    .business-customer-section{padding:104px 0 112px;border-top:1px solid var(--b-line)}
+    .business-customer-section.alt{background:#fbfcfb}
+    .business-section-head{display:grid;grid-template-columns:220px minmax(0,1fr);gap:58px;align-items:start;margin-bottom:66px}
+    .business-section-label{color:var(--b-green);font-size:22px;line-height:1.3;font-weight:700;letter-spacing:-.035em}
+    .business-section-copy{max-width:910px}
+    .business-section-copy h2{margin:0 0 26px;font-size:clamp(28px,2.3vw,38px);line-height:1.32;letter-spacing:-.045em;font-weight:700}
+    .business-section-copy p{margin:0;max-width:760px;color:#4f544f;font-size:16px;line-height:1.82;letter-spacing:-.014em}
+
+    .online-logo-board{margin:0 0 42px;padding:44px 28px;border:1px solid var(--b-line);border-radius:10px;background:#fff}
+    .online-logo-board img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain}
+    .online-proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+    .online-proof-grid figure{margin:0;overflow:hidden;border:1px solid var(--b-line);border-radius:10px;background:#f4f4f3}
+    .online-proof-grid img{display:block;width:100%;height:100%;aspect-ratio:1.88/1;object-fit:cover}
+
+    .corporate-visual{margin:0;overflow:hidden;border-radius:10px;border:1px solid var(--b-line);background:#f2f4f2}
+    .corporate-visual img{display:block;width:100%;height:auto;object-fit:cover}
+
+    .business-system{padding:100px 0 116px;border-top:1px solid var(--b-line)}
+    .business-system-head{display:flex;align-items:flex-end;justify-content:space-between;gap:50px;margin-bottom:48px}
+    .business-system-head h2{margin:0;font-size:clamp(30px,2.45vw,40px);line-height:1.2;letter-spacing:-.045em;font-weight:680}
+    .business-system-head p{margin:0;max-width:620px;color:var(--b-muted);font-size:14px;line-height:1.78;text-align:right}
+    .business-category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--b-line);border-left:1px solid var(--b-line)}
+    .business-category-card{position:relative;min-height:250px;padding:28px;border-right:1px solid var(--b-line);border-bottom:1px solid var(--b-line);background:#fff;transition:background .22s ease,color .22s ease}
+    .business-category-card small{display:block;color:#929892;font-size:10px;font-weight:750;letter-spacing:.13em}
+    .business-category-card div{position:absolute;left:28px;right:28px;bottom:28px}
+    .business-category-card h3{margin:0 0 10px;font-size:24px;line-height:1.3;letter-spacing:-.04em;font-weight:680}
+    .business-category-card span{display:block;color:var(--b-muted);font-size:12px;line-height:1.6}
+    .business-category-card::after{content:"↗";position:absolute;top:25px;right:27px;color:#9b9f9b;font-size:15px;transition:transform .2s ease,color .2s ease}
+    .business-category-card:hover{background:var(--b-green);color:#fff}
+    .business-category-card:hover small,.business-category-card:hover span{color:rgba(255,255,255,.72)}
+    .business-category-card:hover::after{color:#fff;transform:translate(2px,-2px)}
+
+    @media(max-width:1100px){
+      .business-intro-grid{grid-template-columns:1fr;gap:28px}.business-intro-copy{padding-top:0}
+      .business-section-head{grid-template-columns:1fr;gap:22px}.business-section-copy{max-width:none}
+      .business-system-head{align-items:flex-start;flex-direction:column;gap:16px}.business-system-head p{text-align:left}
+      .business-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .business-category-card:last-child{grid-column:1/-1}
+    }
+    @media(max-width:760px){
+      .business-shell{width:calc(100% - 36px)}
+      .business-intro{padding:64px 0 72px}.business-intro h2{font-size:34px}.business-intro-copy p{font-size:14px;line-height:1.76}
+      .business-summary{grid-template-columns:1fr;margin-top:42px}.business-summary article{min-height:auto}
+      .business-customer-section{padding:68px 0 78px}.business-section-head{margin-bottom:38px}.business-section-label{font-size:19px}.business-section-copy h2{font-size:28px}.business-section-copy p{font-size:14px;line-height:1.76}
+      .online-logo-board{margin-bottom:16px;padding:26px 18px}.online-proof-grid{grid-template-columns:1fr;gap:16px}.online-proof-grid img{aspect-ratio:1.6/1}
+      .business-system{padding:68px 0 78px}.business-system-head{margin-bottom:32px}.business-system-head h2{font-size:28px}.business-category-grid{grid-template-columns:1fr}.business-category-card,.business-category-card:last-child{grid-column:auto;min-height:190px}
+    }
+  </style>
+</head>
+<body data-base="../" data-section="business">
+<div data-site-header></div>
+<main class="sub-main business-page">
+  <section class="sub-hero">
+    <div class="wrap">
+      <p class="breadcrumb">HOME / BUSINESS</p>
+      <h1>운영현황</h1>
+      <p>고객이 원하는 제품을 기획하고 안정적으로 생산해 필요한 곳에 정확하게 공급하는 전 과정을 연결합니다.</p>
+    </div>
+  </section>
+
+  <section class="business-intro">
+    <div class="business-shell">
+      <div class="business-intro-grid">
+        <div>
+          <span class="business-kicker">How We Work</span>
+          <h2>약 50년의 제조 경험을<br>고객·생산·공급으로 연결합니다</h2>
+        </div>
+        <div class="business-intro-copy">
+          <p>태평제지는 대기업, 대형건물, 학교, 병원, 관공서 등에 위생용품을 공급해온 기업 고객 경험과 쿠팡·네이버·카카오·지마켓·옥션·11번가·알리익스프레스 등 온라인 채널의 소비자 접점을 함께 운영하고 있습니다.</p>
+          <p>고객 요구에 맞는 상품 개발과 PB 생산, 전자동 설비 기반의 제조, 제품 사양과 품질 관리, 전국 단위의 신속하고 정확한 배송까지 각 단계가 끊기지 않도록 운영합니다.</p>
+        </div>
+      </div>
+
+      <div class="business-summary">
+        <article><span>01 · CUSTOMER</span><h3>기업 고객과 온라인 소비자</h3><p>B2B 납품과 B2C 온라인 판매를 함께 운영하며 다양한 사용 환경의 요구를 확인합니다.</p></article>
+        <article><span>02 · PRODUCT</span><h3>상품 개발과 PB 생산</h3><p>유통 고객의 요구와 소비자 경험을 반영해 채널에 맞는 제품을 개발하고 생산합니다.</p></article>
+        <article><span>03 · SUPPLY</span><h3>생산부터 전국 배송까지</h3><p>품질 관리와 재고·물류 운영을 연결해 필요한 제품을 신속하고 정확하게 공급합니다.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="business-customer-section" aria-labelledby="online-title">
+    <div class="business-shell">
+      <div class="business-section-head">
+        <div class="business-section-label">온라인 고객</div>
+        <div class="business-section-copy">
+          <h2 id="online-title">태평제지는 다양한 온라인 쇼핑몰에서<br>대한민국 최종소비자를 직접 만나고 있습니다</h2>
+          <p>쿠팡, 네이버, 카카오, 지마켓, 옥션, 11번가, 알리익스프레스 등 다양한 온라인 채널에 입점하여 소비자의 반응과 만족도를 가까이에서 확인합니다. 최근에는 쿠팡의 PB 제품인 코멧 제품을 직접 생산·납품하며, 고객이 원하는 상품 개발을 통해 더 많은 선택을 받을 수 있도록 노력하고 있습니다.</p>
+        </div>
+      </div>
+
+      <figure class="online-logo-board">
+        <img src="https://cdn.imweb.me/upload/S20260219b829e728b3f2e/0a5251fa0f5e7.png" alt="쿠팡, 네이버, 카카오, 지마켓, 옥션, 11번가, 알리익스프레스 온라인 판매 채널" loading="lazy">
+      </figure>
+      <div class="online-proof-grid">
+        <figure><img src="https://cdn.imweb.me/upload/S20260219b829e728b3f2e/e72cd27e5e957.png" alt="온라인 고객 리뷰 및 구매 경험 자료" loading="lazy"></figure>
+        <figure><img src="https://cdn.imweb.me/upload/S20260219b829e728b3f2e/01de17568c852.png" alt="온라인 소비자 만족도 자료" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="business-customer-section alt" aria-labelledby="corporate-title">
+    <div class="business-shell">
+      <div class="business-section-head">
+        <div class="business-section-label">기업 고객</div>
+        <div class="business-section-copy">
+          <h2 id="corporate-title">대기업·대형건물·학교·병원·관공서에<br>생활 위생용품을 안정적으로 공급해왔습니다</h2>
+          <p>태평제지는 경쟁력 있는 가격, 우수한 품질, 전국 단위의 신속하고 정확한 배송을 기반으로 오랜 기간 기업 고객의 선택을 받아왔습니다. 공중화장실과 다양한 사업 공간에 꼭 필요한 제품을 안정적으로 공급하는 비즈니스 파트너로 자리매김할 수 있도록 운영 기준을 꾸준히 높이고 있습니다.</p>
+        </div>
+      </div>
+      <figure class="corporate-visual">
+        <img src="https://cdn.imweb.me/upload/S20260219b829e728b3f2e/ad5171822eabb.jpg" alt="태평제지 기업 고객 납품처를 상징하는 기업·학교·병원·기관 이미지" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <section class="business-system" aria-labelledby="system-title">
+    <div class="business-shell">
+      <div class="business-system-head">
+        <div><span class="business-kicker">Business System</span><h2 id="system-title">태평제지의 운영 영역</h2></div>
+        <p>고객 접점에서 확인한 요구를 마케팅, 생산, 물류, 품질 관리로 연결해 안정적인 공급 체계를 완성합니다.</p>
+      </div>
+      <div class="business-category-grid">
+        <a class="business-category-card" href="./customer/"><small>01 · CUSTOMER</small><div><h3>고객</h3><span>B2B · B2C 고객</span></div></a>
+        <a class="business-category-card" href="./marketing/"><small>02 · MARKETING</small><div><h3>마케팅</h3><span>시장과 고객을 연결하는 방식</span></div></a>
+        <a class="business-category-card" href="./production/"><small>03 · PRODUCTION</small><div><h3>생산</h3><span>안정적인 전자동 생산</span></div></a>
+        <a class="business-category-card" href="./logistics/"><small>04 · LOGISTICS</small><div><h3>물류</h3><span>신속하고 정확한 공급</span></div></a>
+        <a class="business-category-card" href="./quality/"><small>05 · QUALITY</small><div><h3>품질</h3><span>제품의 기본을 지키는 기준</span></div></a>
+      </div>
+    </div>
+  </section>
+</main>
+<div data-site-footer></div>
+</body>
+</html>
