@@ -1,173 +1,32 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>채용 | 태평제지</title>
-  <meta name="description" content="태평제지의 채용 절차, 인재상, 직무소개와 복리후생을 안내합니다.">
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <script defer src="../assets/js/layout.js"></script>
-  <script defer src="../assets/js/main.js"></script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>채용 | 태평제지</title><meta name="description" content="태평제지의 채용 절차, 인재상, 직무소개와 복리후생을 안내합니다.">
+  <link rel="stylesheet" href="../assets/css/style.css"><script defer src="../assets/js/layout.js"></script><script defer src="../assets/js/main.js"></script>
   <style>
-    body[data-section="recruit"]{background:#fff;color:#171917}
-    body[data-section="recruit"] .source-image-gallery,
-    body[data-section="recruit"] .page-media-section,
-    body[data-section="recruit"] .product-source-extra{display:none!important}
-
-    .recruit-page{
-      --r-green:#22793a;
-      --r-ink:#171917;
-      --r-muted:#666b66;
-      --r-line:rgba(23,25,23,.10);
-      --r-soft:#f4faf5;
-      background:#fff;
-    }
-    .recruit-shell{width:min(calc(100% - 72px),1440px);margin-inline:auto}
-
-    .recruit-hero{padding:32px 0 0}
-    .recruit-hero figure{margin:0;overflow:hidden;border-radius:8px;aspect-ratio:2.55/1;background:#eef2ee}
-    .recruit-hero img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
-
-    .recruit-intro{padding:92px 0 82px}
-    .recruit-intro-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:76px;align-items:start}
-    .recruit-kicker{display:block;margin:0 0 22px;color:var(--r-green);font-size:12px;line-height:1;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
-    .recruit-intro h1{margin:0;font-size:clamp(38px,3.1vw,52px);line-height:1.12;letter-spacing:-.05em;font-weight:700}
-    .recruit-intro-copy{max-width:720px;padding-top:30px}
-    .recruit-intro-copy p{margin:0;color:var(--r-muted);font-size:16px;line-height:1.86;letter-spacing:-.012em}
-
-    .recruit-section{padding:92px 0 104px;border-top:1px solid var(--r-line)}
-    .recruit-section.alt{background:#fbfcfb}
-    .recruit-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:50px}
-    .recruit-head h2{margin:0;font-size:clamp(30px,2.45vw,40px);line-height:1.2;letter-spacing:-.045em;font-weight:680}
-    .recruit-head p{width:min(100%,620px);margin:0;color:var(--r-muted);font-size:14px;line-height:1.78;text-align:right}
-
-    .recruit-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-    .recruit-step{position:relative;min-height:220px;padding:28px;border:1px solid var(--r-line);border-radius:10px;background:#fff}
-    .recruit-step-no{display:block;margin-bottom:30px;color:var(--r-green);font-size:11px;font-weight:800;letter-spacing:.14em}
-    .recruit-step-icon,.recruit-job-icon,.recruit-benefit-icon{display:grid;place-items:center;width:52px;height:52px;margin-bottom:24px;border-radius:50%;background:var(--r-soft);color:var(--r-green)}
-    .recruit-step-icon svg,.recruit-job-icon svg,.recruit-benefit-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-    .recruit-step h3{margin:0 0 12px;font-size:21px;line-height:1.35;letter-spacing:-.035em}
-    .recruit-step p{margin:0;color:var(--r-muted);font-size:14px;line-height:1.72}
-    .recruit-step::after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);z-index:2;width:30px;background:#fff;color:rgba(34,121,58,.5);text-align:center;font-size:20px}
-    .recruit-step:last-child::after{display:none}
-
-    .talent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-    .talent-card{padding:32px 30px;border:1px solid var(--r-line);border-radius:10px;background:#fff}
-    .talent-card span{display:block;margin-bottom:24px;color:var(--r-green);font-size:11px;font-weight:800;letter-spacing:.14em}
-    .talent-card h3{margin:0 0 18px;font-size:23px;line-height:1.4;letter-spacing:-.04em}
-    .talent-card p{margin:0;color:var(--r-muted);font-size:14px;line-height:1.82}
-
-    .job-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-    .job-card{min-height:330px;padding:28px 24px;border:1px solid var(--r-line);border-radius:10px;background:#fff}
-    .recruit-job-icon{width:62px;height:62px;margin-bottom:28px;background:#edf8ef}
-    .recruit-job-icon svg{width:31px;height:31px}
-    .job-card h3{margin:0 0 22px;color:var(--r-green);font-size:24px;line-height:1.3;letter-spacing:-.04em}
-    .job-card ul{margin:0;padding-left:19px;color:#343834;font-size:15px;line-height:1.8}
-
-    .benefit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--r-line);border-left:1px solid var(--r-line)}
-    .benefit-card{min-height:215px;padding:30px 28px;border-right:1px solid var(--r-line);border-bottom:1px solid var(--r-line);background:#fff}
-    .recruit-benefit-icon{width:58px;height:58px;margin-bottom:32px}
-    .benefit-card span{display:block;margin-bottom:8px;color:#9aa09a;font-size:10px;font-weight:800;letter-spacing:.14em}
-    .benefit-card h3{margin:0;font-size:20px;line-height:1.4;letter-spacing:-.035em}
-
-    @media(max-width:1180px){
-      .recruit-intro-grid{grid-template-columns:1fr;gap:28px}.recruit-intro-copy{padding-top:0}
-      .recruit-head{align-items:flex-start;flex-direction:column;gap:18px}.recruit-head p{text-align:left}
-      .recruit-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.recruit-step::after{display:none}
-      .job-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media(max-width:760px){
-      .recruit-shell{width:calc(100% - 36px)}
-      .recruit-hero{padding-top:18px}.recruit-hero figure{aspect-ratio:1.45/1;border-radius:6px}
-      .recruit-intro{padding:58px 0 62px}.recruit-intro h1{font-size:34px}.recruit-intro-copy p{font-size:14px;line-height:1.76}
-      .recruit-section{padding:64px 0 74px}.recruit-head{margin-bottom:34px}.recruit-head h2{font-size:28px}.recruit-head p{font-size:13px}
-      .recruit-flow,.talent-grid,.job-grid,.benefit-grid{grid-template-columns:1fr}
-      .recruit-step,.job-card,.benefit-card{min-height:auto}
-      .job-card h3{font-size:22px}.job-card ul{font-size:14px}
-    }
+    body[data-section="recruit"]{background:#fff;color:#171917}body[data-section="recruit"] .source-image-gallery,body[data-section="recruit"] .page-media-section,body[data-section="recruit"] .product-source-extra{display:none!important}
+    .recruit-page{--r-green:#22793a;--r-ink:#171917;--r-muted:#666b66;--r-line:rgba(23,25,23,.10);--r-soft:#f4faf5;background:#fff}.recruit-shell{width:min(calc(100% - 72px),1440px);margin-inline:auto}
+    .recruit-hero{padding:32px 0 0}.recruit-hero figure{margin:0;overflow:hidden;border-radius:8px;aspect-ratio:2.55/1;background:#eef2ee}.recruit-hero img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
+    .recruit-intro{padding:92px 0 82px}.recruit-intro-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:76px;align-items:start}.recruit-kicker{display:block;margin:0 0 22px;color:var(--r-green);font-size:12px;line-height:1;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.recruit-intro h1{margin:0;font-size:clamp(38px,3.1vw,52px);line-height:1.12;letter-spacing:-.05em;font-weight:700}.recruit-intro-copy{max-width:720px;padding-top:30px}.recruit-intro-copy p{margin:0;color:var(--r-muted);font-size:16px;line-height:1.86;letter-spacing:-.012em}
+    .recruit-section{padding:92px 0 104px;border-top:1px solid var(--r-line)}.recruit-section.alt{background:#fbfcfb}.recruit-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:50px}.recruit-head h2{margin:0;font-size:clamp(30px,2.45vw,40px);line-height:1.2;letter-spacing:-.045em;font-weight:680}.recruit-head p{width:min(100%,620px);margin:0;color:var(--r-muted);font-size:14px;line-height:1.78;text-align:right}
+    .recruit-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.recruit-step{position:relative;min-height:220px;padding:28px;border:1px solid var(--r-line);border-radius:10px;background:#fff}.recruit-step-no{display:block;margin-bottom:30px;color:var(--r-green);font-size:11px;font-weight:800;letter-spacing:.14em}.recruit-step-icon,.recruit-job-icon{display:grid;place-items:center;width:52px;height:52px;margin-bottom:24px;border-radius:50%;background:var(--r-soft);color:var(--r-green)}.recruit-step-icon svg,.recruit-job-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.recruit-step h3{margin:0 0 12px;font-size:21px;line-height:1.35;letter-spacing:-.035em}.recruit-step p{margin:0;color:var(--r-muted);font-size:14px;line-height:1.72}.recruit-step::after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);z-index:2;width:30px;background:#fff;color:rgba(34,121,58,.5);text-align:center;font-size:20px}.recruit-step:last-child::after{display:none}
+    .recruit-wide-media{margin:46px 0 0;overflow:hidden;border-radius:10px;background:#f3f4f2}.recruit-wide-media img{display:block;width:100%;height:auto;object-fit:contain}
+    .talent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.talent-card{padding:32px 30px;border:1px solid var(--r-line);border-radius:10px;background:#fff}.talent-card span{display:block;margin-bottom:24px;color:var(--r-green);font-size:11px;font-weight:800;letter-spacing:.14em}.talent-card h3{margin:0 0 18px;font-size:23px;line-height:1.4;letter-spacing:-.04em}.talent-card p{margin:0;color:var(--r-muted);font-size:14px;line-height:1.82}
+    .job-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.job-card{min-height:330px;padding:28px 24px;border:1px solid var(--r-line);border-radius:10px;background:#fff}.recruit-job-icon{width:62px;height:62px;margin-bottom:28px;background:#edf8ef}.recruit-job-icon svg{width:31px;height:31px}.job-card h3{margin:0 0 22px;color:var(--r-green);font-size:24px;line-height:1.3;letter-spacing:-.04em}.job-card ul{margin:0;padding-left:19px;color:#343834;font-size:15px;line-height:1.8}
+    .benefit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.benefit-card{overflow:hidden;border:1px solid var(--r-line);border-radius:10px;background:#fff}.benefit-card figure{margin:0;background:#f4f6f3}.benefit-card img{display:block;width:100%;height:auto;aspect-ratio:1.42/1;object-fit:cover}.benefit-card-body{padding:24px 24px 26px}.benefit-card span{display:block;margin-bottom:8px;color:#9aa09a;font-size:10px;font-weight:800;letter-spacing:.14em}.benefit-card h3{margin:0;font-size:20px;line-height:1.4;letter-spacing:-.035em}
+    @media(max-width:1180px){.recruit-intro-grid{grid-template-columns:1fr;gap:28px}.recruit-intro-copy{padding-top:0}.recruit-head{align-items:flex-start;flex-direction:column;gap:18px}.recruit-head p{text-align:left}.recruit-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.recruit-step::after{display:none}.job-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.benefit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.recruit-shell{width:calc(100% - 36px)}.recruit-hero{padding-top:18px}.recruit-hero figure{aspect-ratio:1.45/1;border-radius:6px}.recruit-intro{padding:58px 0 62px}.recruit-intro h1{font-size:34px}.recruit-intro-copy p{font-size:14px;line-height:1.76}.recruit-section{padding:64px 0 74px}.recruit-head{margin-bottom:34px}.recruit-head h2{font-size:28px}.recruit-head p{font-size:13px}.recruit-flow,.talent-grid,.job-grid,.benefit-grid{grid-template-columns:1fr}.recruit-step,.job-card{min-height:auto}.job-card h3{font-size:22px}.job-card ul{font-size:14px}.recruit-wide-media{margin-top:34px}}
   </style>
 </head>
-<body data-base="../" data-section="recruit">
-<div data-site-header></div>
+<body data-base="../" data-section="recruit"><div data-site-header></div>
 <main class="sub-main recruit-page">
-  <section class="recruit-hero" aria-label="태평제지 채용">
-    <div class="recruit-shell">
-      <figure>
-        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/da8e594322415.jpg" alt="태평제지 채용 면접 이미지" fetchpriority="high">
-      </figure>
-    </div>
-  </section>
-
-  <section class="recruit-intro">
-    <div class="recruit-shell recruit-intro-grid">
-      <div>
-        <span class="recruit-kicker">Recruit</span>
-        <h1>함께 성장하며,<br>새로운 기준을 만드는 사람</h1>
-      </div>
-      <div class="recruit-intro-copy">
-        <p>태평제지는 기본에 충실한 자세와 문제의 본질을 깊이 이해하는 태도, 새로운 가능성에 도전하는 실행력을 중요하게 생각합니다. 각자의 역할에서 책임을 다하며 함께 성장할 인재를 기다립니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="recruit-section" aria-labelledby="process-title">
-    <div class="recruit-shell">
-      <div class="recruit-head">
-        <div><span class="recruit-kicker">Recruitment Process</span><h2 id="process-title">채용 절차</h2></div>
-        <p>채용은 연간 수시로 진행되며, 아래의 네 단계를 거쳐 최종 합류가 확정됩니다.</p>
-      </div>
-      <div class="recruit-flow">
-        <article class="recruit-step"><span class="recruit-step-no">STEP 01</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><path d="M9 5h14v22H9z"/><path d="M12 10h8M12 15h8M12 20h5"/></svg></div><h3>서류 전형</h3><p>지원자의 경험과 직무 적합성을 종합적으로 검토합니다.</p></article>
-        <article class="recruit-step"><span class="recruit-step-no">STEP 02</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><circle cx="11" cy="12" r="4"/><circle cx="22" cy="12" r="4"/><path d="M4 25c1-4 3.5-6 7-6s6 2 7 6M17 25c.6-2.9 2.4-5 5-5 2.8 0 4.8 1.8 6 5"/></svg></div><h3>면접</h3><p>직무 역량과 협업 방식, 태평제지와의 방향성을 확인합니다.</p></article>
-        <article class="recruit-step"><span class="recruit-step-no">STEP 03</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><path d="M7 25V13M16 25V7M25 25V17"/><path d="m7 10 8-5 9 5"/></svg></div><h3>본인 목표 설정</h3><p>입사 후 역할과 목표를 구체화하고 성장 방향을 함께 설정합니다.</p></article>
-        <article class="recruit-step"><span class="recruit-step-no">STEP 04</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="m11 16 3.4 3.4L22 12"/></svg></div><h3>최종 결과 통보</h3><p>최종 검토 후 결과와 입사 관련 사항을 개별 안내드립니다.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="recruit-section alt" aria-labelledby="talent-title">
-    <div class="recruit-shell">
-      <div class="recruit-head"><div><span class="recruit-kicker">Our People</span><h2 id="talent-title">태평제지 인재상</h2></div><p>일의 기본을 지키고, 원인을 끝까지 파고들며, 새로운 가능성에 도전하는 사람을 찾습니다.</p></div>
-      <div class="talent-grid">
-        <article class="talent-card"><span>01 · BASIC</span><h3>기본에 충실한 인재</h3><p>업무의 기본이 무엇인지 이해하고 반복을 통해 숙련도를 높이며, 기본을 가장 소중하게 생각하는 자세로 일합니다.</p></article>
-        <article class="talent-card"><span>02 · ESSENCE</span><h3>문제의 본질을 집요하게 파고드는 인재</h3><p>현상의 원인을 깊이 파악하고 문제의 핵심을 정확하게 이해해 실제 해결책으로 연결합니다.</p></article>
-        <article class="talent-card"><span>03 · CHALLENGE</span><h3>늘 새로운 것에 도전하는 인재</h3><p>현재에 안주하지 않고 창의적인 해결책과 새로운 상품, 시장을 주도적으로 찾아 나갑니다.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="recruit-section" aria-labelledby="job-title">
-    <div class="recruit-shell">
-      <div class="recruit-head"><div><span class="recruit-kicker">Job</span><h2 id="job-title">직무소개</h2></div><p>생산부터 고객 접점과 경영 지원까지 각 분야가 유기적으로 연결되어 태평제지의 운영을 완성합니다.</p></div>
-      <div class="job-grid">
-        <article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 24h22M8 24V12h7v12M17 24V7h7v17"/><path d="M10 9h3M19 11h3M19 15h3"/></svg></div><h3>생산</h3><ul><li>두루마리 생산</li><li>점보롤 생산</li><li>핸드타월 생산</li></ul></article>
-        <article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 10h14v12H5z"/><path d="M19 14h5l3 4v4h-8z"/><circle cx="10" cy="24" r="2"/><circle cx="23" cy="24" r="2"/></svg></div><h3>물류</h3><ul><li>피킹/패킹</li><li>재고관리</li><li>창고관리</li><li>배송관리</li></ul></article>
-        <article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="10" r="5"/><path d="M7 27c1-7 4.5-10 9-10s8 3 9 10"/><path d="M23 6h5v5"/></svg></div><h3>영업</h3><ul><li>B2B 기업 고객 영업</li><li>B2C 온라인 영업</li></ul></article>
-        <article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 25h22V8H5z"/><path d="m9 20 5-5 4 3 6-7"/></svg></div><h3>마케팅</h3><ul><li>고객 니즈 파악</li><li>신상품 기획</li><li>마케팅 프로모션</li></ul></article>
-        <article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M8 8h16v17H8z"/><path d="M12 5h8v6h-8zM12 15h8M12 19h8"/></svg></div><h3>경영지원</h3><ul><li>원가</li><li>세무/회계</li><li>경리</li><li>HR</li><li>총무</li></ul></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="recruit-section alt" aria-labelledby="benefit-title">
-    <div class="recruit-shell">
-      <div class="recruit-head"><div><span class="recruit-kicker">Welfare</span><h2 id="benefit-title">복리후생</h2></div><p>구성원의 안정적인 근무와 성장을 지원하는 기본 제도를 운영합니다.</p></div>
-      <div class="benefit-grid">
-        <article class="benefit-card"><div class="recruit-benefit-icon"><svg viewBox="0 0 32 32"><path d="M16 27c6-4 10-8.2 10-13a6 6 0 0 0-10-4.4A6 6 0 0 0 6 14c0 4.8 4 9 10 13z"/></svg></div><span>01 · SUPPORT</span><h3>경조사 지원</h3></article>
-        <article class="benefit-card"><div class="recruit-benefit-icon"><svg viewBox="0 0 32 32"><path d="M6 12h20v14H6zM4 8h24v5H4zM16 8v18M10 8c-3-3 1-6 6 0M22 8c3-3-1-6-6 0"/></svg></div><span>02 · HOLIDAY</span><h3>명절 상여금 지원</h3></article>
-        <article class="benefit-card"><div class="recruit-benefit-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="12" r="7"/><path d="m12 18-2 10 6-3 6 3-2-10"/></svg></div><span>03 · AWARD</span><h3>우수 사원 시상</h3></article>
-        <article class="benefit-card"><div class="recruit-benefit-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="M12 11h7a3 3 0 0 1 0 6h-6a3 3 0 0 0 0 6h7M16 7v18"/></svg></div><span>04 · BONUS</span><h3>성과에 따른 보너스 지급</h3></article>
-      </div>
-    </div>
-  </section>
-</main>
-<div data-site-footer></div>
-<script>
-  (()=>{
-    const removeLegacy=()=>document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach(el=>el.remove());
-    removeLegacy();
-    new MutationObserver(removeLegacy).observe(document.documentElement,{childList:true,subtree:true});
-  })();
-</script>
-</body>
-</html>
+  <section class="recruit-hero" aria-label="태평제지 채용"><div class="recruit-shell"><figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/06dbfc0dfa3af.png" alt="태평제지 채용 대표 이미지" fetchpriority="high"></figure></div></section>
+  <section class="recruit-intro"><div class="recruit-shell recruit-intro-grid"><div><span class="recruit-kicker">Recruit</span><h1>함께 성장하며,<br>새로운 기준을 만드는 사람</h1></div><div class="recruit-intro-copy"><p>태평제지는 기본에 충실한 자세와 문제의 본질을 깊이 이해하는 태도, 새로운 가능성에 도전하는 실행력을 중요하게 생각합니다. 각자의 역할에서 책임을 다하며 함께 성장할 인재를 기다립니다.</p></div></div></section>
+  <section class="recruit-section" aria-labelledby="process-title"><div class="recruit-shell"><div class="recruit-head"><div><span class="recruit-kicker">Recruitment Process</span><h2 id="process-title">채용 절차</h2></div><p>채용은 연간 수시로 진행되며, 아래의 네 단계를 거쳐 최종 합류가 확정됩니다.</p></div><div class="recruit-flow"><article class="recruit-step"><span class="recruit-step-no">STEP 01</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><path d="M9 5h14v22H9z"/><path d="M12 10h8M12 15h8M12 20h5"/></svg></div><h3>서류 전형</h3><p>지원자의 경험과 직무 적합성을 종합적으로 검토합니다.</p></article><article class="recruit-step"><span class="recruit-step-no">STEP 02</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><circle cx="11" cy="12" r="4"/><circle cx="22" cy="12" r="4"/><path d="M4 25c1-4 3.5-6 7-6s6 2 7 6M17 25c.6-2.9 2.4-5 5-5 2.8 0 4.8 1.8 6 5"/></svg></div><h3>면접</h3><p>직무 역량과 협업 방식, 태평제지와의 방향성을 확인합니다.</p></article><article class="recruit-step"><span class="recruit-step-no">STEP 03</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><path d="M7 25V13M16 25V7M25 25V17"/><path d="m7 10 8-5 9 5"/></svg></div><h3>본인 목표 설정</h3><p>입사 후 역할과 목표를 구체화하고 성장 방향을 함께 설정합니다.</p></article><article class="recruit-step"><span class="recruit-step-no">STEP 04</span><div class="recruit-step-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="m11 16 3.4 3.4L22 12"/></svg></div><h3>최종 결과 통보</h3><p>최종 검토 후 결과와 입사 관련 사항을 개별 안내드립니다.</p></article></div><figure class="recruit-wide-media"><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/e5c4d1e2bfbc6.jpg" alt="채용 절차 이미지" loading="lazy"></figure></div></section>
+  <section class="recruit-section alt" aria-labelledby="talent-title"><div class="recruit-shell"><div class="recruit-head"><div><span class="recruit-kicker">Our People</span><h2 id="talent-title">태평제지 인재상</h2></div><p>일의 기본을 지키고, 원인을 끝까지 파고들며, 새로운 가능성에 도전하는 사람을 찾습니다.</p></div><div class="talent-grid"><article class="talent-card"><span>01 · BASIC</span><h3>기본에 충실한 인재</h3><p>업무의 기본이 무엇인지 이해하고 반복을 통해 숙련도를 높이며, 기본을 가장 소중하게 생각하는 자세로 일합니다.</p></article><article class="talent-card"><span>02 · ESSENCE</span><h3>문제의 본질을 집요하게 파고드는 인재</h3><p>현상의 원인을 깊이 파악하고 문제의 핵심을 정확하게 이해해 실제 해결책으로 연결합니다.</p></article><article class="talent-card"><span>03 · CHALLENGE</span><h3>늘 새로운 것에 도전하는 인재</h3><p>현재에 안주하지 않고 창의적인 해결책과 새로운 상품, 시장을 주도적으로 찾아 나갑니다.</p></article></div></div></section>
+  <section class="recruit-section" aria-labelledby="job-title"><div class="recruit-shell"><div class="recruit-head"><div><span class="recruit-kicker">Job</span><h2 id="job-title">직무소개</h2></div><p>생산부터 고객 접점과 경영 지원까지 각 분야가 유기적으로 연결되어 태평제지의 운영을 완성합니다.</p></div><div class="job-grid"><article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 24h22M8 24V12h7v12M17 24V7h7v17"/><path d="M10 9h3M19 11h3M19 15h3"/></svg></div><h3>생산</h3><ul><li>두루마리 생산</li><li>점보롤 생산</li><li>핸드타월 생산</li></ul></article><article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 10h14v12H5z"/><path d="M19 14h5l3 4v4h-8z"/><circle cx="10" cy="24" r="2"/><circle cx="23" cy="24" r="2"/></svg></div><h3>물류</h3><ul><li>피킹/패킹</li><li>재고관리</li><li>창고관리</li><li>배송관리</li></ul></article><article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="10" r="5"/><path d="M7 27c1-7 4.5-10 9-10s8 3 9 10"/><path d="M23 6h5v5"/></svg></div><h3>영업</h3><ul><li>B2B 기업 고객 영업</li><li>B2C 온라인 영업</li></ul></article><article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M5 25h22V8H5z"/><path d="m9 20 5-5 4 3 6-7"/></svg></div><h3>마케팅</h3><ul><li>고객 니즈 파악</li><li>신상품 기획</li><li>마케팅 프로모션</li></ul></article><article class="job-card"><div class="recruit-job-icon"><svg viewBox="0 0 32 32"><path d="M8 8h16v17H8z"/><path d="M12 5h8v6h-8zM12 15h8M12 19h8"/></svg></div><h3>경영지원</h3><ul><li>원가</li><li>세무/회계</li><li>경리</li><li>HR</li><li>총무</li></ul></article></div><figure class="recruit-wide-media"><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/ecd1b374f006c.jpg" alt="태평제지 직무소개 이미지" loading="lazy"></figure></div></section>
+  <section class="recruit-section alt" aria-labelledby="benefit-title"><div class="recruit-shell"><div class="recruit-head"><div><span class="recruit-kicker">Welfare</span><h2 id="benefit-title">복리후생</h2></div><p>구성원의 안정적인 근무와 성장을 지원하는 기본 제도를 운영합니다.</p></div><div class="benefit-grid"><article class="benefit-card"><figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/349719afcf311.jpg" alt="경조사 지원" loading="lazy"></figure><div class="benefit-card-body"><span>01 · SUPPORT</span><h3>경조사 지원</h3></div></article><article class="benefit-card"><figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/1aff35b5ab6a5.jpg" alt="명절 상여금 지원" loading="lazy"></figure><div class="benefit-card-body"><span>02 · HOLIDAY</span><h3>명절 상여금 지원</h3></div></article><article class="benefit-card"><figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/15a1d44c78834.jpg" alt="우수 사원 시상" loading="lazy"></figure><div class="benefit-card-body"><span>03 · AWARD</span><h3>우수 사원 시상</h3></div></article><article class="benefit-card"><figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/e9165a203abea.jpg" alt="성과에 따른 보너스 지급" loading="lazy"></figure><div class="benefit-card-body"><span>04 · BONUS</span><h3>성과에 따른 보너스 지급</h3></div></article></div></div></section>
+</main><div data-site-footer></div>
+<script>(()=>{const removeLegacy=()=>document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach(el=>el.remove());removeLegacy();new MutationObserver(removeLegacy).observe(document.documentElement,{childList:true,subtree:true});})();</script>
+</body></html>
