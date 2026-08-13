@@ -1,3 +1,8 @@
+/* Shared footer alignment */
+.footer-bottom .footer-legal{display:flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;white-space:nowrap!important;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.footer-bottom .footer-legal::-webkit-scrollbar{display:none}
+.footer-bottom .footer-legal a{display:inline-flex!important;flex:0 0 auto!important}
+
 /* Company carousel + product detail modal */
 .product-source-extra,[class*="product-source-extra"]{display:none!important}
 .page-media-section{display:none!important}
