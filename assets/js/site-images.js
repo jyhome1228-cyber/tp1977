@@ -14,7 +14,7 @@
       link.dataset.siteImages = 'true';
       document.head.appendChild(link);
     }
-    link.href = `${root}assets/css/site-images.css?v=20260810-1815`;
+    link.href = `${root}assets/css/site-images.css?v=20260813-1841`;
   };
 
   const preconnect = () => {
@@ -273,8 +273,8 @@
     const legacyAbout = document.querySelector('.home-about');
     const legacyGallery = document.querySelector('.home-gallery');
 
-    const featured = images[images.length-1];
-    const others = images.slice(0,-1);
+    const featured = images[0];
+    const others = images.slice(1);
     const heroImages = [featured, ...others.slice(0,3)];
 
     hero.innerHTML = heroMarkup(heroImages);
@@ -291,7 +291,7 @@
   ensureCss();
   preconnect();
 
-  fetch(`${root}assets/data/site-images.json?v=20260810-1815`)
+  fetch(`${root}assets/data/site-images.json?v=20260813-1841`)
     .then(response=>response.json())
     .then(data=>{
       if (path === '/') return applyHome(data);
