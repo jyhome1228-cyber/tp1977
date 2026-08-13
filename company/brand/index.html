@@ -1,63 +1,174 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>브랜드 소개 | 태평제지</title>
-  <meta name="description" content="태평제지의 생활 위생 브랜드 브론디의 이름과 아이덴티티 역사를 소개합니다.">
-  <link rel="stylesheet" href="../../assets/css/style.css"><script defer src="../../assets/js/layout.js"></script><script defer src="../../assets/js/main.js"></script>
+  <meta name="description" content="태평제지의 생활 위생 브랜드 브론디의 스토리, 아이덴티티 역사, 로고와 컬러 가이드를 소개합니다.">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/main.js"></script>
+  <style>
+    body[data-section="company"]{background:#fff;color:#171917}
+    body[data-section="company"] .source-image-gallery,
+    body[data-section="company"] .page-media-section,
+    body[data-section="company"] .product-source-extra{display:none!important}
+
+    .blondy-page{
+      --b-yellow:#f6b900;
+      --b-yellow-soft:#fff7d9;
+      --b-ink:#171917;
+      --b-muted:#626660;
+      --b-line:rgba(23,25,23,.10);
+      background:#fff;
+    }
+    .blondy-shell{width:min(calc(100% - 72px),1440px);margin-inline:auto}
+
+    .blondy-intro{padding:92px 0 74px}
+    .blondy-kicker{display:block;margin:0 0 24px;color:var(--b-yellow);font-size:13px;line-height:1;font-weight:750;letter-spacing:-.02em}
+    .blondy-intro-grid{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:84px;align-items:start}
+    .blondy-intro h1{margin:0;font-size:clamp(34px,2.8vw,46px);line-height:1.24;letter-spacing:-.048em;font-weight:700}
+    .blondy-intro-copy{max-width:780px;padding-top:8px}
+    .blondy-intro-copy p{margin:0;color:var(--b-muted);font-size:16px;line-height:1.88;letter-spacing:-.012em}
+    .blondy-intro-copy p+p{margin-top:16px}
+
+    .blondy-origin{padding:0 0 106px}
+    .blondy-origin-media{margin:0;overflow:hidden;border-radius:10px;background:#ffd900}
+    .blondy-origin-media img{width:100%;display:block;aspect-ratio:2.06/1;object-fit:cover}
+
+    .blondy-section{padding:96px 0 106px;border-top:1px solid var(--b-line)}
+    .blondy-section.alt{background:#fcfcfb}
+    .blondy-head{display:flex;align-items:flex-end;justify-content:space-between;gap:56px;margin-bottom:50px}
+    .blondy-head h2{margin:0;color:var(--b-yellow);font-size:27px;line-height:1.3;letter-spacing:-.035em;font-weight:700}
+    .blondy-head p{width:min(100%,620px);margin:0;color:var(--b-muted);font-size:14px;line-height:1.8;text-align:right}
+
+    .history-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px}
+    .history-card{margin:0}
+    .history-card figure{margin:0 0 22px;overflow:hidden;border-radius:10px;background:#f3f3f1}
+    .history-card img{width:100%;display:block;aspect-ratio:1.55/1;object-fit:cover}
+    .history-card small{display:block;margin-bottom:8px;color:#999d97;font-size:10px;font-weight:750;letter-spacing:.13em}
+    .history-card h3{margin:0;font-size:17px;line-height:1.45;letter-spacing:-.025em;font-weight:620}
+
+    .blondy-philosophy{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:84px;margin-top:76px;padding-top:56px;border-top:1px solid var(--b-line)}
+    .blondy-philosophy strong{font-size:30px;line-height:1.35;letter-spacing:-.045em;font-weight:680}
+    .blondy-philosophy-copy{max-width:800px}
+    .blondy-philosophy-copy p{margin:0;color:#4f544f;font-size:15px;line-height:1.88;letter-spacing:-.012em}
+    .blondy-philosophy-copy p+p{margin-top:16px}
+
+    .brand-asset{margin:0;overflow:hidden;border-radius:10px;background:#f7c900}
+    .brand-asset img{width:100%;display:block;object-fit:cover}
+    .brand-asset.logo img{aspect-ratio:3.2/1}
+    .brand-asset.color img{aspect-ratio:2.76/1}
+
+    .brand-note{margin-top:24px;max-width:720px;color:#7b7f7a;font-size:13px;line-height:1.75}
+
+    @media(max-width:1100px){
+      .blondy-intro-grid,.blondy-philosophy{grid-template-columns:1fr;gap:28px}
+      .blondy-head{align-items:flex-start;flex-direction:column;gap:16px}.blondy-head p{text-align:left}
+      .history-grid{gap:20px}
+    }
+    @media(max-width:760px){
+      .blondy-shell{width:calc(100% - 36px)}
+      .blondy-intro{padding:58px 0 48px}.blondy-kicker{margin-bottom:18px;font-size:12px}.blondy-intro h1{font-size:31px}.blondy-intro-copy p{font-size:14px;line-height:1.78}
+      .blondy-origin{padding-bottom:72px}.blondy-origin-media img{aspect-ratio:1.35/1}
+      .blondy-section{padding:66px 0 76px}.blondy-head{margin-bottom:32px}.blondy-head h2{font-size:23px}.blondy-head p{font-size:13px}
+      .history-grid{grid-template-columns:1fr;gap:34px}.history-card figure{margin-bottom:16px}
+      .blondy-philosophy{margin-top:52px;padding-top:40px}.blondy-philosophy strong{font-size:26px}.blondy-philosophy-copy p{font-size:14px;line-height:1.78}
+      .brand-asset.logo img,.brand-asset.color img{aspect-ratio:1.65/1}
+    }
+  </style>
 </head>
-<body data-base="../../" data-section="company"><div data-site-header></div>
-<main class="sub-main">
-  <section class="sub-hero"><div class="wrap"><p class="breadcrumb">COMPANY / BRAND</p><h1>브랜드 소개</h1><p>평범한 일상 속에서 의미와 가치를 발견하게 하는 브랜드, 브론디.</p></div></section>
-  <nav class="sub-nav"><div class="wrap"><a href="../ceo/">CEO 인사말</a><a href="../story/">태평제지 스토리</a><a class="active" href="../brand/">브랜드 소개</a><a href="../vision/">비전 및 핵심 가치</a></div></nav>
+<body data-base="../../" data-section="company">
+<div data-site-header></div>
 
-  <section class="content-section">
-    <div class="wrap content-grid">
-      <div><span class="content-label">BLONDY</span></div>
-      <div class="content-body">
-        <h2>평범한 일상 속에서<br>의미와 가치를 발견하게 하는 브랜드</h2>
-        <p>브론디라는 이름은 태평제지 창업자 이봉종 회장이 즐겨보던 만화 ‘블론디(BLONDIE)’에서 착안했습니다. 평범한 중산층 가족의 일상을 그린 이 작품은 전 세계에서 100년 이상 이어져 온 만화로 알려져 있습니다.</p>
-        <p>태평제지는 브론디 화장지도 사람들의 일상 속에서 오랫동안 사랑받고 기억되는 브랜드가 되기를 바라는 마음을 이름에 담았습니다.</p>
-        <p>브론디는 정직한 품질을 바탕으로 부드러움과 청결함을 제공하며, 가정과 학교, 병원, 공공시설 등 다양한 공간에서 일상을 지켜주는 생활 파트너를 지향합니다.</p>
-        <p>좋은 제품은 꾸준한 품질로 신뢰를 만들어야 한다는 태평제지의 철학을 바탕으로, 가족의 건강과 생활 가까이에서 믿을 수 있는 제품을 만들어갑니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="wrap content-grid">
-      <div><span class="content-label">IDENTITY HISTORY</span></div>
-      <div class="content-body">
-        <h2>브론디 아이덴티티 역사</h2>
-        <div class="feature-list">
-          <div class="feature-row"><span>1978</span><div><h3>1978년 창업 당시</h3></div></div>
-          <div class="feature-row"><span>2010</span><div><h3>2010년 브론디 BI 작업후</h3></div></div>
-          <div class="feature-row"><span>2025</span><div><h3>2025년 새로운 BI 적용후</h3></div></div>
+<main class="sub-main blondy-page">
+  <section class="blondy-intro">
+    <div class="blondy-shell">
+      <span class="blondy-kicker">브랜드 소개</span>
+      <div class="blondy-intro-grid">
+        <h1>평범한 일상 속에서<br>의미와 가치를 발견하게 하는 브랜드, 브론디</h1>
+        <div class="blondy-intro-copy">
+          <p>브론디라는 이름은 태평제지 창업자 이봉종 회장이 평소 즐겨보던 만화 블론디(BLONDIE)에서 착안해 지어진 이름입니다. 중산층 가정의 평범한 일상을 그린 이 작품처럼, 브론디 역시 사람들의 일상 속에서 오래 사랑받고 기억되는 브랜드가 되기를 바라는 마음을 담고 있습니다.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="wrap content-grid">
-      <div><span class="content-label">LOGO</span></div>
-      <div class="content-body">
-        <h2>브론디 로고</h2>
-        <p>브론디 로고는 브랜드의 핵심 정체성을 시각적으로 대표하는 상징이며, 제품과 커뮤니케이션 전반에서 일관되게 사용하는 것을 기준으로 합니다.</p>
+  <section class="blondy-origin">
+    <div class="blondy-shell">
+      <figure class="blondy-origin-media">
+        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/4d172bbf48ee9.png" alt="브론디 브랜드 이름의 기원이 된 블론디 이미지" fetchpriority="high">
+      </figure>
+    </div>
+  </section>
+
+  <section class="blondy-section" aria-labelledby="history-title">
+    <div class="blondy-shell">
+      <div class="blondy-head">
+        <h2 id="history-title">브론디 아이덴티티 역사</h2>
+        <p>태평제지의 시작부터 현재까지, 브론디의 시각 아이덴티티는 시대의 변화와 함께 조금씩 다듬어져 왔습니다.</p>
+      </div>
+      <div class="history-grid">
+        <article class="history-card">
+          <figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/cbff42e629bcd.png" alt="1978년 창업 당시 브론디 아이덴티티" loading="lazy"></figure>
+          <small>1978 · ORIGIN</small>
+          <h3>1978년 창업 당시</h3>
+        </article>
+        <article class="history-card">
+          <figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/1388d34628dbb.jpg" alt="2010년 브론디 BI" loading="lazy"></figure>
+          <small>2010 · RENEWAL</small>
+          <h3>2010년 브론디 BI 작업후</h3>
+        </article>
+        <article class="history-card">
+          <figure><img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/18b256bd67920.jpg" alt="2025년 새로운 브론디 BI" loading="lazy"></figure>
+          <small>2025 · NEW IDENTITY</small>
+          <h3>2025년 새로운 BI 적용후</h3>
+        </article>
+      </div>
+
+      <div class="blondy-philosophy">
+        <strong>설명하지 않아도<br>믿을 수 있는 생활 브랜드</strong>
+        <div class="blondy-philosophy-copy">
+          <p>브론디는 평범한 일상 속에서 의미와 가치를 발견하게 하는 브랜드로 자리매김했습니다. 정직한 품질을 바탕으로 생활 속 작은 안심을 제공하고, 제품의 부드러움과 청결함을 통해 매일 반복되는 일상에 작은 위로와 여유를 더합니다.</p>
+          <p>가정과 학교, 병원, 공공시설 등 다양한 공간에서 사용되며 누군가의 하루를 보이지 않는 곳에서 묵묵히 지켜주는 존재가 되고 있습니다. 그 속에는 “좋은 제품은 설명하지 않아도 믿을 수 있어야 한다”는 태평제지의 오래된 철학이 스며 있습니다.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="wrap content-grid">
-      <div><span class="content-label">COLOR GUIDE</span></div>
-      <div class="content-body">
-        <h2>색상 가이드</h2>
-        <p>브랜드 고유의 분위기와 식별성을 유지할 수 있도록 지정된 전용 색상을 기준으로 사용합니다.</p>
+  <section class="blondy-section alt" aria-labelledby="logo-title">
+    <div class="blondy-shell">
+      <div class="blondy-head">
+        <h2 id="logo-title">브랜드 로고</h2>
+        <p>브론디 로고는 브랜드의 핵심 정체성을 시각적으로 대표하는 상징으로, 제품과 커뮤니케이션 전반에서 일관된 형태로 사용하는 것을 기준으로 합니다.</p>
       </div>
+      <figure class="brand-asset logo">
+        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/b16318b19dcff.png" alt="브론디 브랜드 로고 가이드" loading="lazy">
+      </figure>
+      <p class="brand-note">로고의 비율과 형태를 임의로 변형하지 않고, 충분한 여백과 명확한 대비를 확보하여 사용합니다.</p>
+    </div>
+  </section>
+
+  <section class="blondy-section" aria-labelledby="color-title">
+    <div class="blondy-shell">
+      <div class="blondy-head">
+        <h2 id="color-title">색상 가이드</h2>
+        <p>브론디 고유의 무드와 선명도를 유지하기 위해 지정된 전용 컬러를 기준으로 사용합니다.</p>
+      </div>
+      <figure class="brand-asset color">
+        <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/0ef144bb2af9b.png" alt="브론디 브랜드 전용 컬러 가이드" loading="lazy">
+      </figure>
     </div>
   </section>
 </main>
+
 <div data-site-footer></div>
+<script>
+  (()=>{
+    const removeLegacy=()=>document.querySelectorAll('.source-image-gallery,.page-media-section,.product-source-extra').forEach(el=>el.remove());
+    removeLegacy();
+    new MutationObserver(removeLegacy).observe(document.documentElement,{childList:true,subtree:true});
+  })();
+</script>
 </body>
 </html>
