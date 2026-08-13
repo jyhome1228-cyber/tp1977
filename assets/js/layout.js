@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260810-1900';
+  const cacheVersion = '20260813-0910';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header]');
@@ -18,8 +18,25 @@
     link.href = href;
   };
 
-  ensureCss('link[data-brand-clean]', 'brandClean', `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`);
-  ensureCss('link[data-site-enhancements]', 'siteEnhancements', `${assetRoot}assets/css/site-enhancements.css?v=${cacheVersion}`);
+  const syncBrandCss = () => {
+    ensureCss('link[data-brand-clean]', 'brandClean', `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`);
+    ensureCss('link[data-footer-brand]', 'footerBrand', `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`);
+    ensureCss('link[data-site-enhancements]', 'siteEnhancements', `${assetRoot}assets/css/site-enhancements.css?v=${cacheVersion}`);
+  };
+  syncBrandCss();
+  window.addEventListener('DOMContentLoaded', syncBrandCss, { once: true });
+
+  if (!document.querySelector('style[data-header-size-override]')) {
+    const style = document.createElement('style');
+    style.dataset.headerSizeOverride = 'true';
+    style.textContent = `
+      @media (min-width:1101px){
+        .desktop-nav .nav-item>a{font-size:16px!important;line-height:1.35!important;font-weight:650!important}
+        .desktop-nav .dropdown a{font-size:15px!important;line-height:1.5!important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
   const logo = () => `
     <a class="brand brand-image" href="${base}" aria-label="태평제지 홈">
@@ -89,19 +106,25 @@
         <div class="wrap footer-shell">
           <div class="footer-primary">
             <div class="footer-brand">
-              <strong>TAEPYUNG PAPER</strong>
-              <p>사람과 환경을 생각합니다.</p>
-              <small>SINCE 1977 · 생활 위생용품 전문 제조기업</small>
+              <a class="footer-logo-link" href="${base}" aria-label="태평제지 홈">
+                <img class="footer-logo" src="${assetRoot}assets/images/logo-taepyung.svg?v=${cacheVersion}" alt="태평제지 Taepyung Since 1977">
+              </a>
+              <span class="footer-eyebrow">TAEPYUNG PAPER · SINCE 1977</span>
+              <p>사람과 환경을 생각하는 생활 위생용품 제조기업</p>
             </div>
-            <div class="footer-nav">
-              <a href="${base}company/">개요</a><a href="${base}business/">운영현황</a><a href="${base}product/">제품소개</a>
-              <a href="${base}esg/">지속가능경영</a><a href="${base}recruit/">채용</a><a href="${base}contact/">고객만족</a>
-            </div>
+            <nav class="footer-nav" aria-label="푸터 메뉴">
+              <a href="${base}company/"><small>01</small><span>개요</span></a>
+              <a href="${base}business/"><small>02</small><span>운영현황</span></a>
+              <a href="${base}product/"><small>03</small><span>제품소개</span></a>
+              <a href="${base}esg/"><small>04</small><span>지속가능경영</span></a>
+              <a href="${base}recruit/"><small>05</small><span>채용</span></a>
+              <a href="${base}contact/"><small>06</small><span>고객만족</span></a>
+            </nav>
           </div>
           <div class="footer-details">
-            <div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사: 이정욱</p><p>사업자등록번호: 132-81-58657</p></div>
+            <div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사 · 이정욱</p><p>사업자등록번호 · 132-81-58657</p></div>
             <div class="footer-detail-group"><span class="footer-label">LOCATION</span><p>경기도 이천시 마장면 마도로 223번길 22</p><p>생활 위생용품 제조 · 생산 · 공급</p></div>
-            <div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">031-595-0797</a><a href="mailto:contact@blondy.co.kr">contact@blondy.co.kr</a><p>FAX. 031-632-4016</p></div>
+            <div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">T. 031-595-0797</a><a href="mailto:contact@blondy.co.kr">E. contact@blondy.co.kr</a><p>F. 031-632-4016</p></div>
           </div>
           <div class="footer-bottom">
             <div class="footer-legal"><a href="${base}privacy/">개인정보처리방침</a><a href="${base}contact/">고객문의</a></div>
