@@ -9,17 +9,26 @@
   <meta property="og:title" content="태평제지 | 사람과 환경을 생각합니다">
   <meta property="og:description" content="1977년부터 생활 위생용품을 제조하고 공급해온 대한민국 화장지 1세대 기업, 태평제지입니다.">
   <meta property="og:type" content="website">
+  <link rel="preload" as="image" href="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/39d9b75e86506.png">
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/home.css">
+  <link rel="stylesheet" href="./assets/css/site-images.css?v=20260814-0810" data-site-images="true">
   <style>
+    /* 첫 페인트부터 최종 화면과 동일하게 유지해 레거시 이미지/섹션이 스쳐 보이지 않게 한다. */
+    .home-page .home-about,.home-page .home-gallery{display:none!important}
+    .home-page .home-hero{position:relative;overflow:hidden;background:#f5f6f5!important}
+    .home-page .home-hero>img{display:block!important;width:100%!important;height:clamp(500px,56vw,740px)!important;min-height:0!important;max-height:none!important;object-fit:cover!important;object-position:center!important;background:#f5f6f5;color:transparent;font-size:0}
     .home-hero-slider .home-hero-slide:not(:first-child){display:none!important}
     .home-hero-slider .home-hero-slide:first-child{display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important}
     .home-hero-slider .home-hero-dots{display:none!important}
+    .home-page img{color:transparent}
     .footer-bottom .footer-legal{display:flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;white-space:nowrap!important;gap:0!important}
     .footer-bottom .footer-legal a{display:inline-flex!important;flex:0 0 auto!important}
+    @media(max-width:760px){.home-page .home-hero>img{height:clamp(360px,72vw,520px)!important}}
   </style>
-  <script defer src="./assets/js/layout.js?v=20260814-0802"></script>
-  <script defer src="./assets/js/main.js?v=20260814-0802"></script>
+  <script defer src="./assets/js/layout.js?v=20260814-0810"></script>
+  <script defer src="./assets/js/site-images.js?v=20260814-0810" data-site-images-loader="true"></script>
+  <script defer src="./assets/js/main.js?v=20260814-0810"></script>
 </head>
 <body class="home-page" data-base="./" data-section="home">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -29,151 +38,46 @@
       <a class="brand brand-image" href="./" aria-label="태평제지 홈">
         <img src="./assets/images/logo-taepyung.svg" alt="Taepyung 태평제지 Since 1977">
       </a>
-
       <nav class="desktop-nav" aria-label="주요 메뉴">
-        <div class="nav-item has-dropdown">
-          <a href="./company/">개요</a>
-          <div class="dropdown">
-            <a href="./company/ceo/">CEO 인사말</a>
-            <a href="./company/story/">태평제지 스토리</a>
-            <a href="./company/brand/">브랜드 소개</a>
-            <a href="./company/vision/">비전 및 핵심 가치</a>
-          </div>
-        </div>
-        <div class="nav-item has-dropdown">
-          <a href="./business/">운영현황</a>
-          <div class="dropdown">
-            <a href="./business/customer/">고객</a>
-            <a href="./business/marketing/">마케팅</a>
-            <a href="./business/production/">생산</a>
-            <a href="./business/logistics/">물류</a>
-            <a href="./business/quality/">품질</a>
-          </div>
-        </div>
-        <div class="nav-item has-dropdown">
-          <a href="./product/">제품소개</a>
-          <div class="dropdown">
-            <a href="./product/roll/">두루마리 화장지</a>
-            <a href="./product/jumbo-roll/">점보롤 화장지</a>
-            <a href="./product/hand-towel/">페이퍼타월</a>
-            <a href="./product/kitchen-towel/">키친타월</a>
-            <a href="./product/facial-tissue/">미용티슈</a>
-            <a href="./product/etc/">물티슈 · 디스펜서</a>
-          </div>
-        </div>
+        <div class="nav-item has-dropdown"><a href="./company/">개요</a><div class="dropdown"><a href="./company/ceo/">CEO 인사말</a><a href="./company/story/">태평제지 스토리</a><a href="./company/brand/">브랜드 소개</a><a href="./company/vision/">비전 및 핵심 가치</a></div></div>
+        <div class="nav-item has-dropdown"><a href="./business/">운영현황</a><div class="dropdown"><a href="./business/customer/">고객</a><a href="./business/marketing/">마케팅</a><a href="./business/production/">생산</a><a href="./business/logistics/">물류</a><a href="./business/quality/">품질</a></div></div>
+        <div class="nav-item has-dropdown"><a href="./product/">제품소개</a><div class="dropdown"><a href="./product/roll/">두루마리 화장지</a><a href="./product/jumbo-roll/">점보롤 화장지</a><a href="./product/hand-towel/">페이퍼타월</a><a href="./product/kitchen-towel/">키친타월</a><a href="./product/facial-tissue/">미용티슈</a><a href="./product/etc/">물티슈 · 디스펜서</a></div></div>
         <div class="nav-item"><a href="./esg/">지속가능경영</a></div>
         <div class="nav-item"><a href="./recruit/">채용</a></div>
         <div class="nav-item"><a href="./contact/">고객만족</a></div>
         <div class="nav-item"><a href="./inquiry/">문의·제휴</a></div>
       </nav>
-
-      <button class="menu-button" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-button>
-        <span></span><span></span><span></span>
-      </button>
+      <button class="menu-button" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-button><span></span><span></span><span></span></button>
     </div>
-
     <div class="mobile-panel" data-mobile-panel>
       <nav class="mobile-nav" aria-label="모바일 메뉴">
-        <details>
-          <summary>개요</summary>
-          <a href="./company/ceo/">CEO 인사말</a>
-          <a href="./company/story/">태평제지 스토리</a>
-          <a href="./company/brand/">브랜드 소개</a>
-          <a href="./company/vision/">비전 및 핵심 가치</a>
-        </details>
-        <details>
-          <summary>운영현황</summary>
-          <a href="./business/customer/">고객</a>
-          <a href="./business/marketing/">마케팅</a>
-          <a href="./business/production/">생산</a>
-          <a href="./business/logistics/">물류</a>
-          <a href="./business/quality/">품질</a>
-        </details>
-        <details>
-          <summary>제품소개</summary>
-          <a href="./product/roll/">두루마리 화장지</a>
-          <a href="./product/jumbo-roll/">점보롤 화장지</a>
-          <a href="./product/hand-towel/">페이퍼타월</a>
-          <a href="./product/kitchen-towel/">키친타월</a>
-          <a href="./product/facial-tissue/">미용티슈</a>
-          <a href="./product/etc/">물티슈 · 디스펜서</a>
-        </details>
-        <a class="mobile-single" href="./esg/">지속가능경영</a>
-        <a class="mobile-single" href="./recruit/">채용</a>
-        <a class="mobile-single" href="./contact/">고객만족</a>
-        <a class="mobile-single" href="./inquiry/">문의·제휴</a>
+        <details><summary>개요</summary><a href="./company/ceo/">CEO 인사말</a><a href="./company/story/">태평제지 스토리</a><a href="./company/brand/">브랜드 소개</a><a href="./company/vision/">비전 및 핵심 가치</a></details>
+        <details><summary>운영현황</summary><a href="./business/customer/">고객</a><a href="./business/marketing/">마케팅</a><a href="./business/production/">생산</a><a href="./business/logistics/">물류</a><a href="./business/quality/">품질</a></details>
+        <details><summary>제품소개</summary><a href="./product/roll/">두루마리 화장지</a><a href="./product/jumbo-roll/">점보롤 화장지</a><a href="./product/hand-towel/">페이퍼타월</a><a href="./product/kitchen-towel/">키친타월</a><a href="./product/facial-tissue/">미용티슈</a><a href="./product/etc/">물티슈 · 디스펜서</a></details>
+        <a class="mobile-single" href="./esg/">지속가능경영</a><a class="mobile-single" href="./recruit/">채용</a><a class="mobile-single" href="./contact/">고객만족</a><a class="mobile-single" href="./inquiry/">문의·제휴</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="home-main">
     <section class="home-hero" aria-label="태평제지 메인 비주얼">
-      <img src="./assets/images/main-hero.svg" alt="화장지를 들고 있는 아이와 태평제지 로고">
+      <img src="https://cdn.imweb.me/upload/S2023030963558ef55ba8e/39d9b75e86506.png" alt="태평제지 메인 비주얼" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer">
     </section>
-
-    <section class="home-about" aria-label="태평제지 소개">
-      <div class="home-about-inner">
-        <p class="home-about-copy">
-          <span>태평제지는 1977년 설립 이래 약 50년간 생활 위생용품 분야에서</span>
-          <span>우수한 품질의 화장지를 제조하여 공급해온 대한민국 화장지 1세대 기업입니다.</span>
-          <span>두루마리 화장지, 점보롤, 페이퍼타월, 키친타월, 물티슈 등 다양한 제품을 전자동 설비로 안정적으로 생산하며,</span>
-          <span>공공기관과 기업 고객, 그리고 온라인 시장을 통해 소비자에게 공급하고 있습니다.</span>
-        </p>
-      </div>
-    </section>
-
-    <section class="home-gallery" aria-label="태평제지 생산 및 물류 현장">
-      <div class="home-gallery-inner">
-        <figure>
-          <img src="./assets/images/main-gallery.svg" alt="태평제지 원단, 생산설비, 물류창고와 자동화 공정">
-        </figure>
-        <p class="home-gallery-caption">TAEPYUNG PAPER · PRODUCTION & LOGISTICS</p>
-      </div>
-    </section>
+    <section class="home-about" aria-hidden="true"></section>
+    <section class="home-gallery" aria-hidden="true"></section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-shell">
       <div class="footer-primary">
-        <div class="footer-brand">
-          <a class="footer-logo-link" href="./" aria-label="태평제지 홈">
-            <img class="footer-logo" src="./assets/images/logo-taepyung.svg" alt="태평제지 Taepyung Since 1977">
-          </a>
-          <span class="footer-eyebrow">TAEPYUNG PAPER · SINCE 1977</span>
-          <p>사람과 환경을 생각하는 생활 위생용품 제조기업</p>
-        </div>
+        <div class="footer-brand"><a class="footer-logo-link" href="./" aria-label="태평제지 홈"><img class="footer-logo" src="./assets/images/logo-taepyung.svg" alt="태평제지 Taepyung Since 1977"></a><span class="footer-eyebrow">TAEPYUNG PAPER · SINCE 1977</span><p>사람과 환경을 생각하는 생활 위생용품 제조기업</p></div>
         <div class="footer-utility">
-          <form class="footer-search" action="./product/" method="get" role="search">
-            <label for="footer-product-search">PRODUCT SEARCH</label>
-            <div class="footer-search-control">
-              <input id="footer-product-search" name="q" type="search" placeholder="제품명 또는 종류 검색" autocomplete="off">
-              <button type="submit" aria-label="제품 검색">검색 <span>→</span></button>
-            </div>
-          </form>
-          <nav class="footer-nav" aria-label="푸터 메뉴">
-            <a href="./company/"><small>01</small><span>개요</span></a>
-            <a href="./business/"><small>02</small><span>운영현황</span></a>
-            <a href="./product/"><small>03</small><span>제품소개</span></a>
-            <a href="./esg/"><small>04</small><span>지속가능경영</span></a>
-            <a href="./recruit/"><small>05</small><span>채용</span></a>
-            <a href="./contact/"><small>06</small><span>고객만족</span></a>
-            <a href="./inquiry/"><small>07</small><span>문의·제휴</span></a>
-          </nav>
+          <form class="footer-search" action="./product/" method="get" role="search"><label for="footer-product-search">PRODUCT SEARCH</label><div class="footer-search-control"><input id="footer-product-search" name="q" type="search" placeholder="제품명 또는 종류 검색" autocomplete="off"><button type="submit" aria-label="제품 검색">검색 <span>→</span></button></div></form>
+          <nav class="footer-nav" aria-label="푸터 메뉴"><a href="./company/"><small>01</small><span>개요</span></a><a href="./business/"><small>02</small><span>운영현황</span></a><a href="./product/"><small>03</small><span>제품소개</span></a><a href="./esg/"><small>04</small><span>지속가능경영</span></a><a href="./recruit/"><small>05</small><span>채용</span></a><a href="./contact/"><small>06</small><span>고객만족</span></a><a href="./inquiry/"><small>07</small><span>문의·제휴</span></a></nav>
         </div>
       </div>
-      <div class="footer-details">
-        <div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사 · 이정욱</p><p>사업자등록번호 · 132-81-58657</p></div>
-        <div class="footer-detail-group"><span class="footer-label">LOCATION</span><p>경기도 이천시 마장면 마도로 223번길 22</p><p>생활 위생용품 제조 · 생산 · 공급</p></div>
-        <div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">T. 031-595-0797</a><a href="mailto:contact@blondy.co.kr">E. contact@blondy.co.kr</a><p>F. 031-632-4016</p></div>
-      </div>
-      <div class="footer-bottom">
-        <div class="footer-legal">
-          <a href="./privacy/">개인정보처리방침</a>
-          <a href="./terms/">사이트 이용약관</a>
-          <a href="./inquiry/">고객문의</a>
-        </div>
-        <span>© 2026 TAEPYUNG PAPER CO., LTD. ALL RIGHTS RESERVED.</span>
-      </div>
+      <div class="footer-details"><div class="footer-detail-group"><span class="footer-label">COMPANY</span><p>태평제지(주)</p><p>대표이사 · 이정욱</p><p>사업자등록번호 · 132-81-58657</p></div><div class="footer-detail-group"><span class="footer-label">LOCATION</span><p>경기도 이천시 마장면 마도로 223번길 22</p><p>생활 위생용품 제조 · 생산 · 공급</p></div><div class="footer-detail-group"><span class="footer-label">CONTACT</span><a href="tel:0315950797">T. 031-595-0797</a><a href="mailto:contact@blondy.co.kr">E. contact@blondy.co.kr</a><p>F. 031-632-4016</p></div></div>
+      <div class="footer-bottom"><div class="footer-legal"><a href="./privacy/">개인정보처리방침</a><a href="./terms/">사이트 이용약관</a><a href="./inquiry/">고객문의</a></div><span>© 2026 TAEPYUNG PAPER CO., LTD. ALL RIGHTS RESERVED.</span></div>
     </div>
   </footer>
 </body>
