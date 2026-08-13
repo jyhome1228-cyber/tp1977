@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260814-0802';
+  const cacheVersion = '20260814-0822';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header], .site-header');
@@ -22,6 +22,7 @@
     ensureCss('link[data-brand-clean]', 'brandClean', `${assetRoot}assets/css/brand-clean.css?v=${cacheVersion}`);
     ensureCss('link[data-footer-brand]', 'footerBrand', `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`);
     ensureCss('link[data-site-enhancements]', 'siteEnhancements', `${assetRoot}assets/css/site-enhancements.css?v=${cacheVersion}`);
+    if (active === 'inquiry') ensureCss('link[data-inquiry-ui]', 'inquiryUi', `${assetRoot}assets/css/inquiry-ui.css?v=${cacheVersion}`);
   };
   syncBrandCss();
   window.addEventListener('DOMContentLoaded', syncBrandCss, { once: true });
