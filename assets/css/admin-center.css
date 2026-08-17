@@ -1,0 +1,201 @@
+/* Taepyung Paper Admin — centered refinement */
+:root{
+  --admin-canvas:#f5f6f3;
+  --admin-paper:#ffffff;
+  --admin-ink:#171917;
+  --admin-muted:#767b76;
+  --admin-line:rgba(23,25,23,.11);
+  --admin-green:#22793a;
+  --admin-soft:#f1f6f2;
+}
+
+html,body{background:var(--admin-canvas)!important}
+
+/* LOGIN: remove split screen and make one complete centered composition */
+.admin-login-screen{
+  width:100%!important;
+  min-height:100vh!important;
+  margin:0!important;
+  padding:48px 24px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(34,121,58,.05),transparent 28%),
+    var(--admin-canvas)!important;
+}
+.admin-login-visual{display:none!important}
+.admin-login-panel{
+  width:min(100%,540px)!important;
+  min-height:0!important;
+  padding:46px 48px 36px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  border:1px solid var(--admin-line)!important;
+  border-radius:14px!important;
+  background:var(--admin-paper)!important;
+  box-shadow:0 24px 70px rgba(17,25,18,.07)!important;
+}
+.admin-login-brand{
+  justify-content:center!important;
+  margin:0 0 48px!important;
+}
+.admin-login-brand img{width:154px!important;height:auto!important}
+.admin-login-brand span{
+  padding-left:12px!important;
+  border-left:1px solid var(--admin-line)!important;
+  color:#8e938e!important;
+  font-size:9px!important;
+  letter-spacing:.14em!important;
+}
+.admin-login-copy{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  align-self:auto!important;
+  text-align:center!important;
+}
+.admin-login-copy small{
+  margin-bottom:13px!important;
+  color:var(--admin-green)!important;
+  font-size:9px!important;
+  letter-spacing:.15em!important;
+}
+.admin-login-copy h1{
+  margin:0 0 12px!important;
+  font-size:38px!important;
+  line-height:1.12!important;
+  font-weight:650!important;
+  letter-spacing:-.05em!important;
+}
+.admin-login-copy>p{
+  max-width:390px!important;
+  margin:0 auto!important;
+  color:var(--admin-muted)!important;
+  font-size:12px!important;
+  line-height:1.7!important;
+}
+.admin-login-form{
+  width:100%!important;
+  max-width:400px!important;
+  margin:34px auto 0!important;
+  text-align:left!important;
+}
+.admin-login-field{margin-bottom:15px!important}
+.admin-login-field>span{
+  margin-bottom:7px!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  color:#414641!important;
+}
+.admin-login-field input{
+  width:100%!important;
+  height:48px!important;
+  padding:0 14px!important;
+  border:1px solid #dfe3df!important;
+  border-radius:7px!important;
+  background:#fff!important;
+  font-size:13px!important;
+  box-shadow:none!important;
+}
+.admin-login-field input:focus{
+  border-color:var(--admin-green)!important;
+  box-shadow:0 0 0 3px rgba(34,121,58,.055)!important;
+}
+.admin-login-button{
+  height:48px!important;
+  margin-top:3px!important;
+  border-radius:7px!important;
+  background:var(--admin-green)!important;
+  font-size:12px!important;
+  font-weight:750!important;
+  letter-spacing:-.01em!important;
+}
+.admin-login-button:hover{background:#1c6832!important}
+.admin-login-message{max-width:400px!important;margin:12px auto 0!important;text-align:left!important}
+.admin-login-foot{
+  margin-top:46px!important;
+  align-self:center!important;
+  color:#9da19d!important;
+  font-size:8px!important;
+  letter-spacing:.03em!important;
+}
+
+/* ADMIN APP: centered content, calmer hierarchy */
+.admin-shell{background:var(--admin-canvas)!important}
+.admin-sidebar{
+  background:#fff!important;
+  border-right:1px solid var(--admin-line)!important;
+}
+.admin-topbar{
+  height:68px!important;
+  padding:0 32px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid var(--admin-line)!important;
+  box-shadow:none!important;
+}
+.admin-topbar h1{font-size:16px!important;font-weight:650!important}
+.admin-content{
+  width:min(calc(100% - 64px),1180px)!important;
+  margin:0 auto!important;
+  padding:42px 0 72px!important;
+}
+.admin-heading{
+  margin-bottom:22px!important;
+  padding-bottom:20px!important;
+  border-bottom:1px solid var(--admin-line)!important;
+}
+.admin-heading h2{
+  font-size:27px!important;
+  font-weight:650!important;
+}
+.admin-heading p{font-size:11px!important;color:var(--admin-muted)!important}
+.metric-grid{gap:12px!important}
+.metric-card{
+  min-height:128px!important;
+  padding:19px!important;
+  border:1px solid var(--admin-line)!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+}
+.metric-card strong{font-size:28px!important;font-weight:650!important}
+.admin-grid{gap:12px!important;margin-top:12px!important}
+.panel{
+  border:1px solid var(--admin-line)!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+}
+.panel-head{min-height:52px!important}
+.content-grid-admin{gap:12px!important}
+.content-card{
+  min-height:160px!important;
+  border:1px solid var(--admin-line)!important;
+  border-radius:9px!important;
+  box-shadow:none!important;
+}
+.content-card:hover{transform:none!important;border-color:rgba(34,121,58,.35)!important}
+.table-toolbar{background:#fff!important}
+.admin-table th{background:#fafbf9!important}
+.admin-site-link,.admin-logout{border-radius:6px!important}
+
+@media(max-width:1080px){
+  .admin-login-screen{padding:32px 20px!important}
+  .admin-content{width:min(calc(100% - 48px),980px)!important}
+}
+@media(max-width:780px){
+  .admin-login-screen{padding:18px 14px!important;align-items:center!important}
+  .admin-login-panel{
+    width:100%!important;
+    padding:30px 22px 24px!important;
+    border-radius:10px!important;
+  }
+  .admin-login-brand{margin-bottom:34px!important}
+  .admin-login-brand img{width:138px!important}
+  .admin-login-copy h1{font-size:32px!important}
+  .admin-login-copy>p{font-size:11px!important}
+  .admin-login-form{margin-top:28px!important}
+  .admin-login-foot{margin-top:34px!important}
+  .admin-content{width:calc(100% - 32px)!important;padding:28px 0 88px!important}
+}
