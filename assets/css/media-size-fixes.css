@@ -1,0 +1,82 @@
+/* Strong, cache-busted media sizing fixes */
+body[data-section="company"] .story-source-media{
+  width:min(calc(100% - 72px),1160px)!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+body[data-section="company"] .story-source-media figure{
+  height:320px!important;
+  min-height:320px!important;
+  aspect-ratio:auto!important;
+  overflow:hidden!important;
+  margin:0!important;
+  background:#eef0ee!important;
+  border-radius:10px!important;
+}
+body[data-section="company"] .story-source-media img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+  margin:0!important;
+}
+body[data-section="company"] .story-source-media figure:first-child img{
+  transform:scale(1.12)!important;
+  transform-origin:center top!important;
+}
+
+body[data-section="business"] .customer-review-grid{
+  width:min(100%,1000px)!important;
+  max-width:1000px!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:20px!important;
+}
+body[data-section="business"] .customer-review-grid figure{
+  height:240px!important;
+  min-height:240px!important;
+  aspect-ratio:auto!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  border-radius:10px!important;
+}
+body[data-section="business"] .customer-review-grid img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+body[data-section="business"] .customer-business-image{
+  width:min(100%,1000px)!important;
+  max-width:1000px!important;
+  height:340px!important;
+  min-height:340px!important;
+  aspect-ratio:auto!important;
+  overflow:hidden!important;
+}
+body[data-section="business"] .customer-business-image img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+}
+
+@media(max-width:1100px){
+  body[data-section="company"] .story-source-media{width:calc(100% - 40px)!important}
+  body[data-section="company"] .story-source-media figure{height:280px!important;min-height:280px!important}
+  body[data-section="business"] .customer-review-grid figure{height:220px!important;min-height:220px!important}
+  body[data-section="business"] .customer-business-image{height:320px!important;min-height:320px!important}
+}
+@media(max-width:760px){
+  body[data-section="company"] .story-source-media{width:calc(100% - 36px)!important;grid-template-columns:1fr!important;gap:14px!important}
+  body[data-section="company"] .story-source-media figure{height:230px!important;min-height:230px!important}
+  body[data-section="company"] .story-source-media figure:first-child img{transform:scale(1.06)!important}
+  body[data-section="business"] .customer-review-grid{width:100%!important;max-width:none!important;grid-template-columns:1fr!important;gap:12px!important}
+  body[data-section="business"] .customer-review-grid figure{height:200px!important;min-height:200px!important}
+  body[data-section="business"] .customer-business-image{width:100%!important;max-width:none!important;height:260px!important;min-height:260px!important}
+}
