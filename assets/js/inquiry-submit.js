@@ -7,12 +7,16 @@ if (form) {
   form.removeAttribute('method');
   form.removeAttribute('enctype');
 
+  const guide = form.querySelector('.iq-head p');
+  if (guide) guide.textContent = '작성하신 내용은 태평제지 담당자에게 접수됩니다. 접수 후 확인하여 순차적으로 안내드립니다.';
+
   const button = form.querySelector('.iq-submit');
   const actions = form.querySelector('.iq-actions');
   const status = document.createElement('p');
   status.className = 'iq-save-status';
   status.setAttribute('role', 'status');
   status.setAttribute('aria-live', 'polite');
+  status.style.cssText = 'margin:22px 0 0;padding:12px 14px;border-radius:9px;font-size:12px;line-height:1.6;display:none';
   actions?.insertAdjacentElement('beforebegin', status);
 
   const honey = document.createElement('input');
@@ -27,6 +31,9 @@ if (form) {
   const setStatus = (message = '', kind = '') => {
     status.textContent = message;
     status.dataset.kind = kind;
+    status.style.display = message ? 'block' : 'none';
+    status.style.background = kind === 'success' ? '#f0f8f2' : kind === 'error' ? '#fff2f0' : '#f5f6f5';
+    status.style.color = kind === 'success' ? '#27623a' : kind === 'error' ? '#a4483b' : '#666';
   };
 
   form.addEventListener('submit', async (event) => {
