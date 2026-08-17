@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260814-1000';
+  const cacheVersion = '20260817-2154';
 
   const upsertMeta = (selector, attrs) => {
     let el = document.head.querySelector(selector);
@@ -60,6 +60,19 @@
   ensureStylesheet('link[data-content-refine]', 'contentRefine', `${assetRoot}assets/css/content-refine.css?v=${cacheVersion}`);
   ensureStylesheet('link[data-footer-brand]', 'footerBrand', `${assetRoot}assets/css/footer-brand.css?v=${cacheVersion}`);
   ensureStylesheet('link[data-site-images]', 'siteImages', `${assetRoot}assets/css/site-images.css?v=${cacheVersion}`);
+
+  const ensureModule = (dataName, src) => {
+    if (document.querySelector(`script[data-${dataName}]`)) return;
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = src;
+    script.setAttribute(`data-${dataName}`, 'true');
+    document.head.appendChild(script);
+  };
+
+  ensureModule('visitor-tracker', `${assetRoot}assets/js/visitor-tracker.js?v=${cacheVersion}`);
+  if (normalizedPath === '/inquiry/') ensureModule('inquiry-submit', `${assetRoot}assets/js/inquiry-submit.js?v=${cacheVersion}`);
+  if (normalizedPath === '/contact/') ensureModule('contact-submit', `${assetRoot}assets/js/contact-submit.js?v=${cacheVersion}`);
 
   /* Product detail/list pages now own their exact supplied thumbnails in HTML.
      Do not let the legacy image loader replace them by array index. */
