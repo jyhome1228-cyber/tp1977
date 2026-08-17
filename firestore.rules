@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'tp5950797@naver.com';
+    }
+
+    function textWithin(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    match /inquiries/{inquiryId} {
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasOnly([
+          'type','inquiryType','partnershipType','name','company','phone','email',
+          'product','relatedItem','subject','message','status','source','createdAt','updatedAt'
+        ])
+        && textWithin(request.resource.data.type, 30)
+        && textWithin(request.resource.data.inquiryType, 60)
+        && textWithin(request.resource.data.partnershipType, 60)
+        && textWithin(request.resource.data.name, 80)
+        && textWithin(request.resource.data.company, 120)
+        && textWithin(request.resource.data.phone, 40)
+        && textWithin(request.resource.data.email, 160)
+        && textWithin(request.resource.data.product, 160)
+        && textWithin(request.resource.data.relatedItem, 160)
+        && textWithin(request.resource.data.subject, 200)
+        && textWithin(request.resource.data.message, 5000)
+        && request.resource.data.name.size() > 0
+        && request.resource.data.phone.size() > 0
+        && request.resource.data.email.size() > 0
+        && request.resource.data.subject.size() > 0
+        && request.resource.data.message.size() > 0
+        && request.resource.data.status == '신규'
+        && request.resource.data.source == '문의·제휴';
+
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /customerInquiries/{inquiryId} {
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasOnly([
+          'name','company','phone','email','product','category','message',
+          'status','source','createdAt','updatedAt'
+        ])
+        && textWithin(request.resource.data.name, 80)
+        && textWithin(request.resource.data.company, 120)
+        && textWithin(request.resource.data.phone, 40)
+        && textWithin(request.resource.data.email, 160)
+        && textWithin(request.resource.data.product, 160)
+        && textWithin(request.resource.data.category, 80)
+        && textWithin(request.resource.data.message, 5000)
+        && request.resource.data.name.size() > 0
+        && request.resource.data.phone.size() > 0
+        && request.resource.data.email.size() > 0
+        && request.resource.data.category.size() > 0
+        && request.resource.data.message.size() > 0
+        && request.resource.data.status == '신규'
+        && request.resource.data.source == '고객만족';
+
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /visitors_daily/{date} {
+      allow read: if isAdmin();
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasOnly(['date','visitors','pageViews','updatedAt'])
+        && request.resource.data.date == date
+        && request.resource.data.visitors == 1
+        && request.resource.data.pageViews == 1;
+      allow update: if request.auth == null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitors','pageViews','updatedAt'])
+        && request.resource.data.date == resource.data.date
+        && request.resource.data.visitors >= resource.data.visitors
+        && request.resource.data.visitors <= resource.data.visitors + 1
+        && request.resource.data.pageViews == resource.data.pageViews + 1;
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
