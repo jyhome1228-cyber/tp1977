@@ -5,16 +5,24 @@ const form = document.getElementById('inquiryForm');
 const statusBox = document.getElementById('formStatus');
 
 if (form) {
+  const intro = document.querySelector('.inquiry-intro p');
+  if (intro) intro.textContent = '아래 내용을 작성해 보내주시면 태평제지 고객지원으로 바로 접수됩니다. 확인 후 순차적으로 안내드립니다.';
+  const note = form.querySelector('.inquiry-note');
+  if (note) note.textContent = '접수된 내용은 고객 문의 확인과 답변을 위해 관리자 페이지에서 관리됩니다.';
+
   const button = form.querySelector('.inquiry-submit');
   const setStatus = (message = '', kind = '') => {
     if (!statusBox) return;
     statusBox.textContent = message;
     statusBox.dataset.kind = kind;
     statusBox.classList.toggle('show', Boolean(message));
+    statusBox.style.background = kind === 'success' ? '#f0f8f2' : kind === 'error' ? '#fff2f0' : '#f5f6f5';
+    statusBox.style.color = kind === 'success' ? '#27623a' : kind === 'error' ? '#a4483b' : '#666';
   };
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    event.stopImmediatePropagation();
     if (!form.reportValidity()) return;
 
     const data = new FormData(form);
@@ -49,5 +57,5 @@ if (form) {
     } finally {
       if (button) button.disabled = false;
     }
-  });
+  }, true);
 }
