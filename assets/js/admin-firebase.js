@@ -22,10 +22,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Firebase Authentication requires an email-style account.
-// The admin UI still accepts the simple ID "tp1977" and maps it internally.
+// Admin screen keeps the simple ID while Firebase authenticates with the saved email account.
 const ADMIN_ID = "tp1977";
-const ADMIN_EMAIL = "tp1977@admin.invalid";
+const ADMIN_EMAIL = "tp5950797@naver.com";
 
 const loginScreen = document.querySelector('[data-admin-login-screen]');
 const adminApp = document.querySelector('[data-admin-app]');
