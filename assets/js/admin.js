@@ -2,9 +2,23 @@
   if(!document.querySelector('link[data-admin-data-css]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='../assets/css/admin-data.css?v=20260818-1028';
+    link.href='../assets/css/admin-data.css?v=20260818-1058';
     link.dataset.adminDataCss='true';
     document.head.appendChild(link);
+  }
+  if(!document.querySelector('link[data-admin-advanced-css]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='../assets/css/admin-advanced.css?v=20260818-1058';
+    link.dataset.adminAdvancedCss='true';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-admin-advanced]')){
+    const script=document.createElement('script');
+    script.type='module';
+    script.src='../assets/js/admin-advanced.js?v=20260818-1058';
+    script.dataset.adminAdvanced='true';
+    document.head.appendChild(script);
   }
 
   const adminIdInput=document.querySelector('[data-admin-id]');
