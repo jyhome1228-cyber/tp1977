@@ -1,5 +1,5 @@
 (()=>{
-  const version='20260818-1448';
+  const version='20260818-1449';
   const addStyle=(key,file)=>{
     if(document.querySelector(`link[data-${key}]`))return;
     const link=document.createElement('link');link.rel='stylesheet';link.href=`../assets/css/${file}?v=${version}`;link.setAttribute(`data-${key}`,'true');document.head.appendChild(link);
@@ -8,6 +8,20 @@
     if(document.querySelector(`script[data-${key}]`))return;
     const script=document.createElement('script');script.type='module';script.src=`../assets/js/${file}?v=${version}`;script.setAttribute(`data-${key}`,'true');document.head.appendChild(script);
   };
+
+  if(!document.querySelector('link[rel="icon"]')){
+    const favicon=document.createElement('link');
+    favicon.rel='icon';
+    favicon.type='image/svg+xml';
+    favicon.href=`../favicon.svg?v=${version}`;
+    document.head.appendChild(favicon);
+  }
+  if(!document.querySelector('link[rel="shortcut icon"]')){
+    const shortcut=document.createElement('link');
+    shortcut.rel='shortcut icon';
+    shortcut.href=`../favicon.svg?v=${version}`;
+    document.head.appendChild(shortcut);
+  }
 
   addStyle('admin-data-css','admin-data.css');
   addStyle('admin-advanced-css','admin-advanced.css');
@@ -30,13 +44,7 @@
     document.querySelectorAll(`[data-admin-nav="${key}"],[data-admin-view="${key}"]`).forEach(el=>el.remove());
   });
 
-  const order=['dashboard','inquiries','products','visitors','trash','settings'];
-  order.forEach((key,index)=>{
-    document.querySelectorAll(`.admin-sidebar [data-admin-nav="${key}"]`).forEach(button=>{
-      const number=button.querySelector('span:last-child');
-      if(number) number.textContent=String(index+1).padStart(2,'0');
-    });
-  });
+  document.querySelectorAll('.admin-sidebar .admin-nav button > span').forEach(number=>number.remove());
 
   const views=[...document.querySelectorAll('[data-admin-view]')];
   const buttons=[...document.querySelectorAll('[data-admin-nav]')];
