@@ -1,4 +1,4 @@
-import { app, db } from './firebase-client.js?v=20260817-2154';
+import { app, db } from './firebase-client.js?v=20260818-1228';
 import {
   getAuth,
   setPersistence,
@@ -35,7 +35,6 @@ const logoutButton = document.querySelector('[data-admin-logout]');
 
 let unsubscribe = [];
 let inquiryItems = [];
-let customerItems = [];
 let visitorItems = [];
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
@@ -90,8 +89,8 @@ function findMetric(view, label) {
     ?.querySelector('strong');
 }
 
-function statusSelect(item, collectionName) {
-  return `<select class="admin-status-select" data-status-id="${escapeHTML(item.id)}" data-status-collection="${collectionName}" aria-label="처리 상태">
+function statusSelect(item) {
+  return `<select class="admin-status-select" data-status-id="${escapeHTML(item.id)}" data-status-collection="inquiries" aria-label="처리 상태">
     ${STATUS_OPTIONS.map(status => `<option value="${status}"${status === item.status ? ' selected' : ''}>${status}</option>`).join('')}
   </select>`;
 }
@@ -109,46 +108,12 @@ function renderInquiryTable() {
       <td><span class="admin-type-pill">${escapeHTML(item.type || '문의하기')}</span></td>
       <td><strong>${escapeHTML(item.company || item.name || '-')}</strong><small>${escapeHTML(item.company ? item.name : '')}</small></td>
       <td>${escapeHTML(item.subject || '-')}</td>
-      <td>${statusSelect(item, 'inquiries')}</td>
-    </tr>`).join('');
-}
-
-function ensureCustomerTable() {
-  const panel = document.querySelector('[data-admin-view="customer"] .panel');
-  if (!panel) return null;
-  let tbody = panel.querySelector('tbody[data-customer-tbody]');
-  if (tbody) return tbody;
-  panel.querySelector('.empty-state')?.remove();
-  panel.insertAdjacentHTML('beforeend', `
-    <div class="admin-table-scroll">
-      <table class="admin-table">
-        <thead><tr><th>접수일</th><th>유형</th><th>고객 / 회사</th><th>문의 제품</th><th>내용</th><th>상태</th></tr></thead>
-        <tbody data-customer-tbody></tbody>
-      </table>
-    </div>`);
-  return panel.querySelector('tbody[data-customer-tbody]');
-}
-
-function renderCustomerTable() {
-  const tbody = ensureCustomerTable();
-  if (!tbody) return;
-  if (!customerItems.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="admin-empty-cell">등록된 고객문의가 없습니다.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = customerItems.map(item => `
-    <tr class="admin-data-row" data-detail-kind="customer" data-detail-id="${escapeHTML(item.id)}">
-      <td>${formatDateTime(item.createdAt)}</td>
-      <td>${escapeHTML(item.category || '-')}</td>
-      <td><strong>${escapeHTML(item.name || '-')}</strong><small>${escapeHTML(item.company || '')}</small></td>
-      <td>${escapeHTML(item.product || '-')}</td>
-      <td class="admin-message-preview">${escapeHTML(item.message || '-')}</td>
-      <td>${statusSelect(item, 'customerInquiries')}</td>
+      <td>${statusSelect(item)}</td>
     </tr>`).join('');
 }
 
 function renderOpenCount() {
-  const count = [...inquiryItems, ...customerItems].filter(item => !['완료', '보관'].includes(item.status)).length;
+  const count = inquiryItems.filter(item => !['완료', '보관'].includes(item.status)).length;
   const target = findMetric('dashboard', '미처리 문의');
   if (target) target.textContent = String(count);
 }
@@ -157,19 +122,17 @@ function renderRecent() {
   const panel = document.querySelector('[data-admin-view="dashboard"] .admin-grid .panel:first-child');
   if (!panel) return;
   const old = panel.querySelector('.empty-state, .admin-recent-list');
-  const recent = [
-    ...inquiryItems.map(item => ({ ...item, _kind: 'inquiry', _label: item.type || '문의·제휴' })),
-    ...customerItems.map(item => ({ ...item, _kind: 'customer', _label: item.category || '고객문의' }))
-  ].sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt)).slice(0, 6);
-
+  const recent = [...inquiryItems]
+    .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt))
+    .slice(0, 6);
   const wrapper = document.createElement('div');
   wrapper.className = 'admin-recent-list';
   wrapper.innerHTML = recent.length ? recent.map(item => `
-    <button type="button" class="admin-recent-item" data-detail-kind="${item._kind}" data-detail-id="${escapeHTML(item.id)}">
-      <span><b>${escapeHTML(item._label)}</b><small>${formatDateTime(item.createdAt)}</small></span>
-      <strong>${escapeHTML(item.subject || item.product || item.message || '-')}</strong>
+    <button type="button" class="admin-recent-item" data-detail-kind="inquiry" data-detail-id="${escapeHTML(item.id)}">
+      <span><b>${escapeHTML(item.type || '문의·제휴')}</b><small>${formatDateTime(item.createdAt)}</small></span>
+      <strong>${escapeHTML(item.subject || item.message || '-')}</strong>
       <em>${escapeHTML(item.company || item.name || '-')} · ${escapeHTML(item.status || '신규')}</em>
-    </button>`).join('') : '<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의가 접수되면 최근 순서대로 표시됩니다.</p></div>';
+    </button>`).join('') : '<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div>';
   old?.replaceWith(wrapper);
 }
 
@@ -231,23 +194,19 @@ function ensureDetailModal() {
   return modal;
 }
 
-function openDetail(kind, id) {
-  const item = (kind === 'inquiry' ? inquiryItems : customerItems).find(entry => entry.id === id);
+function openDetail(id) {
+  const item = inquiryItems.find(entry => entry.id === id);
   if (!item) return;
   const modal = ensureDetailModal();
   const type = modal.querySelector('[data-admin-detail-type]');
   const title = modal.querySelector('[data-admin-detail-title]');
   const body = modal.querySelector('[data-admin-detail-body]');
-  if (type) type.textContent = kind === 'inquiry' ? (item.type || '문의·제휴') : (item.category || '고객문의');
-  if (title) title.textContent = item.subject || item.product || '문의 상세';
-
-  const rows = kind === 'inquiry' ? [
+  if (type) type.textContent = item.type || '문의·제휴';
+  if (title) title.textContent = item.subject || '문의 상세';
+  const rows = [
     ['접수일', formatDateTime(item.createdAt)], ['상태', item.status], ['이름', item.name], ['회사 / 기관', item.company],
     ['연락처', item.phone], ['이메일', item.email], ['문의 구분', item.inquiryType], ['제휴 유형', item.partnershipType],
     ['문의 제품', item.product], ['관련 제품 / 브랜드', item.relatedItem], ['문의 내용', item.message]
-  ] : [
-    ['접수일', formatDateTime(item.createdAt)], ['상태', item.status], ['이름', item.name], ['회사', item.company],
-    ['연락처', item.phone], ['이메일', item.email], ['문의 제품', item.product], ['문의 유형', item.category], ['문의 내용', item.message]
   ];
   body.innerHTML = rows.filter(([, value]) => value).map(([label, value]) => `
     <div class="admin-detail-row${label.includes('내용') ? ' is-message' : ''}"><span>${escapeHTML(label)}</span><div>${escapeHTML(value).replace(/\n/g, '<br>')}</div></div>`).join('');
@@ -259,9 +218,6 @@ function renderDataError(kind) {
   if (kind === 'inquiry') {
     const tbody = document.querySelector('[data-admin-view="inquiries"] .admin-table tbody');
     if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="admin-empty-cell">${message}</td></tr>`;
-  } else if (kind === 'customer') {
-    const tbody = ensureCustomerTable();
-    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="admin-empty-cell">${message}</td></tr>`;
   } else if (kind === 'visitor') {
     const tbody = ensureVisitorTable();
     if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty-cell">${message}</td></tr>`;
@@ -275,7 +231,6 @@ function stopDataListeners() {
 
 function startDataListeners() {
   stopDataListeners();
-
   unsubscribe.push(onSnapshot(
     query(collection(db, 'inquiries'), orderBy('createdAt', 'desc'), limit(200)),
     snapshot => {
@@ -284,16 +239,6 @@ function startDataListeners() {
     },
     error => { console.error('[Taepyung Admin] inquiries', error?.code || error); renderDataError('inquiry'); }
   ));
-
-  unsubscribe.push(onSnapshot(
-    query(collection(db, 'customerInquiries'), orderBy('createdAt', 'desc'), limit(200)),
-    snapshot => {
-      customerItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() }));
-      renderCustomerTable(); renderOpenCount(); renderRecent();
-    },
-    error => { console.error('[Taepyung Admin] customer inquiries', error?.code || error); renderDataError('customer'); }
-  ));
-
   unsubscribe.push(onSnapshot(
     query(collection(db, 'visitors_daily'), orderBy(documentId(), 'asc')),
     snapshot => {
@@ -323,8 +268,8 @@ adminApp?.addEventListener('change', async event => {
 
 adminApp?.addEventListener('click', event => {
   if (event.target.closest('select, option, a')) return;
-  const trigger = event.target.closest('[data-detail-kind][data-detail-id]');
-  if (trigger) openDetail(trigger.dataset.detailKind, trigger.dataset.detailId);
+  const trigger = event.target.closest('[data-detail-kind="inquiry"][data-detail-id]');
+  if (trigger) openDetail(trigger.dataset.detailId);
 });
 
 await setPersistence(auth, browserLocalPersistence);
