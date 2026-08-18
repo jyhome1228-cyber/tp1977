@@ -16,8 +16,7 @@ if(category && grid){
   const q = query(
     collection(db,'products'),
     where('category','==',category),
-    where('published','==',true),
-    where('catalogKey','==',`${category}:published`)
+    where('published','==',true)
   );
   onSnapshot(q,snapshot=>{
     grid.querySelectorAll('[data-admin-product]').forEach(el=>el.remove());
