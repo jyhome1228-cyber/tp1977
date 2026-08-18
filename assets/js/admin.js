@@ -1,5 +1,5 @@
 (()=>{
-  const version='20260818-1505';
+  const version='20260818-1512';
   const addStyle=(key,file)=>{
     if(document.querySelector(`link[data-${key}]`))return;
     const link=document.createElement('link');
@@ -31,13 +31,11 @@
     document.head.appendChild(shortcut);
   }
 
-  /* CSS is light enough to prepare on the login screen. */
   addStyle('admin-data-css','admin-data.css');
   addStyle('admin-advanced-css','admin-advanced.css');
   addStyle('admin-products-v2-css','admin-products-v2.css');
   addStyle('admin-trash-css','admin-trash.css');
 
-  /* Firestore/Storage-heavy tools are loaded only after Authentication succeeds. */
   let authenticatedModulesLoaded=false;
   const loadAuthenticatedModules=()=>{
     if(authenticatedModulesLoaded)return;
