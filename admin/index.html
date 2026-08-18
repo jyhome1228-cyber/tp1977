@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>태평제지 Admin</title>
-  <link rel="stylesheet" href="../assets/css/admin.css?v=20260818-1228">
-  <link rel="stylesheet" href="../assets/css/admin-center.css?v=20260818-1228">
-  <script defer src="../assets/js/admin.js?v=20260818-1228"></script>
-  <script type="module" src="../assets/js/admin-firebase.js?v=20260818-1228"></script>
+  <link rel="stylesheet" href="../assets/css/admin.css?v=20260818-1448">
+  <link rel="stylesheet" href="../assets/css/admin-center.css?v=20260818-1448">
+  <script defer src="../assets/js/admin.js?v=20260818-1448"></script>
+  <script type="module" src="../assets/js/admin-firebase.js?v=20260818-1448"></script>
 </head>
 <body class="admin-guest">
   <section class="admin-login-screen" data-admin-login-screen>
@@ -39,7 +39,8 @@
           <button data-admin-nav="inquiries">문의·제휴 <span>02</span></button>
           <button data-admin-nav="products">제품관리 <span>03</span></button>
           <button data-admin-nav="visitors">방문자 <span>04</span></button>
-          <button data-admin-nav="settings">사이트설정 <span>05</span></button>
+          <button data-admin-nav="trash">휴지통 <span>05</span></button>
+          <button data-admin-nav="settings">사이트설정 <span>06</span></button>
         </nav>
         <div class="admin-sidebar-bottom"><small>TAEPYUNG PAPER · SINCE 1977</small><a href="../" target="_blank" rel="noopener">사이트 바로가기 ↗</a></div>
       </aside>
@@ -57,7 +58,7 @@
             </div>
             <div class="admin-grid">
               <section class="panel"><div class="panel-head"><h3>최근 문의</h3><button type="button" data-admin-nav="inquiries">전체 보기 →</button></div><div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div></section>
-              <section class="panel"><div class="panel-head"><h3>빠른 관리</h3></div><div class="setup-list"><div class="setup-item"><span class="setup-no">01</span><div><b>문의 확인</b><p>문의·제휴 요청과 처리 상태를 확인합니다.</p></div></div><div class="setup-item"><span class="setup-no">02</span><div><b>제품 관리</b><p>제품명, 카테고리, 이미지와 노출 상태를 관리합니다.</p></div></div><div class="setup-item"><span class="setup-no">03</span><div><b>방문 현황</b><p>일간·주간·월간·누적 방문 흐름을 확인합니다.</p></div></div><div class="setup-item"><span class="setup-no">04</span><div><b>사이트 설정</b><p>대표 정보와 정책 문서 링크를 확인합니다.</p></div></div></div></section>
+              <section class="panel"><div class="panel-head"><h3>빠른 관리</h3></div><div class="setup-list"><div class="setup-item"><span class="setup-no">01</span><div><b>문의 확인</b><p>문의·제휴 요청과 처리 상태를 확인합니다.</p></div></div><div class="setup-item"><span class="setup-no">02</span><div><b>제품 관리</b><p>제품명, 카테고리, 이미지와 노출 상태를 관리합니다.</p></div></div><div class="setup-item"><span class="setup-no">03</span><div><b>방문 현황</b><p>일간·주간·월간·누적 방문 흐름을 확인합니다.</p></div></div><div class="setup-item"><span class="setup-no">04</span><div><b>휴지통</b><p>삭제한 문의와 제품을 복원하거나 영구 삭제합니다.</p></div></div></div></section>
             </div>
           </section>
 
@@ -70,11 +71,26 @@
 
           <section class="admin-view" data-admin-view="visitors"><div class="admin-heading"><div><h2>방문자</h2><p>일간, 주간, 월간, 누적 방문자 통계를 확인합니다.</p></div></div><div class="metric-grid"><article class="metric-card"><small>오늘</small><strong>—</strong><em>데이터 없음</em></article><article class="metric-card"><small>최근 7일</small><strong>—</strong><em>데이터 없음</em></article><article class="metric-card"><small>이번 달</small><strong>—</strong><em>데이터 없음</em></article><article class="metric-card"><small>누적</small><strong>—</strong><em>데이터 없음</em></article></div><section class="panel" style="margin-top:14px"><div class="empty-state"><b>방문 데이터가 아직 없습니다.</b><p>방문 기록이 쌓이면 기간별 방문 수와 페이지별 조회 현황을 확인할 수 있습니다.</p></div></section></section>
 
+          <section class="admin-view" data-admin-view="trash">
+            <div class="admin-heading"><div><h2>휴지통</h2><p>삭제한 문의와 제품을 카테고리별로 확인하고 복원하거나 영구 삭제합니다.</p></div></div>
+            <section class="panel admin-trash-shell" data-trash-root>
+              <div class="admin-trash-toolbar">
+                <div class="admin-trash-tabs" role="tablist" aria-label="휴지통 카테고리">
+                  <button class="is-active" type="button" data-trash-filter="all">전체 <span data-trash-count="all">0</span></button>
+                  <button type="button" data-trash-filter="inquiry">문의 <span data-trash-count="inquiry">0</span></button>
+                  <button type="button" data-trash-filter="product">제품 <span data-trash-count="product">0</span></button>
+                </div>
+                <input type="search" placeholder="삭제된 항목 검색" data-trash-search>
+              </div>
+              <div class="admin-trash-list" data-trash-list><div class="admin-trash-empty">휴지통이 비어 있습니다.</div></div>
+            </section>
+          </section>
+
           <section class="admin-view" data-admin-view="settings"><div class="admin-heading"><div><h2>사이트설정</h2><p>대표 정보, 문의 회신 정보와 정책 문서를 확인하고 관리합니다.</p></div></div><section class="panel"><div class="setup-list"><div class="setup-item"><span class="setup-no">A</span><div><b>기본 정보</b><p>회사명, 전화, 이메일, 주소와 상담시간 관리</p></div></div><div class="setup-item"><span class="setup-no">B</span><div><b>문의 운영</b><p>문의 회신 이메일과 처리 흐름 확인</p></div></div><div class="setup-item"><span class="setup-no">C</span><div><b>정책 문서</b><p>개인정보처리방침과 사이트 이용약관 확인</p></div></div><div class="setup-item"><span class="setup-no">D</span><div><b>보안</b><p>관리자 인증과 데이터 접근 권한 관리</p></div></div></div></section></section>
         </div>
       </main>
     </div>
-    <nav class="mobile-admin-menu"><button class="is-active" data-admin-nav="dashboard">홈</button><button data-admin-nav="inquiries">문의</button><button data-admin-nav="products">제품</button><button data-admin-nav="settings">설정</button></nav>
+    <nav class="mobile-admin-menu"><button class="is-active" data-admin-nav="dashboard">홈</button><button data-admin-nav="inquiries">문의</button><button data-admin-nav="products">제품</button><button data-admin-nav="trash">휴지통</button><button data-admin-nav="settings">설정</button></nav>
   </div>
 </body>
 </html>
