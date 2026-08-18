@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260817-2154';
+  const cacheVersion = '20260818-1058';
 
   const upsertMeta = (selector, attrs) => {
     let el = document.head.querySelector(selector);
@@ -44,7 +44,7 @@
   const description = document.head.querySelector('meta[name="description"]')?.content || '1977년부터 생활 위생용품을 제조해온 태평제지 공식 웹사이트입니다.';
   upsertMeta('meta[property="og:description"]', { property: 'og:description', content: description });
   const canonicalPath = normalizedPath.endsWith('/') ? normalizedPath : `${normalizedPath}/`;
-  const canonicalUrl = `https://www.tp1977.com${canonicalPath}`;
+  const canonicalUrl = `https://tp1977.com${canonicalPath}`;
   upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonicalUrl });
   upsertLink('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl });
   upsertLink('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
@@ -73,6 +73,7 @@
   ensureModule('visitor-tracker', `${assetRoot}assets/js/visitor-tracker.js?v=${cacheVersion}`);
   if (normalizedPath === '/inquiry/') ensureModule('inquiry-submit', `${assetRoot}assets/js/inquiry-submit.js?v=${cacheVersion}`);
   if (normalizedPath === '/contact/') ensureModule('contact-submit', `${assetRoot}assets/js/contact-submit.js?v=${cacheVersion}`);
+  if (normalizedPath.startsWith('/product/') && normalizedPath !== '/product/') ensureModule('product-runtime', `${assetRoot}assets/js/product-runtime.js?v=${cacheVersion}`);
 
   /* Product detail/list pages now own their exact supplied thumbnails in HTML.
      Do not let the legacy image loader replace them by array index. */
