@@ -1,8 +1,6 @@
-import { app, db } from './firebase-client.js?v=20260818-1228';
+import { app, db } from './firebase-client.js?v=20260818-1505';
 import {
   getAuth,
-  setPersistence,
-  browserLocalPersistence,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut
@@ -23,6 +21,7 @@ const auth = getAuth(app);
 const ADMIN_ID = 'tp1977';
 const ADMIN_EMAIL = 'tp5950797@naver.com';
 const STATUS_OPTIONS = ['신규', '확인중', '완료', '보관'];
+const LOGIN_TIMEOUT = 12000;
 
 const loginScreen = document.querySelector('[data-admin-login-screen]');
 const adminApp = document.querySelector('[data-admin-app]');
@@ -36,11 +35,11 @@ const logoutButton = document.querySelector('[data-admin-logout]');
 let unsubscribe = [];
 let inquiryItems = [];
 let visitorItems = [];
+let adminVisible = false;
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
 }[char]));
-
 const toMillis = value => value?.toMillis?.() || 0;
 const formatDateTime = value => {
   const date = value?.toDate?.();
@@ -49,7 +48,6 @@ const formatDateTime = value => {
     timeZone: 'Asia/Seoul', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
   }).format(date);
 };
-
 const kstDateKey = date => {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'
@@ -57,6 +55,11 @@ const kstDateKey = date => {
   const pick = type => parts.find(part => part.type === type)?.value || '';
   return `${pick('year')}-${pick('month')}-${pick('day')}`;
 };
+const timeout = ms => new Promise((_, reject) => {
+  const error = new Error('Login request timed out');
+  error.code = 'auth/timeout';
+  setTimeout(() => reject(error), ms);
+});
 
 function setMessage(message = '', type = '') {
   if (!loginMessage) return;
@@ -64,42 +67,53 @@ function setMessage(message = '', type = '') {
   loginMessage.dataset.type = type;
   loginMessage.hidden = !message;
 }
-
-function showLogin() {
-  stopDataListeners();
+function setLoginBusy(busy) {
+  if (loginButton) loginButton.disabled = busy;
+  if (idInput) idInput.disabled = busy;
+  if (passwordInput) passwordInput.disabled = busy;
+}
+function stopDataListeners() {
+  unsubscribe.forEach(stop => { try { stop(); } catch {} });
+  unsubscribe = [];
+}
+function showLogin({ keepMessage = false } = {}) {
+  if (adminVisible) stopDataListeners();
+  adminVisible = false;
   document.body.classList.remove('admin-authenticated');
   document.body.classList.add('admin-guest');
   if (loginScreen) loginScreen.hidden = false;
   if (adminApp) adminApp.hidden = true;
-  requestAnimationFrame(() => idInput?.focus());
+  setLoginBusy(false);
+  if (!keepMessage) setMessage('');
+  requestAnimationFrame(() => passwordInput?.focus());
 }
-
 function showAdmin() {
+  const firstOpen = !adminVisible;
+  adminVisible = true;
   document.body.classList.remove('admin-guest');
   document.body.classList.add('admin-authenticated');
   if (loginScreen) loginScreen.hidden = true;
   if (adminApp) adminApp.hidden = false;
+  setLoginBusy(false);
   setMessage('');
   startDataListeners();
+  if (firstOpen) window.dispatchEvent(new CustomEvent('tp-admin-authenticated'));
 }
-
 function findMetric(view, label) {
   return [...document.querySelectorAll(`[data-admin-view="${view}"] .metric-card`)]
     .find(card => card.querySelector('small')?.textContent.trim() === label)
     ?.querySelector('strong');
 }
-
 function statusSelect(item) {
   return `<select class="admin-status-select" data-status-id="${escapeHTML(item.id)}" data-status-collection="inquiries" aria-label="처리 상태">
     ${STATUS_OPTIONS.map(status => `<option value="${status}"${status === item.status ? ' selected' : ''}>${status}</option>`).join('')}
   </select>`;
 }
-
 function renderInquiryTable() {
   const tbody = document.querySelector('[data-admin-view="inquiries"] .admin-table tbody');
   if (!tbody) return;
   if (!inquiryItems.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="admin-empty-cell">등록된 문의가 없습니다.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="admin-empty-cell">등록된 문의가 없습니다.</td></tr>';
     return;
   }
   tbody.innerHTML = inquiryItems.map(item => `
@@ -111,20 +125,16 @@ function renderInquiryTable() {
       <td>${statusSelect(item)}</td>
     </tr>`).join('');
 }
-
 function renderOpenCount() {
   const count = inquiryItems.filter(item => !['완료', '보관'].includes(item.status)).length;
   const target = findMetric('dashboard', '미처리 문의');
   if (target) target.textContent = String(count);
 }
-
 function renderRecent() {
   const panel = document.querySelector('[data-admin-view="dashboard"] .admin-grid .panel:first-child');
   if (!panel) return;
   const old = panel.querySelector('.empty-state, .admin-recent-list');
-  const recent = [...inquiryItems]
-    .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt))
-    .slice(0, 6);
+  const recent = [...inquiryItems].sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt)).slice(0, 6);
   const wrapper = document.createElement('div');
   wrapper.className = 'admin-recent-list';
   wrapper.innerHTML = recent.length ? recent.map(item => `
@@ -135,26 +145,20 @@ function renderRecent() {
     </button>`).join('') : '<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div>';
   old?.replaceWith(wrapper);
 }
-
 function ensureVisitorTable() {
   const panel = document.querySelector('[data-admin-view="visitors"] .panel');
   if (!panel) return null;
   let tbody = panel.querySelector('tbody[data-visitor-tbody]');
   if (tbody) return tbody;
   panel.querySelector('.empty-state')?.remove();
-  panel.innerHTML = `
-    <div class="panel-head"><h3>최근 방문 현황</h3></div>
-    <div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>날짜</th><th>방문자</th><th>페이지 조회</th></tr></thead><tbody data-visitor-tbody></tbody></table></div>`;
+  panel.innerHTML = `<div class="panel-head"><h3>최근 방문 현황</h3></div><div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>날짜</th><th>방문자</th><th>페이지 조회</th></tr></thead><tbody data-visitor-tbody></tbody></table></div>`;
   return panel.querySelector('tbody[data-visitor-tbody]');
 }
-
 function renderVisitors() {
   const today = kstDateKey(new Date());
   const todayDate = new Date();
   const last7 = new Set(Array.from({ length: 7 }, (_, index) => {
-    const d = new Date(todayDate);
-    d.setDate(d.getDate() - index);
-    return kstDateKey(d);
+    const d = new Date(todayDate); d.setDate(d.getDate() - index); return kstDateKey(d);
   }));
   const monthPrefix = today.slice(0, 7);
   const byDate = new Map(visitorItems.map(item => [item.id, item]));
@@ -162,22 +166,17 @@ function renderVisitors() {
   const weekCount = visitorItems.filter(item => last7.has(item.id)).reduce((sum, item) => sum + Number(item.visitors || 0), 0);
   const monthCount = visitorItems.filter(item => item.id.startsWith(monthPrefix)).reduce((sum, item) => sum + Number(item.visitors || 0), 0);
   const totalCount = visitorItems.reduce((sum, item) => sum + Number(item.visitors || 0), 0);
-
   const dashboardToday = findMetric('dashboard', '오늘 방문자');
   if (dashboardToday) dashboardToday.textContent = todayCount.toLocaleString('ko-KR');
   const values = { '오늘': todayCount, '최근 7일': weekCount, '이번 달': monthCount, '누적': totalCount };
   Object.entries(values).forEach(([label, value]) => {
-    const target = findMetric('visitors', label);
-    if (target) target.textContent = Number(value).toLocaleString('ko-KR');
+    const target = findMetric('visitors', label); if (target) target.textContent = Number(value).toLocaleString('ko-KR');
   });
-
   const tbody = ensureVisitorTable();
   if (!tbody) return;
   const recent = [...visitorItems].sort((a, b) => b.id.localeCompare(a.id)).slice(0, 14);
-  tbody.innerHTML = recent.length ? recent.map(item => `
-    <tr><td>${escapeHTML(item.id)}</td><td><strong>${Number(item.visitors || 0).toLocaleString('ko-KR')}</strong></td><td>${Number(item.pageViews || 0).toLocaleString('ko-KR')}</td></tr>`).join('') : '<tr><td colspan="3" class="admin-empty-cell">방문 데이터가 아직 없습니다.</td></tr>';
+  tbody.innerHTML = recent.length ? recent.map(item => `<tr><td>${escapeHTML(item.id)}</td><td><strong>${Number(item.visitors || 0).toLocaleString('ko-KR')}</strong></td><td>${Number(item.pageViews || 0).toLocaleString('ko-KR')}</td></tr>`).join('') : '<tr><td colspan="3" class="admin-empty-cell">방문 데이터가 아직 없습니다.</td></tr>';
 }
-
 function ensureDetailModal() {
   let modal = document.querySelector('[data-admin-detail-modal]');
   if (modal) return modal;
@@ -193,7 +192,6 @@ function ensureDetailModal() {
   modal.querySelectorAll('[data-admin-detail-close]').forEach(button => button.addEventListener('click', () => { modal.hidden = true; }));
   return modal;
 }
-
 function openDetail(id) {
   const item = inquiryItems.find(entry => entry.id === id);
   if (!item) return;
@@ -208,43 +206,31 @@ function openDetail(id) {
     ['연락처', item.phone], ['이메일', item.email], ['문의 구분', item.inquiryType], ['제휴 유형', item.partnershipType],
     ['문의 제품', item.product], ['관련 제품 / 브랜드', item.relatedItem], ['문의 내용', item.message]
   ];
-  body.innerHTML = rows.filter(([, value]) => value).map(([label, value]) => `
-    <div class="admin-detail-row${label.includes('내용') ? ' is-message' : ''}"><span>${escapeHTML(label)}</span><div>${escapeHTML(value).replace(/\n/g, '<br>')}</div></div>`).join('');
+  body.innerHTML = rows.filter(([, value]) => value).map(([label, value]) => `<div class="admin-detail-row${label.includes('내용') ? ' is-message' : ''}"><span>${escapeHTML(label)}</span><div>${escapeHTML(value).replace(/\n/g, '<br>')}</div></div>`).join('');
   modal.hidden = false;
 }
-
 function renderDataError(kind) {
   const message = '데이터를 불러올 수 없습니다. 데이터베이스 설정을 확인해 주세요.';
   if (kind === 'inquiry') {
     const tbody = document.querySelector('[data-admin-view="inquiries"] .admin-table tbody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="admin-empty-cell">${message}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="admin-empty-cell">${message}</td></tr>`;
   } else if (kind === 'visitor') {
-    const tbody = ensureVisitorTable();
-    if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty-cell">${message}</td></tr>`;
+    const tbody = ensureVisitorTable(); if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty-cell">${message}</td></tr>`;
   }
 }
-
-function stopDataListeners() {
-  unsubscribe.forEach(stop => { try { stop(); } catch {} });
-  unsubscribe = [];
-}
-
 function startDataListeners() {
   stopDataListeners();
   unsubscribe.push(onSnapshot(
     query(collection(db, 'inquiries'), orderBy('createdAt', 'desc'), limit(200)),
     snapshot => {
-      inquiryItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() }));
+      inquiryItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() })).filter(item => !item.trashed);
       renderInquiryTable(); renderOpenCount(); renderRecent();
     },
     error => { console.error('[Taepyung Admin] inquiries', error?.code || error); renderDataError('inquiry'); }
   ));
   unsubscribe.push(onSnapshot(
     query(collection(db, 'visitors_daily'), orderBy(documentId(), 'asc')),
-    snapshot => {
-      visitorItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() }));
-      renderVisitors();
-    },
+    snapshot => { visitorItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() })); renderVisitors(); },
     error => { console.error('[Taepyung Admin] visitors', error?.code || error); renderDataError('visitor'); }
   ));
 }
@@ -254,55 +240,75 @@ adminApp?.addEventListener('change', async event => {
   if (!select) return;
   select.disabled = true;
   try {
-    await updateDoc(doc(db, select.dataset.statusCollection, select.dataset.statusId), {
-      status: select.value,
-      updatedAt: serverTimestamp()
-    });
+    await updateDoc(doc(db, select.dataset.statusCollection, select.dataset.statusId), { status: select.value, updatedAt: serverTimestamp() });
   } catch (error) {
     console.error('[Taepyung Admin] status update failed', error?.code || error);
     alert('처리 상태를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.');
-  } finally {
-    select.disabled = false;
-  }
+  } finally { select.disabled = false; }
 });
-
 adminApp?.addEventListener('click', event => {
   if (event.target.closest('select, option, a')) return;
   const trigger = event.target.closest('[data-detail-kind="inquiry"][data-detail-id]');
   if (trigger) openDetail(trigger.dataset.detailId);
 });
 
-await setPersistence(auth, browserLocalPersistence);
-
 loginForm?.addEventListener('submit', async event => {
   event.preventDefault();
   const adminId = idInput?.value.trim() || '';
   const password = passwordInput?.value || '';
-  if (adminId !== ADMIN_ID) {
+  if (adminId !== ADMIN_ID || !password) {
     setMessage('아이디 또는 비밀번호를 확인해 주세요.', 'error');
     return;
   }
-  if (loginButton) loginButton.disabled = true;
+  setLoginBusy(true);
   setMessage('로그인 중입니다.', 'loading');
   try {
-    await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+    const credential = await Promise.race([
+      signInWithEmailAndPassword(auth, ADMIN_EMAIL, password),
+      timeout(LOGIN_TIMEOUT)
+    ]);
+    if (credential?.user?.email === ADMIN_EMAIL) {
+      showAdmin();
+    } else {
+      await signOut(auth).catch(() => {});
+      throw Object.assign(new Error('Unauthorized account'), { code: 'auth/unauthorized' });
+    }
   } catch (error) {
     console.error('[Taepyung Admin] login failed', error?.code || error);
-    setMessage('아이디 또는 비밀번호를 확인해 주세요.', 'error');
+    const code = String(error?.code || '');
+    if (code === 'auth/timeout' || code === 'auth/network-request-failed') {
+      setMessage('로그인 서버 응답이 지연되고 있습니다. 네트워크를 확인한 뒤 다시 시도해 주세요.', 'error');
+    } else if (code === 'auth/too-many-requests') {
+      setMessage('로그인 시도가 너무 많습니다. 잠시 후 다시 시도해 주세요.', 'error');
+    } else {
+      setMessage('아이디 또는 비밀번호를 확인해 주세요.', 'error');
+    }
     if (passwordInput) { passwordInput.value = ''; passwordInput.focus(); }
   } finally {
-    if (loginButton) loginButton.disabled = false;
+    setLoginBusy(false);
   }
 });
-
-logoutButton?.addEventListener('click', async () => { await signOut(auth); });
+logoutButton?.addEventListener('click', async () => {
+  setMessage('');
+  await signOut(auth).catch(() => {});
+  showLogin();
+});
 
 onAuthStateChanged(auth, user => {
-  if (user && user.email === ADMIN_EMAIL) showAdmin();
+  if (user?.email === ADMIN_EMAIL) showAdmin();
   else {
     if (user) signOut(auth).catch(() => {});
-    showLogin();
+    if (!adminVisible) showLogin({ keepMessage: true });
+    else showLogin();
   }
 });
+
+/* Never leave the login UI locked forever, even if an SDK request stalls. */
+setTimeout(() => {
+  if (!adminVisible && loginButton?.disabled) {
+    setLoginBusy(false);
+    setMessage('로그인 응답이 지연되었습니다. 다시 시도해 주세요.', 'error');
+  }
+}, LOGIN_TIMEOUT + 1500);
 
 window.TP_ADMIN_FIREBASE = { app, auth, db };
