@@ -1,5 +1,5 @@
 (()=>{
-  const version='20260818-1449';
+  const version='20260818-1502';
   const addStyle=(key,file)=>{
     if(document.querySelector(`link[data-${key}]`))return;
     const link=document.createElement('link');link.rel='stylesheet';link.href=`../assets/css/${file}?v=${version}`;link.setAttribute(`data-${key}`,'true');document.head.appendChild(link);
