@@ -1,47 +1,22 @@
 (()=>{
-  const version='20260818-1228';
-  if(!document.querySelector('link[data-admin-data-css]')){
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href=`../assets/css/admin-data.css?v=${version}`;
-    link.dataset.adminDataCss='true';
-    document.head.appendChild(link);
-  }
-  if(!document.querySelector('link[data-admin-advanced-css]')){
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href=`../assets/css/admin-advanced.css?v=${version}`;
-    link.dataset.adminAdvancedCss='true';
-    document.head.appendChild(link);
-  }
-  if(!document.querySelector('link[data-admin-products-v2-css]')){
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href=`../assets/css/admin-products-v2.css?v=${version}`;
-    link.dataset.adminProductsV2Css='true';
-    document.head.appendChild(link);
-  }
-  if(!document.querySelector('script[data-admin-advanced]')){
-    const script=document.createElement('script');
-    script.type='module';
-    script.src=`../assets/js/admin-advanced.js?v=${version}`;
-    script.dataset.adminAdvanced='true';
-    document.head.appendChild(script);
-  }
-  if(!document.querySelector('script[data-admin-row-actions]')){
-    const script=document.createElement('script');
-    script.type='module';
-    script.src=`../assets/js/admin-row-actions.js?v=${version}`;
-    script.dataset.adminRowActions='true';
-    document.head.appendChild(script);
-  }
-  if(!document.querySelector('script[data-admin-products-v2]')){
-    const script=document.createElement('script');
-    script.type='module';
-    script.src=`../assets/js/admin-products-v2.js?v=${version}`;
-    script.dataset.adminProductsV2='true';
-    document.head.appendChild(script);
-  }
+  const version='20260818-1448';
+  const addStyle=(key,file)=>{
+    if(document.querySelector(`link[data-${key}]`))return;
+    const link=document.createElement('link');link.rel='stylesheet';link.href=`../assets/css/${file}?v=${version}`;link.setAttribute(`data-${key}`,'true');document.head.appendChild(link);
+  };
+  const addModule=(key,file)=>{
+    if(document.querySelector(`script[data-${key}]`))return;
+    const script=document.createElement('script');script.type='module';script.src=`../assets/js/${file}?v=${version}`;script.setAttribute(`data-${key}`,'true');document.head.appendChild(script);
+  };
+
+  addStyle('admin-data-css','admin-data.css');
+  addStyle('admin-advanced-css','admin-advanced.css');
+  addStyle('admin-products-v2-css','admin-products-v2.css');
+  addStyle('admin-trash-css','admin-trash.css');
+  addModule('admin-advanced','admin-advanced.js');
+  addModule('admin-row-actions','admin-row-actions.js');
+  addModule('admin-products-v2','admin-products-v2.js');
+  addModule('admin-trash','admin-trash.js');
 
   const adminIdInput=document.querySelector('[data-admin-id]');
   if(adminIdInput){
@@ -55,7 +30,7 @@
     document.querySelectorAll(`[data-admin-nav="${key}"],[data-admin-view="${key}"]`).forEach(el=>el.remove());
   });
 
-  const order=['dashboard','inquiries','products','visitors','settings'];
+  const order=['dashboard','inquiries','products','visitors','trash','settings'];
   order.forEach((key,index)=>{
     document.querySelectorAll(`.admin-sidebar [data-admin-nav="${key}"]`).forEach(button=>{
       const number=button.querySelector('span:last-child');
@@ -67,7 +42,7 @@
   const buttons=[...document.querySelectorAll('[data-admin-nav]')];
   const title=document.querySelector('[data-admin-title]');
   const date=document.querySelector('[data-admin-date]');
-  const names={dashboard:'대시보드',inquiries:'문의·제휴',products:'제품관리',visitors:'방문자',settings:'사이트설정'};
+  const names={dashboard:'대시보드',inquiries:'문의·제휴',products:'제품관리',visitors:'방문자',trash:'휴지통',settings:'사이트설정'};
 
   function open(key){
     const target=names[key]?key:'dashboard';
