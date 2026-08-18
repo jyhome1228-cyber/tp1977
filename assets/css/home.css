@@ -31,19 +31,11 @@ body.home-page{background:#fff!important;color:#111}
 }
 
 @media(max-width:1100px){
-  .home-about{padding:64px 0 42px}
-  .home-about-inner,.home-gallery-inner{width:calc(100% - 48px)}
-  .home-about-copy{font-size:19px}
-  .home-gallery{padding-bottom:80px}
-}
-@media(max-width:760px){
-  .home-main{padding-top:var(--header-h)}
-
-  /* Taller mobile hero: preserve impact and allow horizontal cropping. */
+  /* Hamburger/tablet range also needs the larger hero, not only <=760px. */
   .home-page .home-hero-static{
-    height:clamp(340px,62vw,440px)!important;
-    min-height:340px!important;
-    max-height:440px!important;
+    height:clamp(400px,52vw,560px)!important;
+    min-height:400px!important;
+    max-height:560px!important;
     overflow:hidden!important;
   }
   .home-page .home-hero-static > img:not(.home-hero-logo){
@@ -53,6 +45,29 @@ body.home-page{background:#fff!important;color:#111}
     min-height:100%!important;
     max-height:none!important;
     aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+  }
+  .home-about{padding:64px 0 42px}
+  .home-about-inner,.home-gallery-inner{width:calc(100% - 48px)}
+  .home-about-copy{font-size:19px}
+  .home-gallery{padding-bottom:80px}
+}
+@media(max-width:760px){
+  .home-main{padding-top:var(--header-h)}
+
+  /* Phone hero: deliberately taller; horizontal crop is allowed. */
+  .home-page .home-hero-static{
+    height:clamp(380px,82vw,520px)!important;
+    min-height:380px!important;
+    max-height:520px!important;
+    overflow:hidden!important;
+  }
+  .home-page .home-hero-static > img:not(.home-hero-logo){
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    max-height:none!important;
     object-fit:cover!important;
     object-position:center center!important;
   }
