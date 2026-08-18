@@ -20,6 +20,13 @@
     script.dataset.adminAdvanced='true';
     document.head.appendChild(script);
   }
+  if(!document.querySelector('script[data-admin-row-actions]')){
+    const script=document.createElement('script');
+    script.type='module';
+    script.src='../assets/js/admin-row-actions.js?v=20260818-1058';
+    script.dataset.adminRowActions='true';
+    document.head.appendChild(script);
+  }
 
   const adminIdInput=document.querySelector('[data-admin-id]');
   if(adminIdInput){
