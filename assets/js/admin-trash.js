@@ -1,4 +1,4 @@
-import { app, db, storage } from './firebase-client.js?v=20260818-1502';
+import { app, db, storage } from './firebase-client.js?v=20260818-1505';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 import {
   collection, deleteDoc, deleteField, doc, getDoc, onSnapshot, serverTimestamp, updateDoc
@@ -12,8 +12,10 @@ let trashItems = [];
 let stops = [];
 let currentInquiryId = '';
 let activeFilter = 'all';
+let cleanupTimer = 0;
+let modalCheckQueued = false;
 
-const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]));
 const millis = value => value?.toMillis?.() || 0;
 const formatDate = value => {
   const date = value?.toDate?.();
@@ -95,7 +97,8 @@ async function permanentlyDelete(item){
 function renderCounts(){
   const counts={all:trashItems.length,inquiry:trashItems.filter(i=>i.kind==='inquiry').length,product:trashItems.filter(i=>i.kind==='product').length};
   Object.entries(counts).forEach(([key,value])=>{
-    const el=document.querySelector(`[data-trash-count="${key}"]`);if(el)el.textContent=String(value);
+    const el=document.querySelector(`[data-trash-count="${key}"]`);
+    if(el && el.textContent!==String(value)) el.textContent=String(value);
   });
 }
 
@@ -126,16 +129,17 @@ function cleanupMainViews(){
   inquiryTbody?.querySelectorAll('tr[data-detail-id]').forEach(row=>{if(!activeInquiryIds.has(row.dataset.detailId))row.remove();});
   if(inquiryTbody && !inquiryTbody.querySelector('tr[data-detail-id]')){
     const cols=inquiryView?.querySelectorAll('thead th').length||6;
-    inquiryTbody.innerHTML=`<tr><td colspan="${cols}" class="admin-empty-cell">등록된 문의가 없습니다.</td></tr>`;
+    const empty=`<tr><td colspan="${cols}" class="admin-empty-cell">등록된 문의가 없습니다.</td></tr>`;
+    if(inquiryTbody.innerHTML!==empty) inquiryTbody.innerHTML=empty;
   }
 
   const recent=document.querySelector('[data-admin-view="dashboard"] .admin-recent-list');
   recent?.querySelectorAll('[data-detail-id]').forEach(row=>{if(!activeInquiryIds.has(row.dataset.detailId))row.remove();});
-  if(recent && !recent.querySelector('[data-detail-id]')) recent.innerHTML='<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div>';
+  if(recent && !recent.querySelector('[data-detail-id]') && !recent.querySelector('.empty-state')) recent.innerHTML='<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div>';
 
   const openCount=inquiries.filter(item=>item.trashed!==true&&!['완료','보관'].includes(item.status)).length;
   const openMetric=[...document.querySelectorAll('[data-admin-view="dashboard"] .metric-card')].find(card=>card.querySelector('small')?.textContent.trim()==='미처리 문의')?.querySelector('strong');
-  if(openMetric)openMetric.textContent=String(openCount);
+  if(openMetric && openMetric.textContent!==String(openCount))openMetric.textContent=String(openCount);
 
   const activeProducts=products.filter(item=>item.trashed!==true);
   const activeProductIds=new Set(activeProducts.map(item=>item.id));
@@ -143,12 +147,19 @@ function cleanupMainViews(){
   const countEl=document.querySelector('[data-apv2-count]');
   if(countEl){
     const visibleRows=document.querySelectorAll('[data-apv2-row]').length;
-    countEl.textContent=`${visibleRows}개 / 전체 ${activeProducts.length}개`;
+    const text=`${visibleRows}개 / 전체 ${activeProducts.length}개`;
+    if(countEl.textContent!==text) countEl.textContent=text;
   }
   const productMetric=[...document.querySelectorAll('[data-admin-view="dashboard"] .metric-card')].find(card=>card.querySelector('small')?.textContent.trim()==='등록 제품')?.querySelector('strong');
-  if(productMetric)productMetric.textContent=String(activeProducts.length);
+  if(productMetric && productMetric.textContent!==String(activeProducts.length))productMetric.textContent=String(activeProducts.length);
   const productHeading=document.querySelector('[data-admin-view="products"] .admin-heading p');
-  if(productHeading)productHeading.textContent=`총 ${activeProducts.length}개 제품의 이름, 카테고리, 이미지와 노출 여부를 관리합니다.`;
+  const headingText=`총 ${activeProducts.length}개 제품의 이름, 카테고리, 이미지와 노출 여부를 관리합니다.`;
+  if(productHeading && productHeading.textContent!==headingText)productHeading.textContent=headingText;
+}
+
+function scheduleCleanup(){
+  clearTimeout(cleanupTimer);
+  cleanupTimer=setTimeout(cleanupMainViews,0);
 }
 
 function setupTrashUi(){
@@ -164,10 +175,18 @@ function improveCompletedModal(){
   const modal=document.querySelector('[data-admin-detail-modal]');
   if(!modal)return;
   const deleteButton=modal.querySelector('[data-admin-delete]');
-  if(deleteButton)deleteButton.textContent='휴지통으로 이동';
+  if(deleteButton && deleteButton.textContent!=='휴지통으로 이동') deleteButton.textContent='휴지통으로 이동';
 }
 
-const uiObserver=new MutationObserver(()=>{improveCompletedModal();cleanupMainViews();});
+/* Only watch for a newly-created detail modal. Do not mutate dashboard/product DOM from this observer. */
+const uiObserver=new MutationObserver(()=>{
+  if(modalCheckQueued)return;
+  modalCheckQueued=true;
+  requestAnimationFrame(()=>{
+    modalCheckQueued=false;
+    improveCompletedModal();
+  });
+});
 uiObserver.observe(document.body,{childList:true,subtree:true});
 setupTrashUi();
 
@@ -211,10 +230,12 @@ document.addEventListener('click',event=>{
   const complete=event.target.closest('[data-admin-complete]');
   if(!complete)return;
   setTimeout(()=>{
-    complete.textContent='완료됨';complete.disabled=true;
+    if(complete.textContent!=='완료됨') complete.textContent='완료됨';
+    complete.disabled=true;
     const modal=document.querySelector('[data-admin-detail-modal]');
     const statusRow=[...(modal?.querySelectorAll('.admin-detail-row')||[])].find(row=>row.querySelector('span')?.textContent.trim()==='상태');
-    if(statusRow)statusRow.querySelector('div').textContent='완료';
+    const statusValue=statusRow?.querySelector('div');
+    if(statusValue && statusValue.textContent!=='완료')statusValue.textContent='완료';
     const actions=modal?.querySelector('.admin-detail-actions');
     if(actions&&!modal.querySelector('.admin-detail-next'))actions.insertAdjacentHTML('afterend','<div class="admin-detail-next">처리가 완료되었습니다. 정리하려면 <b>휴지통으로 이동</b>해 주세요.</div>');
     improveCompletedModal();
@@ -245,10 +266,10 @@ onAuthStateChanged(auth,user=>{
   if(!user)return;
   stops.push(onSnapshot(collection(db,'inquiries'),snapshot=>{
     inquiries=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-    renderTrash();cleanupMainViews();
+    renderTrash();scheduleCleanup();
   }));
   stops.push(onSnapshot(collection(db,'products'),snapshot=>{
     products=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-    renderTrash();cleanupMainViews();
+    renderTrash();scheduleCleanup();
   }));
 });
