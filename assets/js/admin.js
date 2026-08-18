@@ -2,9 +2,17 @@
   if(!document.querySelector('link[data-admin-data-css]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='../assets/css/admin-data.css?v=20260817-2154';
+    link.href='../assets/css/admin-data.css?v=20260818-1028';
     link.dataset.adminDataCss='true';
     document.head.appendChild(link);
+  }
+
+  const adminIdInput=document.querySelector('[data-admin-id]');
+  if(adminIdInput){
+    adminIdInput.value='tp1977';
+    adminIdInput.readOnly=true;
+    adminIdInput.autocomplete='off';
+    adminIdInput.setAttribute('aria-label','관리자 아이디 tp1977');
   }
 
   const views=[...document.querySelectorAll('[data-admin-view]')];
