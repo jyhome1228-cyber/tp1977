@@ -1,30 +1,45 @@
 (()=>{
+  const version='20260818-1115';
   if(!document.querySelector('link[data-admin-data-css]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='../assets/css/admin-data.css?v=20260818-1058';
+    link.href=`../assets/css/admin-data.css?v=${version}`;
     link.dataset.adminDataCss='true';
     document.head.appendChild(link);
   }
   if(!document.querySelector('link[data-admin-advanced-css]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='../assets/css/admin-advanced.css?v=20260818-1058';
+    link.href=`../assets/css/admin-advanced.css?v=${version}`;
     link.dataset.adminAdvancedCss='true';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('link[data-admin-products-v2-css]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href=`../assets/css/admin-products-v2.css?v=${version}`;
+    link.dataset.adminProductsV2Css='true';
     document.head.appendChild(link);
   }
   if(!document.querySelector('script[data-admin-advanced]')){
     const script=document.createElement('script');
     script.type='module';
-    script.src='../assets/js/admin-advanced.js?v=20260818-1058';
+    script.src=`../assets/js/admin-advanced.js?v=${version}`;
     script.dataset.adminAdvanced='true';
     document.head.appendChild(script);
   }
   if(!document.querySelector('script[data-admin-row-actions]')){
     const script=document.createElement('script');
     script.type='module';
-    script.src='../assets/js/admin-row-actions.js?v=20260818-1058';
+    script.src=`../assets/js/admin-row-actions.js?v=${version}`;
     script.dataset.adminRowActions='true';
+    document.head.appendChild(script);
+  }
+  if(!document.querySelector('script[data-admin-products-v2]')){
+    const script=document.createElement('script');
+    script.type='module';
+    script.src=`../assets/js/admin-products-v2.js?v=${version}`;
+    script.dataset.adminProductsV2='true';
     document.head.appendChild(script);
   }
 
