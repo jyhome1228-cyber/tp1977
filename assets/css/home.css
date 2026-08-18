@@ -14,27 +14,9 @@ body.home-page{background:#fff!important;color:#111}
 .home-gallery-caption{margin:18px 0 0;font-size:11px;letter-spacing:.12em;color:#22793a;font-weight:700}
 .home-page .site-footer{margin-top:0!important}
 
-/* Homepage supplied hero logo — align to the same 1440px content grid used by header/body. */
-.home-page .home-hero-static > img.home-hero-logo{
-  position:absolute!important;
-  z-index:3!important;
-  left:max(48px,calc((100vw - 1440px)/2))!important;
-  top:50%!important;
-  width:clamp(210px,22vw,420px)!important;
-  max-width:32vw!important;
-  height:auto!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  filter:none!important;
-  transform:translateY(-50%)!important;
-  pointer-events:none!important;
-}
+/* The supplied hero image already carries the intended visual identity.
+   Keep the separate overlaid Taepyung logo hidden at every breakpoint. */
+.home-page .home-hero-static > img.home-hero-logo{display:none!important}
 
 /* Natural Korean line wrapping: avoid tiny orphan lines in hero/section headings. */
 .home-page :where(.home-intro-text h2,.home-section-head h2,.home-contact-copy h2){
@@ -53,11 +35,22 @@ body.home-page{background:#fff!important;color:#111}
   .home-about-inner,.home-gallery-inner{width:calc(100% - 48px)}
   .home-about-copy{font-size:19px}
   .home-gallery{padding-bottom:80px}
-  .home-page .home-hero-static > img.home-hero-logo{left:24px!important}
 }
 @media(max-width:760px){
   .home-main{padding-top:var(--header-h)}
-  .home-hero img{min-height:260px;object-fit:cover;object-position:62% center}
+  /* Let the hero image define its own height on phones instead of forcing a crop. */
+  .home-page .home-hero-static{height:auto!important;min-height:0!important;max-height:none!important}
+  .home-page .home-hero-static > img:not(.home-hero-logo){
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    aspect-ratio:auto!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+  .home-hero img{min-height:0;height:auto;max-height:none;object-fit:contain;object-position:center}
   .home-about{padding:48px 0 32px}
   .home-about-inner,.home-gallery-inner{width:calc(100% - 36px)}
   .home-about-copy{font-size:17px;line-height:1.68;letter-spacing:-.025em;font-weight:600}
@@ -66,12 +59,5 @@ body.home-page{background:#fff!important;color:#111}
   .home-gallery figure{overflow-x:auto;scrollbar-width:none}
   .home-gallery figure::-webkit-scrollbar{display:none}
   .home-gallery img{width:1000px;max-width:none;height:200px;object-fit:cover}
-  .home-page .home-hero-static > img.home-hero-logo{
-    left:18px!important;
-    top:42%!important;
-    width:min(48vw,230px)!important;
-    max-width:230px!important;
-    transform:translateY(-50%)!important;
-  }
   .home-page :where(.home-intro-text h2,.home-section-head h2,.home-contact-copy h2){text-wrap:pretty}
 }
