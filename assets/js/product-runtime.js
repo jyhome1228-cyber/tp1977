@@ -17,15 +17,15 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;'
 if(category && grid){
   const q = query(collection(db,'products'),where('published','==',true));
   onSnapshot(q,snapshot=>{
+    // No managed catalog yet: keep the static HTML as a safe fallback.
+    if(snapshot.empty) return;
+
     const items=snapshot.docs
       .map(d=>({id:d.id,...d.data()}))
       .filter(item=>item.category===category)
       .sort((a,b)=>Number(a.order||999)-Number(b.order||999)||String(a.name||'').localeCompare(String(b.name||''),'ko'));
 
-    // Before the managed catalog is initialized, leave the static page content as a safe fallback.
-    if(!items.length) return;
-
-    grid.innerHTML=items.map(item=>`
+    grid.innerHTML=items.length?items.map(item=>`
       <article class="product-item" data-firestore-product="${esc(item.id)}">
         <div class="product-thumb has-source-image"><img src="${esc(item.imageUrl||'')}" alt="${esc(item.name||'제품')}" loading="lazy" decoding="async"></div>
         <div class="product-info">
@@ -34,6 +34,6 @@ if(category && grid){
           ${item.material?`<p class="product-spec">${esc(item.material)}</p>`:''}
           ${item.note?`<p class="product-spec product-note">${esc(item.note)}</p>`:''}
         </div>
-      </article>`).join('');
+      </article>`).join(''):'<div class="product-catalog-empty">현재 노출 중인 제품이 없습니다.</div>';
   },error=>console.debug('[Taepyung] managed product catalog unavailable',error?.code||error));
 }
