@@ -14,6 +14,28 @@ body.home-page{background:#fff!important;color:#111}
 .home-gallery-caption{margin:18px 0 0;font-size:11px;letter-spacing:.12em;color:#22793a;font-weight:700}
 .home-page .site-footer{margin-top:0!important}
 
+/* Homepage supplied hero logo — keep it as a small transparent overlay. */
+.home-page .home-hero-static > img.home-hero-logo{
+  position:absolute!important;
+  z-index:3!important;
+  left:clamp(42px,18vw,360px)!important;
+  top:50%!important;
+  width:clamp(210px,22vw,420px)!important;
+  max-width:32vw!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform:translateY(-50%)!important;
+  pointer-events:none!important;
+}
+
 @media(max-width:1100px){
   .home-about{padding:64px 0 42px}
   .home-about-inner,.home-gallery-inner{width:calc(100% - 48px)}
@@ -31,4 +53,11 @@ body.home-page{background:#fff!important;color:#111}
   .home-gallery figure{overflow-x:auto;scrollbar-width:none}
   .home-gallery figure::-webkit-scrollbar{display:none}
   .home-gallery img{width:1000px;max-width:none;height:200px;object-fit:cover}
+  .home-page .home-hero-static > img.home-hero-logo{
+    left:24px!important;
+    top:42%!important;
+    width:min(48vw,230px)!important;
+    max-width:230px!important;
+    transform:translateY(-50%)!important;
+  }
 }
