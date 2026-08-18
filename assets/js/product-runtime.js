@@ -13,14 +13,10 @@ const categoryMap = {
 const category = categoryMap[path];
 const grid = document.querySelector('.product-catalog-grid');
 if(category && grid){
-  const q = query(
-    collection(db,'products'),
-    where('category','==',category),
-    where('published','==',true)
-  );
+  const q = query(collection(db,'products'),where('published','==',true));
   onSnapshot(q,snapshot=>{
     grid.querySelectorAll('[data-admin-product]').forEach(el=>el.remove());
-    const items=snapshot.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{
+    const items=snapshot.docs.map(d=>({id:d.id,...d.data()})).filter(item=>item.category===category).sort((a,b)=>{
       const am=a.createdAt?.toMillis?.()||0,bm=b.createdAt?.toMillis?.()||0;return am-bm;
     });
     items.forEach(item=>{
