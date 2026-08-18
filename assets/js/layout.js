@@ -1,7 +1,7 @@
 (() => {
   const base = document.body.dataset.base || './';
   const assetRoot = location.hostname.endsWith('github.io') ? '/tp1977/' : '/';
-  const cacheVersion = '20260817-1322';
+  const cacheVersion = '20260818-1422';
   const active = document.body.dataset.section || '';
   const isActive = (name) => active === name ? ' aria-current="page"' : '';
   const headerMount = document.querySelector('[data-site-header], .site-header');
@@ -24,6 +24,7 @@
     ensureCss('link[data-site-enhancements]', 'siteEnhancements', `${assetRoot}assets/css/site-enhancements.css?v=${cacheVersion}`);
     ensureCss('link[data-section-title-balance]', 'sectionTitleBalance', `${assetRoot}assets/css/section-title-balance.css?v=${cacheVersion}`);
     ensureCss('link[data-media-size-fixes]', 'mediaSizeFixes', `${assetRoot}assets/css/media-size-fixes.css?v=${cacheVersion}`);
+    ensureCss('link[data-text-wrap]', 'textWrap', `${assetRoot}assets/css/text-wrap.css?v=${cacheVersion}`);
     if (active === 'inquiry') ensureCss('link[data-inquiry-ui]', 'inquiryUi', `${assetRoot}assets/css/inquiry-ui.css?v=${cacheVersion}`);
   };
   syncBrandCss();
