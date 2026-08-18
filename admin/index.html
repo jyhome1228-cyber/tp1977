@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>태평제지 Admin</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=20260818-1505">
-  <link rel="shortcut icon" href="../favicon.svg?v=20260818-1505">
-  <link rel="stylesheet" href="../assets/css/admin.css?v=20260818-1505">
-  <link rel="stylesheet" href="../assets/css/admin-center.css?v=20260818-1505">
-  <script defer src="../assets/js/admin.js?v=20260818-1505"></script>
-  <script type="module" src="../assets/js/admin-firebase.js?v=20260818-1505"></script>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=20260818-1512">
+  <link rel="shortcut icon" href="../favicon.svg?v=20260818-1512">
+  <link rel="stylesheet" href="../assets/css/admin.css?v=20260818-1512">
+  <link rel="stylesheet" href="../assets/css/admin-center.css?v=20260818-1512">
+  <script defer src="../assets/js/admin.js?v=20260818-1512"></script>
+  <script type="module" src="../assets/js/admin-firebase.js?v=20260818-1512"></script>
 </head>
 <body class="admin-guest">
   <section class="admin-login-screen" data-admin-login-screen>
@@ -21,7 +21,7 @@
         <h1>관리자 로그인</h1>
         <p>태평제지 홈페이지의 문의, 제품과 방문 현황을 관리합니다.</p>
         <form class="admin-login-form" data-admin-login-form autocomplete="off">
-          <label class="admin-login-field"><span>아이디</span><input type="text" data-admin-id name="adminId" inputmode="text" autocomplete="username" value="tp1977" readonly required></label>
+          <label class="admin-login-field"><span>아이디</span><input type="text" data-admin-id name="adminId" value="tp1977" readonly required></label>
           <label class="admin-login-field"><span>비밀번호</span><input type="password" data-admin-password name="password" autocomplete="current-password" required></label>
           <button class="admin-login-button" data-admin-login-button type="submit">로그인</button>
           <p class="admin-login-message" data-admin-login-message hidden></p>
@@ -29,7 +29,6 @@
       </div>
       <div class="admin-login-foot">© 2026 TAEPYUNG PAPER CO., LTD.</div>
     </div>
-    <div class="admin-login-visual" aria-hidden="true"><div class="admin-login-visual-copy"><span>SINCE 1977</span><strong>사람과 환경을 생각하는 생활 위생용품 제조기업</strong><p>홈페이지 운영에 필요한 주요 항목을 한 곳에서 관리할 수 있도록 구성합니다.</p></div></div>
   </section>
 
   <div data-admin-app hidden>
@@ -66,7 +65,7 @@
 
           <section class="admin-view" data-admin-view="inquiries">
             <div class="admin-heading"><div><h2>문의·제휴</h2><p>문의하기와 제휴 요청을 구분해 확인하고 처리 상태를 관리합니다.</p></div></div>
-            <section class="panel"><div class="table-toolbar"><input type="search" placeholder="회사명, 이름, 제목 검색" data-admin-search></div><table class="admin-table"><thead><tr><th>접수일</th><th>유형</th><th>회사 / 이름</th><th>제목</th><th>상태</th></tr></thead><tbody><tr><td colspan="5" style="text-align:center;color:#8a8f8a;padding:42px">등록된 문의가 없습니다.</td></tr></tbody></table></section>
+            <section class="panel"><div class="table-toolbar"><input type="search" placeholder="회사명, 이름, 제목 검색" data-admin-search></div><table class="admin-table"><thead><tr><th>접수일</th><th>유형</th><th>회사 / 이름</th><th>제목</th><th>상태</th></tr></thead><tbody><tr><td colspan="5" class="admin-empty-cell">등록된 문의가 없습니다.</td></tr></tbody></table></section>
           </section>
 
           <section class="admin-view" data-admin-view="products"><div class="admin-heading"><div><h2>제품관리</h2><p>현재 제품 목록을 확인하고 수정·삭제·추가·노출 상태를 관리합니다.</p></div></div><div class="content-grid-admin"></div></section>
@@ -76,7 +75,7 @@
           <section class="admin-view" data-admin-view="trash">
             <div class="admin-heading"><div><h2>휴지통</h2><p>삭제한 문의와 제품을 카테고리별로 확인하고 복원하거나 영구 삭제합니다.</p></div></div>
             <section class="panel admin-trash-shell" data-trash-root>
-              <div class="admin-trash-toolbar"><div class="admin-trash-tabs" role="tablist" aria-label="휴지통 카테고리"><button class="is-active" type="button" data-trash-filter="all">전체 <span data-trash-count="all">0</span></button><button type="button" data-trash-filter="inquiry">문의 <span data-trash-count="inquiry">0</span></button><button type="button" data-trash-filter="product">제품 <span data-trash-count="product">0</span></button></div><input type="search" placeholder="삭제된 항목 검색" data-trash-search></div>
+              <div class="admin-trash-toolbar"><div class="admin-trash-tabs" role="tablist"><button class="is-active" type="button" data-trash-filter="all">전체 <span data-trash-count="all">0</span></button><button type="button" data-trash-filter="inquiry">문의 <span data-trash-count="inquiry">0</span></button><button type="button" data-trash-filter="product">제품 <span data-trash-count="product">0</span></button></div><input type="search" placeholder="삭제된 항목 검색" data-trash-search></div>
               <div class="admin-trash-list" data-trash-list><div class="admin-trash-empty">휴지통이 비어 있습니다.</div></div>
             </section>
           </section>
