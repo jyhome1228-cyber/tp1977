@@ -1,7 +1,10 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260818-1058';
+  const cacheVersion = '20260818-1433';
+  const siteOrigin = 'https://tp1977.com';
+  const defaultOgImage = 'https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/a08e6868cebcd.jpg';
+  const naverVerification = 'd35273ec40bb3015baefa801e55cc7e7aa36d43b';
 
   const upsertMeta = (selector, attrs) => {
     let el = document.head.querySelector(selector);
@@ -15,6 +18,7 @@
     Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
     return el;
   };
+
   const normalizedPath = location.pathname.replace(/^\/tp1977(?=\/|$)/, '').replace(/\/index\.html$/, '/') || '/';
   const keywordGroups = {
     company: '태평제지 회사소개, 태평제지 스토리, 태평제지 역사, 태평제지 비전, 태평제지 핵심가치, 브론디 브랜드',
@@ -22,8 +26,20 @@
     product: '브론디, 두루마리 화장지, 점보롤 화장지, 페이퍼타월, 핸드타월, 키친타월, 미용티슈, 물티슈, 디스펜서',
     esg: '태평제지 지속가능경영, 친환경 화장지, 환경마크 화장지, 재생펄프, 친환경 위생용품',
     recruit: '태평제지 채용, 태평제지 인재상, 태평제지 복리후생, 화장지 제조 채용',
-    contact: '태평제지 고객만족, 태평제지 고객센터, 태평제지 문의, 브론디 문의'
+    contact: '태평제지 고객만족, 태평제지 고객센터, 태평제지 문의, 브론디 문의',
+    inquiry: '태평제지 문의, 태평제지 제휴, 제품 문의, 납품 문의, 기업 구매, 브랜드 협업'
   };
+  const descriptionFallbacks = {
+    '/': '1977년부터 두루마리 화장지, 점보롤, 핸드타월 등 생활 위생용품을 제조·공급해온 태평제지 공식 홈페이지입니다.',
+    '/company/': '1977년 설립된 생활 위생용품 제조기업 태평제지의 회사소개, 역사, 브랜드와 핵심가치를 소개합니다.',
+    '/business/': '태평제지의 고객, 마케팅, 생산, 물류, 품질 관리 체계와 안정적인 위생용품 공급 역량을 소개합니다.',
+    '/product/': '브론디 두루마리 화장지, 점보롤, 핸드타월, 키친타월, 미용티슈 등 태평제지 주요 제품을 확인하세요.',
+    '/esg/': '친환경 제조와 지속가능한 생활 위생용품을 위한 태평제지의 지속가능경영 방향을 소개합니다.',
+    '/recruit/': '태평제지의 인재상과 채용 정보를 확인하세요.',
+    '/contact/': '태평제지 제품, 품질, 납품 및 서비스 관련 고객 안내를 확인하세요.',
+    '/inquiry/': '태평제지 제품·납품 문의와 유통·브랜드·사업 제휴 요청을 온라인으로 접수합니다.'
+  };
+
   let sectionKeywords = '';
   if (normalizedPath.startsWith('/company/')) sectionKeywords = keywordGroups.company;
   else if (normalizedPath.startsWith('/business/')) sectionKeywords = keywordGroups.business;
@@ -31,25 +47,94 @@
   else if (normalizedPath.startsWith('/esg/')) sectionKeywords = keywordGroups.esg;
   else if (normalizedPath.startsWith('/recruit/')) sectionKeywords = keywordGroups.recruit;
   else if (normalizedPath.startsWith('/contact/')) sectionKeywords = keywordGroups.contact;
+  else if (normalizedPath.startsWith('/inquiry/')) sectionKeywords = keywordGroups.inquiry;
+
   const baseKeywords = '태평제지, Taepyung Paper, 브론디, Blondy, 화장지 제조업체, 생활 위생용품, 화장지, 위생용품, 대한민국 화장지 제조';
   const keywords = sectionKeywords ? `${baseKeywords}, ${sectionKeywords}` : `${baseKeywords}, 두루마리 화장지, 점보롤 화장지, 핸드타월, 키친타월, 미용티슈`;
+  upsertMeta('meta[name="naver-site-verification"]', { name: 'naver-site-verification', content: naverVerification });
   upsertMeta('meta[name="keywords"]', { name: 'keywords', content: keywords });
   upsertMeta('meta[name="robots"]', { name: 'robots', content: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' });
   upsertMeta('meta[name="author"]', { name: 'author', content: '태평제지(주)' });
   upsertMeta('meta[name="theme-color"]', { name: 'theme-color', content: '#22793a' });
+
+  let description = document.head.querySelector('meta[name="description"]')?.content?.trim() || '';
+  if (!description) {
+    const fallbackKey = Object.keys(descriptionFallbacks).find(key => key !== '/' && normalizedPath.startsWith(key)) || '/';
+    description = descriptionFallbacks[normalizedPath] || descriptionFallbacks[fallbackKey] || descriptionFallbacks['/'];
+    upsertMeta('meta[name="description"]', { name: 'description', content: description });
+  }
+
+  const canonicalPath = normalizedPath.endsWith('/') ? normalizedPath : `${normalizedPath}/`;
+  const canonicalUrl = `${siteOrigin}${canonicalPath}`;
+  const pageTitle = document.title?.trim() || '태평제지 | 화장지·생활 위생용품 제조기업';
+  const existingOgImage = document.head.querySelector('meta[property="og:image"]')?.content?.trim();
+  const ogImage = existingOgImage || defaultOgImage;
+
   upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: '태평제지 | Taepyung Paper' });
   upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: 'ko_KR' });
-  upsertMeta('meta[property="og:title"]', { property: 'og:title', content: document.title });
-  upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
-  const description = document.head.querySelector('meta[name="description"]')?.content || '1977년부터 생활 위생용품을 제조해온 태평제지 공식 웹사이트입니다.';
+  upsertMeta('meta[property="og:type"]', { property: 'og:type', content: 'website' });
+  upsertMeta('meta[property="og:title"]', { property: 'og:title', content: pageTitle });
   upsertMeta('meta[property="og:description"]', { property: 'og:description', content: description });
-  const canonicalPath = normalizedPath.endsWith('/') ? normalizedPath : `${normalizedPath}/`;
-  const canonicalUrl = `https://tp1977.com${canonicalPath}`;
   upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonicalUrl });
+  upsertMeta('meta[property="og:image"]', { property: 'og:image', content: ogImage });
+  upsertMeta('meta[property="og:image:alt"]', { property: 'og:image:alt', content: '태평제지 | Taepyung Paper' });
+  upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
+  upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: pageTitle });
+  upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: description });
+  upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: ogImage });
   upsertLink('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl });
   upsertLink('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
   upsertLink('link[rel="shortcut icon"]', { rel: 'shortcut icon', href: `${assetRoot}favicon.svg?v=${cacheVersion}` });
   upsertLink('link[rel="manifest"]', { rel: 'manifest', href: `${assetRoot}site.webmanifest?v=${cacheVersion}` });
+
+  if (!document.querySelector('script[data-seo-structured]')) {
+    const structured = document.createElement('script');
+    structured.type = 'application/ld+json';
+    structured.dataset.seoStructured = 'true';
+    structured.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': `${siteOrigin}/#organization`,
+          name: '태평제지(주)',
+          alternateName: 'Taepyung Paper',
+          url: `${siteOrigin}/`,
+          logo: `${siteOrigin}/assets/images/logo-taepyung.svg`,
+          foundingDate: '1977',
+          email: 'contact@blondy.co.kr',
+          telephone: '031-595-0797',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: '마도로 223번길 22',
+            addressLocality: '이천시',
+            addressRegion: '경기도',
+            addressCountry: 'KR'
+          }
+        },
+        {
+          '@type': 'WebPage',
+          '@id': `${canonicalUrl}#webpage`,
+          url: canonicalUrl,
+          name: pageTitle,
+          description,
+          isPartOf: { '@id': `${siteOrigin}/#website` },
+          about: { '@id': `${siteOrigin}/#organization` },
+          inLanguage: 'ko-KR'
+        },
+        {
+          '@type': 'WebSite',
+          '@id': `${siteOrigin}/#website`,
+          url: `${siteOrigin}/`,
+          name: '태평제지',
+          alternateName: 'Taepyung Paper',
+          publisher: { '@id': `${siteOrigin}/#organization` },
+          inLanguage: 'ko-KR'
+        }
+      ]
+    });
+    document.head.appendChild(structured);
+  }
 
   const ensureStylesheet = (selector, dataKey, href) => {
     let link = document.querySelector(selector);
