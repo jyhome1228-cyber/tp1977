@@ -1,0 +1,53 @@
+/* Korean typography: avoid orphaned words and awkward short final lines. */
+:where(
+  .sub-hero h1,
+  .content-body h2,
+  .section-title,
+  .brand-title,
+  .contact-banner h2,
+  .story-era-content h2,
+  .source-image-gallery__title,
+  .feature-row h3,
+  .category-card h2,
+  .product-info h2,
+  .vision-banner,
+  .vision-work-title,
+  .recruit-hero h1,
+  .recruit-intro h1,
+  .customer-hero h1,
+  .customer-intro h1,
+  .iq-hero h1,
+  .iq-side h2,
+  .iq-head h2
+){
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  text-wrap:balance;
+}
+
+:where(
+  .sub-hero p:not(.breadcrumb),
+  .content-body p,
+  .story-era-content p,
+  .story-era-list li,
+  .feature-row p,
+  .source-image-gallery__desc,
+  .iq-hero p,
+  .iq-side p,
+  .iq-head p
+){
+  word-break:keep-all!important;
+  overflow-wrap:break-word!important;
+  text-wrap:pretty;
+}
+
+/* Let the browser balance headings instead of honoring arbitrary hard breaks. */
+:where(.content-body h2,.section-title,.brand-title,.contact-banner h2,.story-era-content h2) br{
+  display:none;
+}
+
+@media(max-width:760px){
+  :where(.sub-hero h1,.content-body h2,.story-era-content h2,.source-image-gallery__title,.feature-row h3){
+    text-wrap:pretty;
+  }
+}
