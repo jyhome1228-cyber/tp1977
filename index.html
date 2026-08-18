@@ -10,31 +10,32 @@
   <meta property="og:description" content="1977년부터 생활 위생용품을 제조하고 공급해온 대한민국 화장지 1세대 기업, 태평제지입니다.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://cdn.imweb.me" crossorigin>
-  <link rel="preload" as="image" href="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/25bca7c1b6a7c.jpg" media="(min-width: 761px)">
-  <link rel="preload" as="image" href="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/cb70daace2f0d.jpg" media="(max-width: 760px)">
+  <link rel="preload" as="image" href="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/a08e6868cebcd.jpg">
+  <link rel="preload" as="image" href="./assets/images/logo-taepyung-hero.svg">
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/home.css">
-  <link rel="stylesheet" href="./assets/css/brand-clean.css?v=20260818-1340" data-brand-clean="true">
-  <link rel="stylesheet" href="./assets/css/footer-brand.css?v=20260818-1340" data-footer-brand="true">
-  <link rel="stylesheet" href="./assets/css/site-images.css?v=20260818-1340" data-site-images="true">
+  <link rel="stylesheet" href="./assets/css/brand-clean.css?v=20260818-1405" data-brand-clean="true">
+  <link rel="stylesheet" href="./assets/css/footer-brand.css?v=20260818-1405" data-footer-brand="true">
+  <link rel="stylesheet" href="./assets/css/site-images.css?v=20260818-1405" data-site-images="true">
   <style>
     .home-page .home-about,.home-page .home-gallery{display:none!important}
     .home-page .home-hero{display:none!important}
-    .home-page .home-hero-static{position:relative;width:100%;overflow:hidden;background:#f5f6f5}
-    .home-page .home-hero-static picture{display:block;width:100%}
-    .home-page .home-hero-static img{display:block;width:100%;height:auto;min-height:0;object-fit:contain;object-position:center;background:#f5f6f5;color:transparent;font-size:0}
+    .home-page .home-hero-static{position:relative;width:100%;overflow:hidden;background:#f2f4f2}
+    .home-page .home-hero-static>img{display:block;width:100%;height:auto;min-height:0;object-fit:cover;object-position:center;background:#f2f4f2;color:transparent;font-size:0}
+    .home-hero-logo{position:absolute;z-index:2;left:clamp(28px,6vw,110px);top:50%;width:clamp(210px,22vw,370px);height:auto;transform:translateY(-50%);filter:drop-shadow(0 2px 8px rgba(255,255,255,.15));pointer-events:none}
     .home-page img{color:transparent}
     .footer-bottom .footer-legal{display:flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;white-space:nowrap!important;gap:0!important}
     .footer-bottom .footer-legal a{display:inline-flex!important;flex:0 0 auto!important}
     @media(max-width:760px){
-      .home-page .home-hero-static img{width:100%;height:auto;object-fit:contain;object-position:center top}
+      .home-page .home-hero-static>img{width:100%;height:auto;object-fit:cover;object-position:center top}
+      .home-hero-logo{left:22px;top:22%;width:min(54vw,260px);transform:none}
     }
   </style>
   <script>
     window.addEventListener('error',function(e){if(e.target&&e.target.tagName==='IMG'){e.target.style.visibility='hidden';}},true);
   </script>
-  <script defer src="./assets/js/site-images.js?v=20260818-1340" data-site-images-loader="true"></script>
-  <script defer src="./assets/js/main.js?v=20260818-1340"></script>
+  <script defer src="./assets/js/site-images.js?v=20260818-1405" data-site-images-loader="true"></script>
+  <script defer src="./assets/js/main.js?v=20260818-1405"></script>
 </head>
 <body class="home-page" data-base="./" data-section="home">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -60,10 +61,8 @@
 
   <main id="main" class="home-main">
     <section class="home-hero-static" aria-label="태평제지 메인 비주얼">
-      <picture>
-        <source media="(max-width: 760px)" srcset="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/cb70daace2f0d.jpg">
-        <img src="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/25bca7c1b6a7c.jpg" alt="태평제지 메인 비주얼" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer">
-      </picture>
+      <img src="https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/a08e6868cebcd.jpg" alt="태평제지 메인 비주얼" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer">
+      <img class="home-hero-logo" src="./assets/images/logo-taepyung-hero.svg" alt="Taepyung 태평제지 Since 1977">
     </section>
     <section class="home-hero" aria-hidden="true"></section>
     <section class="home-about" aria-hidden="true"></section>
