@@ -1,21 +1,28 @@
-import { app, db } from './firebase-client.js?v=20260818-1115';
+import { app, db, storage } from './firebase-client.js?v=20260818-1228';
 import { BASE_PRODUCTS } from './product-catalog-data.js?v=20260818-1115';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 import {
   collection, deleteDoc, doc, getDoc, onSnapshot, serverTimestamp,
   setDoc, updateDoc, writeBatch
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
+import {
+  deleteObject, getDownloadURL, ref as storageRef, uploadBytes
+} from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js';
 
 const auth = getAuth(app);
 const categoryLabels = {
   roll:'두루마리 화장지', jumbo:'점보롤 화장지', hand:'핸드타월',
   kitchen:'키친타월', facial:'미용티슈', etc:'물티슈 · 디스펜서'
 };
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
 let items = [];
 let stopProducts = null;
 let editingId = null;
+let selectedFile = null;
+let currentImageMode = 'url';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const safeFileName = name => String(name || 'product-image').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(-100);
 
 function productMetric(){
   return [...document.querySelectorAll('[data-admin-view="dashboard"] .metric-card')]
@@ -78,7 +85,28 @@ function mount(){
           <div class="apv2-field"><label>카테고리 *</label><select name="category" required>${Object.entries(categoryLabels).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
           <div class="apv2-field"><label>정렬 순서</label><input name="order" type="number" min="1" step="1" value="1"></div>
           <div class="apv2-field full"><label>제품명 *</label><input name="name" required></div>
-          <div class="apv2-field full"><label>제품 이미지 URL *</label><input name="imageUrl" type="url" placeholder="https://..." required></div>
+
+          <div class="apv2-image-field full">
+            <label>제품 이미지 *</label>
+            <div class="apv2-image-modes" role="group" aria-label="이미지 등록 방식">
+              <button type="button" class="is-active" data-image-mode="url">이미지 URL</button>
+              <button type="button" data-image-mode="upload">파일 업로드</button>
+            </div>
+            <div data-image-url-panel>
+              <input class="apv2-image-url" name="imageUrl" type="url" placeholder="https://..." required>
+              <small>외부 이미지 주소나 CDN 주소를 그대로 입력할 수 있습니다.</small>
+            </div>
+            <div class="apv2-upload-panel" data-image-upload-panel hidden>
+              <label class="apv2-dropzone" data-dropzone>
+                <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-image-file hidden>
+                <span class="apv2-drop-icon">＋</span>
+                <strong>이미지를 이곳에 끌어놓거나 클릭해 선택</strong>
+                <small>JPG · PNG · WEBP · GIF / 최대 8MB</small>
+              </label>
+            </div>
+            <div class="apv2-image-preview" data-image-preview hidden><img alt="제품 이미지 미리보기"><div><b data-image-preview-name></b><button type="button" data-image-clear>이미지 선택 해제</button></div></div>
+          </div>
+
           <div class="apv2-field"><label>규격 / 구성</label><input name="spec" placeholder="예: 30m · 3겹 · 30롤"></div>
           <div class="apv2-field"><label>원단 / 소재</label><input name="material" placeholder="예: 천연펄프"></div>
           <div class="apv2-field full"><label>추가 설명</label><textarea name="note" placeholder="친환경 인증, 온라인 전용 등"></textarea></div>
@@ -94,6 +122,62 @@ function mount(){
   root.querySelector('[data-apv2-search]')?.addEventListener('input',render);
   document.querySelectorAll('[data-apv2-close]').forEach(btn=>btn.addEventListener('click',closeForm));
   document.querySelector('[data-apv2-form]')?.addEventListener('submit',saveForm);
+
+  document.querySelectorAll('[data-image-mode]').forEach(button=>button.addEventListener('click',()=>setImageMode(button.dataset.imageMode)));
+  document.querySelector('[data-image-file]')?.addEventListener('change',event=>acceptFile(event.target.files?.[0]));
+  document.querySelector('[data-image-clear]')?.addEventListener('click',clearSelectedFile);
+  const dropzone = document.querySelector('[data-dropzone]');
+  ['dragenter','dragover'].forEach(type=>dropzone?.addEventListener(type,event=>{event.preventDefault();dropzone.classList.add('is-dragging');}));
+  ['dragleave','drop'].forEach(type=>dropzone?.addEventListener(type,event=>{event.preventDefault();dropzone.classList.remove('is-dragging');}));
+  dropzone?.addEventListener('drop',event=>acceptFile(event.dataTransfer?.files?.[0]));
+}
+
+function setImageMode(mode){
+  currentImageMode = mode === 'upload' ? 'upload' : 'url';
+  document.querySelectorAll('[data-image-mode]').forEach(button=>button.classList.toggle('is-active',button.dataset.imageMode===currentImageMode));
+  const urlPanel=document.querySelector('[data-image-url-panel]');
+  const uploadPanel=document.querySelector('[data-image-upload-panel]');
+  const urlInput=document.querySelector('[data-apv2-form] [name="imageUrl"]');
+  if(urlPanel) urlPanel.hidden=currentImageMode!=='url';
+  if(uploadPanel) uploadPanel.hidden=currentImageMode!=='upload';
+  const existing = editingId ? items.find(item=>item.id===editingId) : null;
+  if(urlInput) urlInput.required = currentImageMode==='url' && !(existing?.imageUrl && !urlInput.value);
+}
+
+function acceptFile(file){
+  const status=document.querySelector('[data-apv2-status]');
+  if(!file) return;
+  if(!file.type.startsWith('image/')){
+    if(status){status.textContent='이미지 파일만 업로드할 수 있습니다.';status.dataset.kind='error';}
+    return;
+  }
+  if(file.size>MAX_IMAGE_SIZE){
+    if(status){status.textContent='이미지는 8MB 이하로 올려주세요.';status.dataset.kind='error';}
+    return;
+  }
+  selectedFile=file;
+  if(status){status.textContent='';status.dataset.kind='';}
+  const preview=document.querySelector('[data-image-preview]');
+  const img=preview?.querySelector('img');
+  const name=document.querySelector('[data-image-preview-name]');
+  if(preview) preview.hidden=false;
+  if(img) img.src=URL.createObjectURL(file);
+  if(name) name.textContent=`${file.name} · ${(file.size/1024/1024).toFixed(1)}MB`;
+}
+
+function clearSelectedFile(){
+  selectedFile=null;
+  const fileInput=document.querySelector('[data-image-file]');
+  if(fileInput) fileInput.value='';
+  const preview=document.querySelector('[data-image-preview]');
+  if(preview) preview.hidden=true;
+}
+
+async function uploadProductImage(file, productId){
+  const path=`product-images/${productId}/${Date.now()}-${safeFileName(file.name)}`;
+  const fileRef=storageRef(storage,path);
+  await uploadBytes(fileRef,file,{contentType:file.type,cacheControl:'public,max-age=31536000'});
+  return {imageUrl:await getDownloadURL(fileRef),storagePath:path};
 }
 
 function visibleItems(){
@@ -137,6 +221,16 @@ function render(){
   list.querySelectorAll('[data-apv2-delete]').forEach(btn=>btn.addEventListener('click',()=>removeProduct(btn.dataset.apv2Delete)));
 }
 
+function showExistingImage(item){
+  const preview=document.querySelector('[data-image-preview]');
+  const img=preview?.querySelector('img');
+  const name=document.querySelector('[data-image-preview-name]');
+  if(!item?.imageUrl){if(preview)preview.hidden=true;return;}
+  if(preview) preview.hidden=false;
+  if(img) img.src=item.imageUrl;
+  if(name) name.textContent=item.storagePath?'현재 업로드 이미지':'현재 이미지 URL';
+}
+
 function openForm(id=''){
   const modal = document.querySelector('[data-apv2-modal]');
   const form = modal?.querySelector('[data-apv2-form]');
@@ -144,6 +238,7 @@ function openForm(id=''){
   const status = modal?.querySelector('[data-apv2-status]');
   if(!modal || !form) return;
   form.reset();
+  selectedFile=null;
   editingId = id || null;
   if(status){status.textContent='';status.dataset.kind='';}
   const item = items.find(product=>product.id===id);
@@ -157,9 +252,13 @@ function openForm(id=''){
     form.elements.material.value=item.material||'';
     form.elements.note.value=item.note||'';
     form.elements.published.checked=item.published!==false;
+    setImageMode(item.storagePath?'upload':'url');
+    showExistingImage(item);
   }else{
     title.textContent='제품 추가';
     form.elements.published.checked=true;
+    setImageMode('url');
+    clearSelectedFile();
     const category = view()?.querySelector('[data-apv2-category]')?.value;
     if(category && category!=='all') form.elements.category.value=category;
     const sameCategory = items.filter(p=>p.category===form.elements.category.value);
@@ -173,42 +272,74 @@ function closeForm(){
   const modal=document.querySelector('[data-apv2-modal]');
   if(modal) modal.hidden=true;
   editingId=null;
+  selectedFile=null;
 }
 
 async function saveForm(event){
   event.preventDefault();
   const form=event.currentTarget;
+  const existing=editingId?items.find(product=>product.id===editingId):null;
+  const urlInput=form.elements.imageUrl;
+  if(currentImageMode==='url'){
+    urlInput.required=true;
+  }else{
+    urlInput.required=false;
+    if(!selectedFile && !existing?.imageUrl){
+      const status=form.querySelector('[data-apv2-status]');
+      status.textContent='업로드할 이미지를 선택해 주세요.';status.dataset.kind='error';
+      return;
+    }
+  }
   if(!form.reportValidity()) return;
+
   const status=form.querySelector('[data-apv2-status]');
   const save=form.querySelector('[data-apv2-save]');
   const data=new FormData(form);
   const category=String(data.get('category')||'roll');
   const published=data.get('published')==='on';
-  const payload={
-    category,
-    catalogKey:`${category}:${published?'published':'hidden'}`,
-    order:Number(data.get('order')||1),
-    name:String(data.get('name')||'').trim(),
-    imageUrl:String(data.get('imageUrl')||'').trim(),
-    spec:String(data.get('spec')||'').trim(),
-    material:String(data.get('material')||'').trim(),
-    note:String(data.get('note')||'').trim(),
-    published,
-    updatedAt:serverTimestamp()
-  };
-  save.disabled=true; status.textContent=editingId?'수정 중입니다.':'등록 중입니다.'; status.dataset.kind='';
+  const productRef=editingId?doc(db,'products',editingId):doc(collection(db,'products'));
+  let imageUrl=currentImageMode==='url'?String(data.get('imageUrl')||'').trim():(existing?.imageUrl||'');
+  let storagePath=currentImageMode==='upload'?(existing?.storagePath||''):'';
+  let oldStoragePath=existing?.storagePath||'';
+
+  save.disabled=true;
+  status.textContent=editingId?'수정 중입니다.':'등록 중입니다.';
+  status.dataset.kind='';
   try{
-    if(editingId){
-      await updateDoc(doc(db,'products',editingId),payload);
-    }else{
-      const ref=doc(collection(db,'products'));
-      await setDoc(ref,{...payload,origin:'admin',createdAt:serverTimestamp()});
+    if(selectedFile){
+      status.textContent='이미지를 업로드하는 중입니다.';
+      const uploaded=await uploadProductImage(selectedFile,productRef.id);
+      imageUrl=uploaded.imageUrl;
+      storagePath=uploaded.storagePath;
     }
-    status.textContent=editingId?'제품 정보가 수정되었습니다.':'제품이 등록되었습니다.';status.dataset.kind='success';
+    const payload={
+      category,
+      catalogKey:`${category}:${published?'published':'hidden'}`,
+      order:Number(data.get('order')||1),
+      name:String(data.get('name')||'').trim(),
+      imageUrl,
+      storagePath,
+      spec:String(data.get('spec')||'').trim(),
+      material:String(data.get('material')||'').trim(),
+      note:String(data.get('note')||'').trim(),
+      published,
+      updatedAt:serverTimestamp()
+    };
+    if(editingId){
+      await updateDoc(productRef,payload);
+    }else{
+      await setDoc(productRef,{...payload,origin:'admin',createdAt:serverTimestamp()});
+    }
+    if(oldStoragePath && oldStoragePath!==storagePath){
+      deleteObject(storageRef(storage,oldStoragePath)).catch(()=>{});
+    }
+    status.textContent=editingId?'제품 정보가 수정되었습니다.':'제품이 등록되었습니다.';
+    status.dataset.kind='success';
     setTimeout(closeForm,350);
   }catch(error){
     console.error('[Admin product save]',error?.code||error);
-    status.textContent='저장에 실패했습니다. Firestore 권한을 확인해 주세요.';status.dataset.kind='error';
+    status.textContent=String(error?.code||'').includes('storage/')?'이미지 업로드에 실패했습니다. Storage 설정을 확인해 주세요.':'저장에 실패했습니다. Firestore 권한을 확인해 주세요.';
+    status.dataset.kind='error';
   }finally{save.disabled=false;}
 }
 
@@ -222,6 +353,7 @@ async function removeProduct(id){
   const item=items.find(product=>product.id===id); if(!item) return;
   if(!confirm(`“${item.name}” 제품을 삭제할까요?\n삭제하면 사이트 제품 목록에서도 사라집니다.`)) return;
   await deleteDoc(doc(db,'products',id));
+  if(item.storagePath) deleteObject(storageRef(storage,item.storagePath)).catch(()=>{});
 }
 
 const productViewObserver = new MutationObserver(()=>{
