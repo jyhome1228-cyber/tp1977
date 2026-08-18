@@ -67,6 +67,10 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    match /siteMeta/{metaId} {
+      allow read, write: if isAdmin();
+    }
+
     match /siteSettings/{settingId} {
       allow read, write: if isAdmin();
     }
