@@ -1,12 +1,20 @@
 (()=>{
-  const version='20260818-1502';
+  const version='20260818-1505';
   const addStyle=(key,file)=>{
     if(document.querySelector(`link[data-${key}]`))return;
-    const link=document.createElement('link');link.rel='stylesheet';link.href=`../assets/css/${file}?v=${version}`;link.setAttribute(`data-${key}`,'true');document.head.appendChild(link);
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href=`../assets/css/${file}?v=${version}`;
+    link.setAttribute(`data-${key}`,'true');
+    document.head.appendChild(link);
   };
   const addModule=(key,file)=>{
     if(document.querySelector(`script[data-${key}]`))return;
-    const script=document.createElement('script');script.type='module';script.src=`../assets/js/${file}?v=${version}`;script.setAttribute(`data-${key}`,'true');document.head.appendChild(script);
+    const script=document.createElement('script');
+    script.type='module';
+    script.src=`../assets/js/${file}?v=${version}`;
+    script.setAttribute(`data-${key}`,'true');
+    document.head.appendChild(script);
   };
 
   if(!document.querySelector('link[rel="icon"]')){
@@ -23,14 +31,24 @@
     document.head.appendChild(shortcut);
   }
 
+  /* CSS is light enough to prepare on the login screen. */
   addStyle('admin-data-css','admin-data.css');
   addStyle('admin-advanced-css','admin-advanced.css');
   addStyle('admin-products-v2-css','admin-products-v2.css');
   addStyle('admin-trash-css','admin-trash.css');
-  addModule('admin-advanced','admin-advanced.js');
-  addModule('admin-row-actions','admin-row-actions.js');
-  addModule('admin-products-v2','admin-products-v2.js');
-  addModule('admin-trash','admin-trash.js');
+
+  /* Firestore/Storage-heavy tools are loaded only after Authentication succeeds. */
+  let authenticatedModulesLoaded=false;
+  const loadAuthenticatedModules=()=>{
+    if(authenticatedModulesLoaded)return;
+    authenticatedModulesLoaded=true;
+    addModule('admin-advanced','admin-advanced.js');
+    addModule('admin-row-actions','admin-row-actions.js');
+    addModule('admin-products-v2','admin-products-v2.js');
+    addModule('admin-trash','admin-trash.js');
+  };
+  window.addEventListener('tp-admin-authenticated',loadAuthenticatedModules);
+  if(document.body.classList.contains('admin-authenticated'))loadAuthenticatedModules();
 
   const adminIdInput=document.querySelector('[data-admin-id]');
   if(adminIdInput){
@@ -43,7 +61,6 @@
   ['customer','content'].forEach(key=>{
     document.querySelectorAll(`[data-admin-nav="${key}"],[data-admin-view="${key}"]`).forEach(el=>el.remove());
   });
-
   document.querySelectorAll('.admin-sidebar .admin-nav button > span').forEach(number=>number.remove());
 
   const views=[...document.querySelectorAll('[data-admin-view]')];
@@ -61,8 +78,7 @@
   }
 
   buttons.forEach(b=>b.addEventListener('click',()=>open(b.dataset.adminNav)));
-  const initial=location.hash.replace('#','');
-  open(initial);
+  open(location.hash.replace('#',''));
 
   if(date){
     const d=new Date();
