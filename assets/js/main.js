@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260818-1433';
+  const cacheVersion = '20260827-seo-keywords';
   const siteOrigin = 'https://tp1977.com';
   const defaultOgImage = 'https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/a08e6868cebcd.jpg';
   const naverVerification = 'd35273ec40bb3015baefa801e55cc7e7aa36d43b';
@@ -22,12 +22,12 @@
   const normalizedPath = location.pathname.replace(/^\/tp1977(?=\/|$)/, '').replace(/\/index\.html$/, '/') || '/';
   const keywordGroups = {
     company: '태평제지 회사소개, 태평제지 스토리, 태평제지 역사, 태평제지 비전, 태평제지 핵심가치, 브론디 브랜드',
-    business: '태평제지 운영현황, 화장지 생산, 위생용품 생산, 화장지 물류, 화장지 품질, 기업납품, B2B 위생용품',
-    product: '브론디, 두루마리 화장지, 점보롤 화장지, 페이퍼타월, 핸드타월, 키친타월, 미용티슈, 물티슈, 디스펜서',
+    business: '태평제지 운영현황, 화장지 생산, 위생용품 생산, 화장지 물류, 화장지 품질, 기업납품, B2B 위생용품, 화장지 OEM',
+    product: '브론디, 두루마리 화장지, 두루마리 화장지 제조, 점보롤 화장지, 페이퍼타월, 핸드타월, 키친타월, 미용티슈, 물티슈, 디스펜서',
     esg: '태평제지 지속가능경영, 친환경 화장지, 환경마크 화장지, 재생펄프, 친환경 위생용품',
     recruit: '태평제지 채용, 태평제지 인재상, 태평제지 복리후생, 화장지 제조 채용',
     contact: '태평제지 고객만족, 태평제지 고객센터, 태평제지 문의, 브론디 문의',
-    inquiry: '태평제지 문의, 태평제지 제휴, 제품 문의, 납품 문의, 기업 구매, 브랜드 협업'
+    inquiry: '태평제지 문의, 태평제지 제휴, 제품 문의, 납품 문의, 기업 구매, 브랜드 협업, 기업 화장지 납품, 관공서 화장지 납품, PB 화장지 생산'
   };
   const descriptionFallbacks = {
     '/': '1977년부터 두루마리 화장지, 점보롤, 핸드타월 등 생활 위생용품을 제조·공급해온 태평제지 공식 홈페이지입니다.',
@@ -49,7 +49,8 @@
   else if (normalizedPath.startsWith('/contact/')) sectionKeywords = keywordGroups.contact;
   else if (normalizedPath.startsWith('/inquiry/')) sectionKeywords = keywordGroups.inquiry;
 
-  const baseKeywords = '태평제지, Taepyung Paper, 브론디, Blondy, 화장지 제조업체, 생활 위생용품, 화장지, 위생용품, 대한민국 화장지 제조';
+  const coreKeywords = '태평제지, 화장지 제조업체, 화장지 제조, 점보롤 제조, 페이퍼타월 제조, 업소용 화장지, 기업 화장지 납품, 관공서 화장지 납품, 생활 위생용품 제조, PB 화장지, 화장지 PB 생산, 브론디 화장지';
+  const baseKeywords = `${coreKeywords}, Taepyung Paper, 브론디, Blondy, 두루마리 화장지 제조, B2B 화장지, 화장지 OEM`;
   const keywords = sectionKeywords ? `${baseKeywords}, ${sectionKeywords}` : `${baseKeywords}, 두루마리 화장지, 점보롤 화장지, 핸드타월, 키친타월, 미용티슈`;
   upsertMeta('meta[name="naver-site-verification"]', { name: 'naver-site-verification', content: naverVerification });
   upsertMeta('meta[name="keywords"]', { name: 'keywords', content: keywords });
