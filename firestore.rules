@@ -95,6 +95,24 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /traffic_events/{eventId} {
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasOnly([
+          'date','source','keyword','campaign','landing','referrerHost','createdAt'
+        ])
+        && textWithin(request.resource.data.date, 10)
+        && textWithin(request.resource.data.source, 80)
+        && textWithin(request.resource.data.keyword, 100)
+        && textWithin(request.resource.data.campaign, 100)
+        && textWithin(request.resource.data.landing, 160)
+        && textWithin(request.resource.data.referrerHost, 120)
+        && request.resource.data.date.size() == 10
+        && request.resource.data.source.size() > 0;
+
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
