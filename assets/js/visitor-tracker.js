@@ -41,9 +41,8 @@ function detectKeyword(host) {
     const internal = clean(params.get('q'), 100);
     if (internal) return internal;
   }
-  if (/(^|\.)google\./i.test(host)) return 'Google 검색';
-  if (/(^|\.)naver\.com$/i.test(host)) return 'Naver 검색';
-  if (/(^|\.)daum\.net$/i.test(host) || /kakao/i.test(host)) return 'Daum/Kakao 검색';
+  // Search engines often do not expose their exact organic search query.
+  // Do not mislabel the traffic source as an actual keyword.
   return '';
 }
 
