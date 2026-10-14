@@ -95,9 +95,9 @@ function mountWeeklyReport(){
     <div class="admin-weekly-insights">
       <div><span>유입 키워드</span><div data-weekly-keywords><em>수집된 키워드 없음</em></div></div>
       <div><span>주요 유입 경로</span><div data-weekly-sources><em>수집된 유입 경로 없음</em></div></div>
-      <div><span>주요 랜딩 페이지</span><div data-weekly-landings><em>수집된 랜딩 페이지 없음</em></div></div>
+      <div><span>주요 조회 페이지</span><div data-weekly-landings><em>수집된 랜딩 페이지 없음</em></div></div>
     </div>
-    <p class="admin-weekly-note">검색어는 UTM term과 사이트 내부 검색어를 기준으로 집계합니다. 검색엔진이 실제 검색어를 숨기는 경우에는 유입 경로만 표시됩니다.</p>
+    <p class="admin-weekly-note">실제 키워드는 UTM term·내부 검색어만 표시합니다. 네이버·구글 자연검색의 정확한 검색어는 별도 검색도구 연동이 필요합니다.</p>
   </section>`;
   if(visitorSummary)visitorSummary.insertAdjacentHTML('afterend',html);
   else dashboard.querySelector('.admin-grid')?.insertAdjacentHTML('beforebegin',html);
@@ -161,7 +161,7 @@ function renderWeeklyReport(){
   root.querySelector('[data-weekly-peak]').textContent=peak?.id?.slice(5).replace('-','.')||'—';
   root.querySelector('[data-weekly-peak-count]').textContent=peak?`${Number(peak.visitors||0).toLocaleString('ko-KR')}명`:'데이터 없음';
   const events=weeklyTrafficItems.filter(v=>v.date>=range.start&&v.date<=range.end);
-  const keywords=countTop(events,'keyword');
+  const keywords=countTop(events.filter(v=>!['Google 검색','Naver 검색','Daum/Kakao 검색'].includes(v.keyword)),'keyword');
   const sources=countTop(events,'source');
   const landings=countTop(events,'landing');
   root.querySelector('[data-weekly-keywords]').innerHTML=reportTags(keywords);
