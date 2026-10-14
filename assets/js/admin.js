@@ -1,5 +1,5 @@
 (()=>{
-  const version='20261014-admin-report';
+  const version='20261014-admin-report2';
   const addStyle=(key,file)=>{
     if(document.querySelector(`link[data-${key}]`))return;
     const link=document.createElement('link');
