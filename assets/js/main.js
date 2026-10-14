@@ -1,7 +1,7 @@
 (() => {
   const isGithubPages = location.hostname.endsWith('github.io');
   const assetRoot = isGithubPages ? '/tp1977/' : '/';
-  const cacheVersion = '20260827-seo-keywords';
+  const cacheVersion = '20261014-admin-report';
   const siteOrigin = 'https://tp1977.com';
   const defaultOgImage = 'https://cdn.imweb.me/upload/S2025061194bb8d274d3cd/a08e6868cebcd.jpg';
   const naverVerification = 'd35273ec40bb3015baefa801e55cc7e7aa36d43b';
