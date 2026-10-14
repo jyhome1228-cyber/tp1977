@@ -123,9 +123,9 @@ function renderInquiryTable() {
   tbody.innerHTML = inquiryItems.map(item => `
     <tr class="admin-data-row" data-detail-kind="${item.collectionName === 'customerInquiries' ? 'customer' : 'inquiry'}" data-detail-id="${escapeHTML(item.id)}">
       <td>${formatDateTime(item.createdAt)}</td>
-      <td><span class="admin-type-pill">${escapeHTML(item.type || '문의하기')}</span></td>
+      <td><span class="admin-type-pill">${escapeHTML(item.type || item.source || item.category || '문의하기')}</span></td>
       <td><strong>${escapeHTML(item.company || item.name || '-')}</strong><small>${escapeHTML(item.company ? item.name : '')}</small></td>
-      <td>${escapeHTML(item.subject || '-')}</td>
+      <td>${escapeHTML(item.subject || item.category || '-')}</td>
       <td>${statusSelect(item)}</td>
     </tr>`).join('');
 }
@@ -142,7 +142,7 @@ function renderRecent() {
   const wrapper = document.createElement('div');
   wrapper.className = 'admin-recent-list';
   wrapper.innerHTML = recent.length ? recent.map(item => `
-    <button type="button" class="admin-recent-item" data-detail-kind="inquiry" data-detail-id="${escapeHTML(item.id)}">
+    <button type="button" class="admin-recent-item" data-detail-kind="${item.collectionName === 'customerInquiries' ? 'customer' : 'inquiry'}" data-detail-id="${escapeHTML(item.id)}">
       <span><b>${escapeHTML(item.type || item.source || '문의·제휴')}</b><small>${formatDateTime(item.createdAt)}</small></span>
       <strong>${escapeHTML(item.subject || item.message || '-')}</strong>
       <em>${escapeHTML(item.company || item.name || '-')} · ${escapeHTML(item.status || '신규')}</em>
@@ -344,7 +344,7 @@ adminApp?.addEventListener('change', async event => {
 });
 adminApp?.addEventListener('click', event => {
   if (event.target.closest('select, option, a')) return;
-  const trigger = event.target.closest('[data-detail-kind="inquiry"][data-detail-id]');
+  const trigger = event.target.closest('[data-detail-kind][data-detail-id]');
   if (trigger) openDetail(trigger.dataset.detailId);
 });
 
