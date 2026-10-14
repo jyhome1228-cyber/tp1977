@@ -1,7 +1,7 @@
 import { app, db } from './firebase-client.js?v=20260818-1058';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 import {
-  addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query,
+  addDoc, collection, deleteDoc, doc, documentId, getDoc, limit, onSnapshot, orderBy, query,
   serverTimestamp, setDoc, updateDoc, where
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
 
@@ -13,7 +13,10 @@ const categoryLabels = {
 
 let stopProducts = null;
 let stopVisitors = null;
+let stopTraffic = null;
 let currentDetail = null;
+let weeklyVisitorItems = [];
+let weeklyTrafficItems = [];
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const kstKey = date => {
@@ -49,6 +52,122 @@ function renderVisitorSummary(items){
   const total = items.reduce((s,v)=>s+Number(v.visitors||0),0);
   const values = {'[data-v-today]':todayCount,'[data-v-week]':week,'[data-v-month]':monthCount,'[data-v-total]':total};
   Object.entries(values).forEach(([sel,val])=>{const el=document.querySelector(sel);if(el)el.textContent=val.toLocaleString('ko-KR');});
+}
+function adminKstNow(){
+  return new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Seoul'}));
+}
+function plainKey(date){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+function shifted(date,days){
+  const out=new Date(date);out.setDate(out.getDate()+days);return out;
+}
+function previousWeekRange(){
+  const now=adminKstNow();
+  const sinceMonday=(now.getDay()+6)%7;
+  const thisMonday=shifted(now,-sinceMonday);
+  const start=shifted(thisMonday,-7);
+  const end=shifted(thisMonday,-1);
+  const prevStart=shifted(start,-7);
+  const prevEnd=shifted(start,-1);
+  return {now,start:plainKey(start),end:plainKey(end),prevStart:plainKey(prevStart),prevEnd:plainKey(prevEnd)};
+}
+function countTop(items,key,limitCount=5){
+  const map=new Map();
+  items.forEach(item=>{
+    const value=String(item?.[key]||'').trim();
+    if(!value)return;
+    map.set(value,(map.get(value)||0)+1);
+  });
+  return [...map.entries()].sort((a,b)=>b[1]-a[1]).slice(0,limitCount);
+}
+function mountWeeklyReport(){
+  const dashboard=document.querySelector('[data-admin-view="dashboard"]');
+  if(!dashboard || dashboard.querySelector('[data-weekly-report]'))return;
+  const visitorSummary=dashboard.querySelector('[data-dashboard-visitors]');
+  const html=`<section class="admin-weekly-report" data-weekly-report>
+    <div class="admin-weekly-head"><div><small>WEEKLY REPORT</small><h3>지난주 운영 리포트</h3><p data-weekly-period>지난주 방문 현황을 정리합니다.</p></div><span class="admin-weekly-badge">매주 월요일 자동 표시</span></div>
+    <div class="admin-weekly-metrics">
+      <article><span>방문자</span><strong data-weekly-visitors>0</strong><em data-weekly-compare>전주 대비 —</em></article>
+      <article><span>페이지 조회</span><strong data-weekly-pageviews>0</strong><em data-weekly-avg>일 평균 —</em></article>
+      <article><span>최고 방문일</span><strong data-weekly-peak>—</strong><em data-weekly-peak-count>—</em></article>
+    </div>
+    <div class="admin-weekly-insights">
+      <div><span>유입 키워드</span><div data-weekly-keywords><em>수집된 키워드 없음</em></div></div>
+      <div><span>주요 유입 경로</span><div data-weekly-sources><em>수집된 유입 경로 없음</em></div></div>
+      <div><span>주요 랜딩 페이지</span><div data-weekly-landings><em>수집된 랜딩 페이지 없음</em></div></div>
+    </div>
+    <p class="admin-weekly-note">검색어는 UTM term과 사이트 내부 검색어를 기준으로 집계합니다. 검색엔진이 실제 검색어를 숨기는 경우에는 유입 경로만 표시됩니다.</p>
+  </section>`;
+  if(visitorSummary)visitorSummary.insertAdjacentHTML('afterend',html);
+  else dashboard.querySelector('.admin-grid')?.insertAdjacentHTML('beforebegin',html);
+  if(!document.querySelector('[data-weekly-report-style]')){
+    const style=document.createElement('style');style.dataset.weeklyReportStyle='true';style.textContent=`
+      .admin-weekly-report{margin:14px 0;padding:24px;border:1px solid rgba(23,25,23,.10);border-radius:12px;background:#fff}
+      .admin-weekly-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px}
+      .admin-weekly-head small{display:block;margin-bottom:7px;color:#22793a;font-size:10px;font-weight:800;letter-spacing:.1em}
+      .admin-weekly-head h3{margin:0 0 6px;font-size:18px;letter-spacing:-.03em}.admin-weekly-head p{margin:0;color:#7a807a;font-size:11px}
+      .admin-weekly-badge{padding:7px 9px;border-radius:999px;background:#f3f8f4;color:#22793a;font-size:10px;font-weight:700;white-space:nowrap}
+      .admin-weekly-metrics{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(23,25,23,.09);border-radius:10px;overflow:hidden}
+      .admin-weekly-metrics article{padding:18px 20px;background:#fafbfa;border-right:1px solid rgba(23,25,23,.08)}.admin-weekly-metrics article:last-child{border-right:0}
+      .admin-weekly-metrics span,.admin-weekly-insights>div>span{display:block;color:#858b85;font-size:10px;font-weight:650}.admin-weekly-metrics strong{display:block;margin:8px 0 4px;font-size:24px;letter-spacing:-.04em}.admin-weekly-metrics em{color:#667066;font-size:10px;font-style:normal}
+      .admin-weekly-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.admin-weekly-insights>div{min-height:112px;padding:15px 16px;border:1px solid rgba(23,25,23,.09);border-radius:10px}
+      .admin-weekly-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}.admin-weekly-tags b{padding:6px 8px;border-radius:6px;background:#f5f6f5;color:#414641;font-size:10px;font-weight:600}.admin-weekly-tags b i{margin-left:4px;color:#8c928c;font-style:normal;font-weight:500}
+      .admin-weekly-insights em{display:block;margin-top:12px;color:#9a9f9a;font-size:10px;font-style:normal}.admin-weekly-note{margin:12px 0 0;color:#939893;font-size:9px;line-height:1.5}
+      .admin-weekly-modal[hidden]{display:none!important}.admin-weekly-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:24px}.admin-weekly-modal:before{content:"";position:absolute;inset:0;background:rgba(12,16,13,.48);backdrop-filter:blur(4px)}
+      .admin-weekly-modal-card{position:relative;width:min(560px,calc(100vw - 36px));padding:28px;border-radius:14px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.22)}.admin-weekly-modal-card small{color:#22793a;font-size:10px;font-weight:800;letter-spacing:.1em}.admin-weekly-modal-card h2{margin:8px 0 8px;font-size:25px;letter-spacing:-.04em}.admin-weekly-modal-card>p{margin:0;color:#737a73;font-size:12px}
+      .admin-weekly-modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px 0}.admin-weekly-modal-stats div{padding:14px;border-radius:9px;background:#f6f7f6}.admin-weekly-modal-stats span{display:block;color:#8a908a;font-size:9px}.admin-weekly-modal-stats strong{display:block;margin-top:6px;font-size:20px}.admin-weekly-modal-card button{width:100%;min-height:42px;border:0;border-radius:8px;background:#22793a;color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+      @media(max-width:760px){.admin-weekly-head{display:block}.admin-weekly-badge{display:inline-block;margin-top:12px}.admin-weekly-metrics,.admin-weekly-insights,.admin-weekly-modal-stats{grid-template-columns:1fr}.admin-weekly-metrics article{border-right:0;border-bottom:1px solid rgba(23,25,23,.08)}}
+    `;document.head.appendChild(style);
+  }
+}
+function reportTags(entries){
+  return entries.length?`<div class="admin-weekly-tags">${entries.map(([name,count])=>`<b>${esc(name)}<i>${count}</i></b>`).join('')}</div>`:'<em>수집된 데이터 없음</em>';
+}
+function maybeShowMondayReport(range,stats){
+  if(range.now.getDay()!==1)return;
+  const key=`tp1977-weekly-report-${range.start}`;
+  if(localStorage.getItem(key))return;
+  localStorage.setItem(key,'shown');
+  let modal=document.querySelector('[data-weekly-modal]');
+  if(!modal){
+    document.body.insertAdjacentHTML('beforeend',`<div class="admin-weekly-modal" data-weekly-modal hidden><section class="admin-weekly-modal-card"><small>MONDAY REPORT</small><h2>지난주 주간 리포트</h2><p data-weekly-modal-period></p><div class="admin-weekly-modal-stats"><div><span>방문자</span><strong data-weekly-modal-visitors></strong></div><div><span>페이지 조회</span><strong data-weekly-modal-pageviews></strong></div><div><span>전주 대비</span><strong data-weekly-modal-compare></strong></div></div><button type="button" data-weekly-modal-close>리포트 확인</button></section></div>`);
+    modal=document.querySelector('[data-weekly-modal]');
+    modal.querySelector('[data-weekly-modal-close]')?.addEventListener('click',()=>{modal.hidden=true;});
+  }
+  modal.querySelector('[data-weekly-modal-period]').textContent=`${range.start} ~ ${range.end}`;
+  modal.querySelector('[data-weekly-modal-visitors]').textContent=stats.visitors.toLocaleString('ko-KR');
+  modal.querySelector('[data-weekly-modal-pageviews]').textContent=stats.pageViews.toLocaleString('ko-KR');
+  modal.querySelector('[data-weekly-modal-compare]').textContent=stats.compareText;
+  modal.hidden=false;
+}
+function renderWeeklyReport(){
+  mountWeeklyReport();
+  const root=document.querySelector('[data-weekly-report]');if(!root)return;
+  const range=previousWeekRange();
+  const week=weeklyVisitorItems.filter(v=>v.id>=range.start&&v.id<=range.end);
+  const previous=weeklyVisitorItems.filter(v=>v.id>=range.prevStart&&v.id<=range.prevEnd);
+  const visitors=week.reduce((s,v)=>s+Number(v.visitors||0),0);
+  const pageViews=week.reduce((s,v)=>s+Number(v.pageViews||0),0);
+  const previousVisitors=previous.reduce((s,v)=>s+Number(v.visitors||0),0);
+  const compare=previousVisitors?((visitors-previousVisitors)/previousVisitors)*100:null;
+  const compareText=compare===null?'비교 데이터 없음':`${compare>=0?'+':''}${compare.toFixed(1)}%`;
+  const peak=[...week].sort((a,b)=>Number(b.visitors||0)-Number(a.visitors||0))[0];
+  root.querySelector('[data-weekly-period]').textContent=`${range.start} ~ ${range.end}`;
+  root.querySelector('[data-weekly-visitors]').textContent=visitors.toLocaleString('ko-KR');
+  root.querySelector('[data-weekly-pageviews]').textContent=pageViews.toLocaleString('ko-KR');
+  root.querySelector('[data-weekly-compare]').textContent=`전주 대비 ${compareText}`;
+  root.querySelector('[data-weekly-avg]').textContent=`일 평균 ${Math.round(pageViews/7).toLocaleString('ko-KR')}회`;
+  root.querySelector('[data-weekly-peak]').textContent=peak?.id?.slice(5).replace('-','.')||'—';
+  root.querySelector('[data-weekly-peak-count]').textContent=peak?`${Number(peak.visitors||0).toLocaleString('ko-KR')}명`:'데이터 없음';
+  const events=weeklyTrafficItems.filter(v=>v.date>=range.start&&v.date<=range.end);
+  const keywords=countTop(events,'keyword');
+  const sources=countTop(events,'source');
+  const landings=countTop(events,'landing');
+  root.querySelector('[data-weekly-keywords]').innerHTML=reportTags(keywords);
+  root.querySelector('[data-weekly-sources]').innerHTML=reportTags(sources);
+  root.querySelector('[data-weekly-landings]').innerHTML=reportTags(landings);
+  maybeShowMondayReport(range,{visitors,pageViews,compareText});
 }
 
 function mountProductManager(){
@@ -189,9 +308,15 @@ document.addEventListener('click',async e=>{
 const observer=new MutationObserver(()=>mountDetailActions());observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 
 onAuthStateChanged(auth,user=>{
-  if(stopProducts){stopProducts();stopProducts=null;}if(stopVisitors){stopVisitors();stopVisitors=null;}
+  if(stopProducts){stopProducts();stopProducts=null;}if(stopVisitors){stopVisitors();stopVisitors=null;}if(stopTraffic){stopTraffic();stopTraffic=null;}
   if(!user)return;
-  mountVisitorSummary();mountProductManager();mountSettings();mountDetailActions();
+  mountVisitorSummary();mountWeeklyReport();mountProductManager();mountSettings();mountDetailActions();
   stopProducts=onSnapshot(collection(db,'products'),snap=>renderProducts(snap.docs.map(d=>({id:d.id,...d.data()}))),err=>console.error('[Admin products]',err));
-  stopVisitors=onSnapshot(query(collection(db,'visitors_daily'),orderBy('__name__','desc')),snap=>renderVisitorSummary(snap.docs.map(d=>({id:d.id,...d.data()}))),err=>console.error('[Admin visitors]',err));
+  stopVisitors=onSnapshot(query(collection(db,'visitors_daily'),orderBy(documentId(),'desc')),snap=>{
+    weeklyVisitorItems=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderVisitorSummary(weeklyVisitorItems);renderWeeklyReport();
+  },err=>console.error('[Admin visitors]',err));
+  stopTraffic=onSnapshot(query(collection(db,'traffic_events'),orderBy('createdAt','desc'),limit(2000)),snap=>{
+    weeklyTrafficItems=snap.docs.map(d=>({id:d.id,...d.data()}));renderWeeklyReport();
+  },err=>{console.warn('[Admin traffic]',err?.code||err);weeklyTrafficItems=[];renderWeeklyReport();});
 });
