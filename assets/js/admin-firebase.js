@@ -36,6 +36,9 @@ let unsubscribe = [];
 let inquiryItems = [];
 let visitorItems = [];
 let adminVisible = false;
+const inquiryBuckets = { inquiries: [], customerInquiries: [] };
+const inquirySnapshotReady = { inquiries: false, customerInquiries: false };
+let notificationButton = null;
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
@@ -96,6 +99,7 @@ function showAdmin() {
   if (adminApp) adminApp.hidden = false;
   setLoginBusy(false);
   setMessage('');
+  mountNotificationControl();
   startDataListeners();
   if (firstOpen) window.dispatchEvent(new CustomEvent('tp-admin-authenticated'));
 }
@@ -105,7 +109,7 @@ function findMetric(view, label) {
     ?.querySelector('strong');
 }
 function statusSelect(item) {
-  return `<select class="admin-status-select" data-status-id="${escapeHTML(item.id)}" data-status-collection="inquiries" aria-label="처리 상태">
+  return `<select class="admin-status-select" data-status-id="${escapeHTML(item.id)}" data-status-collection="${escapeHTML(item.collectionName || 'inquiries')}" aria-label="처리 상태">
     ${STATUS_OPTIONS.map(status => `<option value="${status}"${status === item.status ? ' selected' : ''}>${status}</option>`).join('')}
   </select>`;
 }
@@ -117,7 +121,7 @@ function renderInquiryTable() {
     return;
   }
   tbody.innerHTML = inquiryItems.map(item => `
-    <tr class="admin-data-row" data-detail-kind="inquiry" data-detail-id="${escapeHTML(item.id)}">
+    <tr class="admin-data-row" data-detail-kind="${item.collectionName === 'customerInquiries' ? 'customer' : 'inquiry'}" data-detail-id="${escapeHTML(item.id)}">
       <td>${formatDateTime(item.createdAt)}</td>
       <td><span class="admin-type-pill">${escapeHTML(item.type || '문의하기')}</span></td>
       <td><strong>${escapeHTML(item.company || item.name || '-')}</strong><small>${escapeHTML(item.company ? item.name : '')}</small></td>
@@ -139,7 +143,7 @@ function renderRecent() {
   wrapper.className = 'admin-recent-list';
   wrapper.innerHTML = recent.length ? recent.map(item => `
     <button type="button" class="admin-recent-item" data-detail-kind="inquiry" data-detail-id="${escapeHTML(item.id)}">
-      <span><b>${escapeHTML(item.type || '문의·제휴')}</b><small>${formatDateTime(item.createdAt)}</small></span>
+      <span><b>${escapeHTML(item.type || item.source || '문의·제휴')}</b><small>${formatDateTime(item.createdAt)}</small></span>
       <strong>${escapeHTML(item.subject || item.message || '-')}</strong>
       <em>${escapeHTML(item.company || item.name || '-')} · ${escapeHTML(item.status || '신규')}</em>
     </button>`).join('') : '<div class="empty-state"><b>등록된 문의가 없습니다.</b><p>새 문의나 제휴 요청이 접수되면 최근 순서대로 표시됩니다.</p></div>';
@@ -203,7 +207,7 @@ function openDetail(id) {
   if (title) title.textContent = item.subject || '문의 상세';
   const rows = [
     ['접수일', formatDateTime(item.createdAt)], ['상태', item.status], ['이름', item.name], ['회사 / 기관', item.company],
-    ['연락처', item.phone], ['이메일', item.email], ['문의 구분', item.inquiryType], ['제휴 유형', item.partnershipType],
+    ['연락처', item.phone], ['이메일', item.email], ['문의 구분', item.inquiryType || item.category], ['제휴 유형', item.partnershipType],
     ['문의 제품', item.product], ['관련 제품 / 브랜드', item.relatedItem], ['문의 내용', item.message]
   ];
   body.innerHTML = rows.filter(([, value]) => value).map(([label, value]) => `<div class="admin-detail-row${label.includes('내용') ? ' is-message' : ''}"><span>${escapeHTML(label)}</span><div>${escapeHTML(value).replace(/\n/g, '<br>')}</div></div>`).join('');
@@ -218,16 +222,108 @@ function renderDataError(kind) {
     const tbody = ensureVisitorTable(); if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty-cell">${message}</td></tr>`;
   }
 }
+function notificationPermissionLabel() {
+  if (!('Notification' in window)) return '알림 미지원';
+  if (Notification.permission === 'granted') return '알림 켜짐';
+  if (Notification.permission === 'denied') return '알림 차단됨';
+  return '문의 알림 켜기';
+}
+function updateNotificationButton() {
+  if (!notificationButton) return;
+  notificationButton.textContent = notificationPermissionLabel();
+  notificationButton.disabled = !('Notification' in window) || Notification.permission === 'denied';
+  notificationButton.dataset.state = 'Notification' in window ? Notification.permission : 'unsupported';
+}
+function mountNotificationControl() {
+  if (notificationButton) { updateNotificationButton(); return; }
+  const actions = document.querySelector('.admin-top-actions');
+  if (!actions) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    .admin-notification-toggle{min-height:36px;padding:0 13px;border:1px solid rgba(23,25,23,.13);border-radius:8px;background:#fff;color:#3d433d;font:inherit;font-size:11px;font-weight:650;cursor:pointer}
+    .admin-notification-toggle[data-state="granted"]{border-color:rgba(34,121,58,.24);background:#f4faf5;color:#22793a}
+    .admin-notification-toggle:disabled{opacity:.55;cursor:not-allowed}
+  `;
+  document.head.appendChild(style);
+  notificationButton = document.createElement('button');
+  notificationButton.type = 'button';
+  notificationButton.className = 'admin-notification-toggle';
+  notificationButton.addEventListener('click', async () => {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'default') {
+      try { await Notification.requestPermission(); } catch {}
+    }
+    updateNotificationButton();
+    if (Notification.permission === 'granted') {
+      try {
+        new Notification('태평제지 문의 알림', {
+          body: '새 문의가 접수되면 이 브라우저로 알려드립니다.',
+          tag: 'tp1977-notification-ready',
+          icon: '../favicon.svg'
+        });
+      } catch {}
+    }
+  });
+  actions.insertBefore(notificationButton, logoutButton || null);
+  updateNotificationButton();
+}
+function notifyNewInquiry(item) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const who = item.company || item.name || '고객';
+  const kind = item.type || item.source || '온라인 문의';
+  const subject = item.subject || item.category || item.message || '새 문의가 접수되었습니다.';
+  try {
+    const notice = new Notification('태평제지 새 문의', {
+      body: `${kind} · ${who}\n${String(subject).slice(0, 90)}`,
+      tag: `tp1977-${item.collectionName || 'inquiries'}-${item.id}`,
+      icon: '../favicon.svg',
+      requireInteraction: true
+    });
+    notice.onclick = () => {
+      window.focus();
+      location.hash = '#inquiries';
+      notice.close();
+    };
+  } catch {}
+}
+function rebuildInquiryItems() {
+  inquiryItems = [...inquiryBuckets.inquiries, ...inquiryBuckets.customerInquiries]
+    .filter(item => !item.trashed)
+    .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt));
+  renderInquiryTable();
+  renderOpenCount();
+  renderRecent();
+}
+function bindInquiryCollection(collectionName) {
+  unsubscribe.push(onSnapshot(
+    query(collection(db, collectionName), orderBy('createdAt', 'desc'), limit(200)),
+    snapshot => {
+      const mapped = snapshot.docs.map(snapshotDoc => ({
+        id: snapshotDoc.id,
+        collectionName,
+        ...snapshotDoc.data()
+      }));
+      inquiryBuckets[collectionName] = mapped;
+      if (inquirySnapshotReady[collectionName]) {
+        snapshot.docChanges()
+          .filter(change => change.type === 'added')
+          .map(change => ({ id: change.doc.id, collectionName, ...change.doc.data() }))
+          .filter(item => !item.trashed)
+          .forEach(notifyNewInquiry);
+      } else {
+        inquirySnapshotReady[collectionName] = true;
+      }
+      rebuildInquiryItems();
+    },
+    error => { console.error(`[Taepyung Admin] ${collectionName}`, error?.code || error); renderDataError('inquiry'); }
+  ));
+}
 function startDataListeners() {
   stopDataListeners();
-  unsubscribe.push(onSnapshot(
-    query(collection(db, 'inquiries'), orderBy('createdAt', 'desc'), limit(200)),
-    snapshot => {
-      inquiryItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() })).filter(item => !item.trashed);
-      renderInquiryTable(); renderOpenCount(); renderRecent();
-    },
-    error => { console.error('[Taepyung Admin] inquiries', error?.code || error); renderDataError('inquiry'); }
-  ));
+  inquirySnapshotReady.inquiries = false;
+  inquirySnapshotReady.customerInquiries = false;
+  bindInquiryCollection('inquiries');
+  bindInquiryCollection('customerInquiries');
   unsubscribe.push(onSnapshot(
     query(collection(db, 'visitors_daily'), orderBy(documentId(), 'asc')),
     snapshot => { visitorItems = snapshot.docs.map(snapshotDoc => ({ id: snapshotDoc.id, ...snapshotDoc.data() })); renderVisitors(); },
